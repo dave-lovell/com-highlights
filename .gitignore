@@ -1,3 +1,10 @@
+## Custom:
+# Ignore anything in 'data inputs'
+# These data won't change, and we don't want to give the public access to 
+# RtJ data especially
+
+data inputs/*
+
 # History files
 .Rhistory
 .Rapp.history
