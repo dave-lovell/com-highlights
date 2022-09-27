@@ -7,6 +7,12 @@ data/inputs/census/*
 data/inputs/recording-the-journey/*
 data/inputs/research-and-statistics/*
 
+## but don't ignore .keep files (empty folders pushed to repo)
+
+!data/inputs/census/.keep
+!data/inputs/recording-the-journey/.keep
+!data/inputs/research-and-statistics/.keep
+
 # History files
 .Rhistory
 .Rapp.history
