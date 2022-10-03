@@ -17,7 +17,9 @@ Create a subfolder entitled 'intermediate-com-outputs'
 ico <- here("intermediate-com-outputs")
 dir.create(ico)
 ```
+
 ## Read file
+
 ```{r readFile}
 
 com_name_path <- here("data", "inputs", "com-names.txt")
@@ -56,11 +58,6 @@ com_names_gaps_pipe <-
 
 com_names_list <- as.list(com_names_gaps_pipe)
 com_names_list
-
-dir.create(com_names_list)
-dir()
-com_names_list
-here(com_names_list)
 
 make_com_dirs <- function(x){
   dir.create (here("intermediate-com-outputs", x) )
