@@ -22,7 +22,7 @@ dir.create(ico)
 
 ```{r readFile}
 
-# com_name_path <- here("data", "inputs", "com-names.txt")
+com_name_path <- here("data", "inputs", "com-names.txt")
 # com_names <- readLines(com_name_path)
 # com_names_lower <- str_to_lower(com_names)
 # com_names_amper <- str_replace(com_names_lower, "&","")
