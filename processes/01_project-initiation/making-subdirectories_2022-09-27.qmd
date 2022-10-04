@@ -1,0 +1,69 @@
+---
+title: "Making data subdirectories"
+format: html
+editor: visual
+---
+
+```{r libraries}
+library(here)
+library(stringr)
+```
+
+## Create subfolder
+
+Create a subfolder entitled 'intermediate-com-outputs'
+
+```{r createSubfolder}
+ico <- here("intermediate-com-outputs")
+dir.create(ico)
+```
+
+## Read file
+
+```{r readFile}
+
+# com_name_path <- here("data", "inputs", "com-names.txt")
+# 
+# com_names <- readLines(com_name_path)
+# 
+# com_names_lower <- str_to_lower(com_names)
+# 
+# com_names_amper <- str_replace(com_names_lower, "&","")
+# 
+# com_names_char <- str_replace(com_names_amper, "-", "")
+# 
+# com_names_spaces <- str_replace(com_names_char, " ", "-")
+# 
+# com_names_gaps <- str_replace(com_names_spaces, " ", "")
+# 
+# # str_replace_all(com_names_lower)
+
+```
+
+### Read file (with pipes)
+
+This code block is equivalent to the one above, but using pipes
+
+```{r readFilePipes}
+## f(x) is equivalent to x |> f()
+## You might also see x %>% f(), which is basically the same
+## Also, f(x, y) is equivalent to x |> f(y)
+
+com_names_gaps_pipe <-
+  readLines(com_name_path) |> 
+  str_to_lower() |> 
+  str_remove_all("[:punct:]") |> 
+  str_squish() |> 
+  str_replace_all(" ", "-")
+
+com_names_list <- as.list(com_names_gaps_pipe)
+com_names_list
+
+make_com_dirs <- function(x){
+  dir.create (here("intermediate-com-outputs", x) )
+  }
+
+com_name_sub <- lapply(com_names_list, make_com_dirs)
+com_name_sub
+here(com_names_list)
+```
