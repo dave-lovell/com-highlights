@@ -25,19 +25,12 @@ dir.create(ico)
 ```{r readFile}
 
 # com_name_path <- here("data", "inputs", "com-names.txt")
-# 
 # com_names <- readLines(com_name_path)
-# 
 # com_names_lower <- str_to_lower(com_names)
-# 
 # com_names_amper <- str_replace(com_names_lower, "&","")
-# 
 # com_names_char <- str_replace(com_names_amper, "-", "")
-# 
 # com_names_spaces <- str_replace(com_names_char, " ", "-")
-# 
 # com_names_gaps <- str_replace(com_names_spaces, " ", "")
-# 
 # # str_replace_all(com_names_lower)
 
 ```
@@ -107,4 +100,4 @@ lapply(com_names_list, create_com_dirs)
 
 ```
 
-```
+\`\`\`
