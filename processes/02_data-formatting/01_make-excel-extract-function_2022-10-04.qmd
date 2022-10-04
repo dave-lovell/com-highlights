@@ -1,0 +1,99 @@
+---
+title: "02_make-excel-extract-function_2022-10-04"
+author: "Dave"
+format: html
+editor: visual
+---
+
+## Excel Extracting
+
+I've worked with this data previously and built a function that extracts data from the multiple tabs of similar (but not quite identical) Excel files. The data is stored in a list. The code below creates an improved version of that function, which is then saved into a (newly created) "functions" directory .
+
+```{r excelExtract}
+
+excel_extract <- function(
+    x,
+    tabs      = c("Population - age, gender", "Ethnicity",
+                  "Religion", "Health", "Household type"),
+    prefixes  = c("pop", "ethn", "rel", "health", "house"),
+    numberise = FALSE
+                          ){
+  
+  listOut <- as.list(tabs)
+  names(listOut) <- tabs
+  
+  ## Allow sheet numbers in 'tabs' vector ------------------------------
+  if(numberise){
+    
+    is_numberish     <- function(x) str_detect(x, "(?=^)\\d+(?<=$)")
+    
+    numberise_gently <- function(x){
+      if(is_numberish(x)){
+        as.numeric(x)
+      } else x
+    }
+    
+    listOut <- lapply(listOut, numberise_gently)
+  }
+
+    listOut <- map2(
+      listOut, as.list(prefixes),
+      function(y, prefix){
+        tryCatch(
+          expr =
+            {
+              suppressMessages(
+                excelTab <- read_xlsx(x, sheet = y)
+                )
+              
+              ## Smart skipping: works because we only ever need to skip
+              ## a maximum of one row. Required because of inconsistent
+              ## formatting
+              bad_names_present <-
+                any(
+                  names(excelTab) |> 
+                    str_detect("\\.\\.\\.")
+                  )
+              
+              if(bad_names_present){
+                names(excelTab) <- t(excelTab[1,])
+                excelTab <- excelTab[-1,]
+                }
+              
+              ## Only get the table, ignore the 'totals'
+              good_rows <- !is.na(excelTab[,1])
+              desired_table <- excelTab[good_rows,]
+              
+              desired_table <- tidyr::clean_names(desired_table)
+              
+              desired_table <- dplyr::select(
+                desired_table,
+                where(function(x) !all(is.na(x)))
+                )
+              
+              desired_table <- rename_with(
+                desired_table,
+                function(z) stingr::str_c(prefix, z, sep = "..")
+              )
+            },
+          error = function(cnd){
+            print(cnd)
+            warning("Sheet \"", y,"\" is missing in file \"", x, "\"")
+            cnd
+          }
+        ) #tryCatch
+      }) # map2
+    
+  names(listOut) <- make_clean_names(names(listOut))
+  
+  listOut
+
+}
+```
+
+## Save
+
+```{r saveFunction}
+dir.create(here::here("functions"))
+saveRDS(excel_extract, here::here("functions", "excel-extract.RDS"))
+```
