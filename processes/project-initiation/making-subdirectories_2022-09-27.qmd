@@ -7,6 +7,8 @@ editor: visual
 ```{r libraries}
 library(here)
 library(stringr)
+install.packages("fs")
+library(fs)
 ```
 
 ## Create subfolder
@@ -66,4 +68,43 @@ make_com_dirs <- function(x){
 com_name_sub <- lapply(com_names_list, make_com_dirs)
 com_name_sub
 here(com_names_list)
+```
+
+### Creating Sub-Directory (Maps, Statistics and Visualizations)
+
+```{r CreatingSubdirectoriesMSV}
+
+str(com_names_list)
+
+sub_folders <- c("maps", "statistics", "visualizations")
+
+create_com_dirs <- function(com_name){
+
+  com_sub_folders <- here("intermediate-com-outputs", com_name, sub_folders)
+  
+  print(com_sub_folders[1])
+ 
+}
+create_com_dirs(com_name = com_names_list)
+dir.create(create_com_dirs(com_sub_folders))
+
+# lapply(com_names_list, create_com_dirs)
+
+create_com_dirs <- function(com_name){
+
+  sub_folders_paths <- here("intermediate-com-outputs", com_name, sub_folders)
+  
+  for(sub_path in sub_folders_paths){
+    dir.create(sub_path)
+    
+  }
+  
+}
+
+
+lapply(com_names_list, create_com_dirs)
+
+
+```
+
 ```
