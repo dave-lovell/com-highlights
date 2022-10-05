@@ -1,0 +1,4 @@
+pop..lsoa_id,pop..proportion_of_lsoa_within_co_m_boundary,pop..total_persons,pop..male_persons,pop..female_persons,pop..x0_4_years,pop..x5_11_years,pop..x12_17_years,pop..x18_29_years,pop..x30_39_years,pop..x40_59_years,pop..x60_74_years,pop..x75_years
+W01000659,0.107491050278209,1786,872,914,133,182,144,269,267,430,253,108
+W01001923,7.1044083718996703E-2,1751,865,886,109,103,99,282,261,478,298,121
+W01001924,0.96185887991070795,1400,720,680,108,168,116,218,189,334,180,87
