@@ -36,7 +36,7 @@ excel_extract <- function(
     listOut <- lapply(listOut, numberise_gently)
   }
 
-    listOut <- map2(
+    listOut <- purrr::map2(
       listOut, as.list(prefixes),
       function(y, prefix){
         tryCatch(
@@ -64,7 +64,7 @@ excel_extract <- function(
               good_rows <- !is.na(excelTab[,1])
               desired_table <- excelTab[good_rows,]
               
-              desired_table <- tidyr::clean_names(desired_table)
+              desired_table <- janitor::clean_names(desired_table)
               
               desired_table <- dplyr::select(
                 desired_table,
@@ -73,7 +73,7 @@ excel_extract <- function(
               
               desired_table <- rename_with(
                 desired_table,
-                function(z) stingr::str_c(prefix, z, sep = "..")
+                function(z) stringr::str_c(prefix, z, sep = "..")
               )
             },
           error = function(cnd){
@@ -84,7 +84,7 @@ excel_extract <- function(
         ) #tryCatch
       }) # map2
     
-  names(listOut) <- make_clean_names(names(listOut))
+  names(listOut) <- janitor::make_clean_names(names(listOut))
   
   listOut
 
