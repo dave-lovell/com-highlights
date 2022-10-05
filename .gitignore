@@ -13,6 +13,12 @@ data/inputs/research-and-statistics/*
 !data/inputs/recording-the-journey/.keep
 !data/inputs/research-and-statistics/.keep
 
+## and don't ignore csvs
+
+!data/inputs/census/nations/csvs/*
+!data/inputs/census/dioceses/csvs/*
+!data/inputs/census/com/csvs/*
+
 # History files
 .Rhistory
 .Rapp.history
