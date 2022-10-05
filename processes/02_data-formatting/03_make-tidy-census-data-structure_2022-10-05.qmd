@@ -1,0 +1,59 @@
+---
+title: "Making tidy census data structure"
+format: html
+editor: visual
+---
+
+#### libraries
+
+```{r libraries}
+library(here)
+library(fs)
+library(stringr)
+library(dplyr)
+```
+
+## Tidy census data structure
+
+### Current data format
+
+Presently, we have census data stored in csvs, under the broad headings of 'nation', 'diocese' and 'com'.
+
+```{r visDir}
+dir_tree(here("data", "inputs", "census"),
+         recurse = 1, type = "directory")
+```
+
+Each of the main subdirectories contains another set of subdirectories, pertaining to their respective unit. Each of these contains a group of 5 csvs, which contain data on:
+
+-   Ethnicity
+-   Health
+-   Household makeup
+-   Population
+-   Religion
+
+```{r visCSVs}
+dir_tree(here("data", "inputs", "census", "com", "csvs", "Attercliffe-and-Darnall"))
+```
+
+### Proposed restructuring
+
+We'd like to turn these data into a useful, tidy R object. There are possibilities, but there are also limitations
+
+-   'Attercliffe-and-Darnall-ethn.csv' can be joined (by small-area) to 'Attercliffe-and-Darnall-health.csv', to make one table with columns pertaining to ethnicity and health data. This is true for all the tables pertaining to a particular com, diocese or nation
+-   None of the data, be they from a CoM, diocese or nation, can be bound to data sets from another nation. So Blackpool CoM and A7 CoM cannot 'live together', because Blackpool is in England and A7 is in Scotland, and each nation uses slightly different measures in their census outputs.
+
+In short, we want to have as few tables as possible - but we cannot combine sources from different nations and it's not useful to combind CoM data with diocesan data (or similar). So we want to build something that looks like this:
+
+```{r example}
+eg_list <- vector("list", 15)
+eg_list <- lapply(eg_list, "data.frame")
+dim(eg_list) <- c(5,3)
+
+rownames(eg_list) <- c("england", "scotland", "northern-ireland", "republic-of-ireland", "wales")
+colnames(eg_list) <- c("nation", "dioceses", "com")
+
+eg_list
+
+
+```
