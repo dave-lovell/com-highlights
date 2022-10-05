@@ -1,0 +1,88 @@
+---
+title: "Make census data tables"
+author: "Dave"
+format: html
+editor: visual
+---
+
+## Introduction
+
+### Libraries
+
+```{r libraries}
+#| message: false
+
+library(here)
+library(dplyr)
+library(readxl)
+library(fs) # check this actually gets used - I'd like to try it
+library(stringr)
+library(purrr)
+```
+
+## Read data using excel_extract()
+
+Currently we've got a lot of data tables from a previous project. We've also got a function, `excel_extract()` , which is designed to read those tables with some degree of flexibility, because they're not always consistently formatted.
+
+### Load excel_extract()
+
+`excel_extract()` is saved as an RDS in the 'functions' directory.
+
+```{r loadExcelExtract}
+excel_extract <- readRDS(here("functions", "excel-extract.RDS"))
+```
+
+### Define paths
+
+```{r definePaths}
+## taking advantage here's (undocument) list-handling behaviour
+census_here <- list("data", "inputs", "census")
+
+nations_path  <- here(census_here, "nations")
+dioceses_path <- here(census_here, "dioceses")
+coms_path     <- here(census_here, "com")
+
+paths <- list(
+  nations  = nations_path,
+  dioceses = dioceses_path,
+  coms     = coms_path
+)
+```
+
+### List excel files
+
+```{r listExcels}
+excels <- lapply(paths, dir, full.names = TRUE)
+```
+
+### Convert lists to vectors and name
+
+Currently, `excels` is a 3-length list of vectors. The simplest way to run `excel_extract()` on each file will be to convert the vectors within each list to a set of named vectors
+
+```{r convertListsToVectors}
+listify_files <- function(x){
+  list_names <- 
+    str_remove(x, ".xlsx") |>
+    str_replace_all("&", "and") |> 
+    str_remove_all("[:punct:]") |> 
+    str_squish() |> 
+    str_replace_all("[:space:]", "-")
+  
+  out <- as.list(x)
+  names(out) <- list_names
+  
+  return(out)
+}
+
+excels <- lapply(excels, listify_files)
+
+show <- function(x) print(str_c(class(x), length(x), sep = "; "))
+walk(excels,show)
+```
+
+### Read excel files
+
+```{r readExcels}
+
+lapply(excels[["nations"]], excel_extract)
+```
