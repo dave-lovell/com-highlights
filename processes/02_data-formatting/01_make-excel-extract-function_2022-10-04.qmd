@@ -84,7 +84,7 @@ excel_extract <- function(
         ) #tryCatch
       }) # map2
     
-  names(listOut) <- janitor::make_clean_names(names(listOut))
+  names(listOut) <- prefixes
   
   listOut
 
