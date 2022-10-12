@@ -1,59 +1,123 @@
 ---
-title: "Making tidy census data structure"
+title: "Reading Census Files"
+author: "Ladun"
 format: html
 editor: visual
 ---
 
 #### libraries
 
-```{r libraries}
+```{r libs}
 library(here)
-library(fs)
-library(stringr)
-library(dplyr)
+# library(vroom)
+library(readr)
 ```
 
-## Tidy census data structure
+### Make CoM name vector
 
-### Current data format
+```{r makeCoMNameVecor}
+## tiny-helper
+what <- function(...) dir( here(...) )
 
-Presently, we have census data stored in csvs, under the broad headings of 'nation', 'diocese' and 'com'.
+com_names_vector <- what("data", "inputs", "census", "com", "csvs")
+str(com_names_vector)
 
-```{r visDir}
-dir_tree(here("data", "inputs", "census"),
-         recurse = 1, type = "directory")
 ```
 
-Each of the main subdirectories contains another set of subdirectories, pertaining to their respective unit. Each of these contains a group of 5 csvs, which contain data on:
-
--   Ethnicity
--   Health
--   Household makeup
--   Population
--   Religion
-
-```{r visCSVs}
-dir_tree(here("data", "inputs", "census", "com", "csvs", "Attercliffe-and-Darnall"))
+```{r settingDirectory}
+path_csvs <- here("data", "inputs", "census", "com", "csvs")
+path_csvs
 ```
 
-### Proposed restructuring
+### Read CoM csvs
 
-We'd like to turn these data into a useful, tidy R object. There are possibilities, but there are also limitations
+#### Create table_read function
 
--   'Attercliffe-and-Darnall-ethn.csv' can be joined (by small-area) to 'Attercliffe-and-Darnall-health.csv', to make one table with columns pertaining to ethnicity and health data. This is true for all the tables pertaining to a particular com, diocese or nation
--   None of the data, be they from a CoM, diocese or nation, can be bound to data sets from another nation. So Blackpool CoM and A7 CoM cannot 'live together', because Blackpool is in England and A7 is in Scotland, and each nation uses slightly different measures in their census outputs.
+```{r tableRead}
+table_read <- function(x, address){
+  path_csvs <- here("data", "inputs", "census", address, "csvs", x)
+  path_csvs <- dir(path_csvs, full.names = TRUE)
+  
+  tables <- lapply(path_csvs, read_csv) 
+   return(tables)
+ }
 
-In short, we want to have as few tables as possible - but we cannot combine sources from different nations and it's not useful to combind CoM data with diocesan data (or similar). So we want to build something that looks like this:
+```
 
-```{r example}
-eg_list <- vector("list", 15)
-eg_list <- lapply(eg_list, "data.frame")
-dim(eg_list) <- c(5,3)
+```{r readCoMCsvs}
+com_paths <- paste(path_csvs, com_names_vector, sep = "/")
 
-rownames(eg_list) <- c("england", "scotland", "northern-ireland", "republic-of-ireland", "wales")
-colnames(eg_list) <- c("nation", "dioceses", "com")
+com_names_list <- as.list(com_names_vector)
+names(com_names_list) <- com_names_list
 
-eg_list
+## 1. change names inside function body to be clearer/more general
+## 2. name the function in the above code chunk
+## 3. call the same funciton in each lapply
+## 4. use the function to read Diocese tables
+## 5. Combine all the lists of tables into one big list of 3 (nation, diocese, com)
+## 6. Save the list as an RDS (?saveRDS) "01_sdjkfdsalk_2022-10-12.RDS
+
+com_tables <- lapply(
+  com_names_list,
+  function(x){
+    path_csvs_langley <- here("data", "inputs", "census", "com", "csvs", x)
+    langley_sub <- dir(path_csvs_langley, full.names = TRUE)
+    tables <- lapply(langley_sub, read_csv)
+    
+    return(tables)
+  }
+)
+
+com_tables <- lapply(com_names_list, table_read)
+nation_tables <- lapply(path_nation_list, table_read)
+dioceses_tables <- lapply(path_dioceses_list, table_read)
+
+is.list(com_tables)
+overall_table <- c(com_tables, nation_tables, dioceses_tables)
+overall_table
+saveRDS(overall_table)
+```
+
+### Read Nation csvs
+
+```{r readNationcsvs}
+
+nation_vector <- what("data", "inputs", "census", "nations", "csvs")
+str(nation_vector)
+path_nation <- here("data", "inputs", "census", "nations", "csvs")
+path_nation
+path_nation_list <- as.list(nation_vector)
+names(path_nation_list) <- path_nation_list
 
 
+nation_tables <- lapply(path_nation_list,  function(x){
+      path_csvs_coms <- here("data", "inputs", "census", "nations", "csvs", x)
+      coms_sub <- dir(path_csvs_coms, full.names = TRUE)
+      tables <- lapply(coms_sub, read_csv) 
+      return(tables)
+ }
+)
+str(nation_tables)
+```
+
+### Read Diocese csvs
+
+```{r readDiocesecsvs}
+dioceses_vector <- what("data", "inputs", "census", "dioceses", "csvs")
+str(dioceses_vector)
+path_dioceses <- here("data", "inputs", "census", "dioceses", "csvs")
+path_dioceses
+path_dioceses_list <- as.list(dioceses_vector)
+names(path_dioceses_list) <- path_dioceses_list
+
+
+
+dioceses_tables <- lapply(path_dioceses_list,  function(x){
+      path_csvs_coms <- here("data", "inputs", "census", "dioceses", "csvs", x)
+      coms_sub <- dir(path_csvs_coms, full.names = TRUE)
+      tables <- lapply(coms_sub, read_csv) 
+      return(tables)
+ }
+)
+str(dioceses_tables)
 ```
