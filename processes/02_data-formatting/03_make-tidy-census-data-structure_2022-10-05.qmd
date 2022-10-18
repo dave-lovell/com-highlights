@@ -10,6 +10,8 @@ editor: visual
 ```{r libs}
 library(here)
 library(vroom)
+library(fs)
+library(purrr)
 ```
 
 ## Define important variables
@@ -30,57 +32,42 @@ com_names_vector <- what("data", "inputs", "census", "com", "csvs")
 ### Create read_census_csvs function
 
 ```{r tableRead}
-read_census_csvs <- function(x, address){
+read_census_csvs <- function(path){
   
-  path_csvs <- here("data", "inputs", "census", address, "csvs", x)
-  path_csvs <- dir(path_csvs, full.names = TRUE)
+  path_csvs <- dir(path, full.names = TRUE)
   
-  tables <- lapply(path_csvs, vroom) 
-   return(tables)
+  tables <- lapply(path_csvs, vroom, show_col_types = FALSE) # additional arg to avoid huge visual clutter
+  
+  return(tables)
 }
 
 ```
 
-
 ### Read CoM csvs
 
-
-
 ```{r readCoMCsvs}
-com_vector <- what("data", "inputs", "census", "nations", "csvs")
-path_nation <- here("data", "inputs", "census", "nations", "csvs")
+com_path <- here("data", "inputs", "census", "com", "csvs")
+com_dirs <- dir_ls(com_path)
 
-com_paths <- paste(path_csvs, com_names_vector, sep = "/")
-
-com_names_list <- as.list(com_names_vector)
-names(com_names_list) <- com_names_list
-
-com_tables <- lapply(com_names_list, read_census_csvs, "com")
-
+com_tables <- map(com_dirs, read_census_csvs)
 ```
 
 ### Read Nation csvs
 
 ```{r readNationcsvs}
-nation_vector <- what("data", "inputs", "census", "nations", "csvs")
+nation_path <- here("data", "inputs", "census", "nations", "csvs")
+nation_dirs <- dir_ls(nation_path)
 
-path_nation_list <- as.list(nation_vector)
-names(path_nation_list) <- path_nation_list
-
-nation_tables <- lapply(path_nation_list, read_census_csvs, "nation")
-
+nation_tables <- map(nation_dirs, read_census_csvs)
 ```
 
 ### Read Diocese csvs
 
 ```{r readDiocesecsvs}
-dioceses_vector <- what("data", "inputs", "census", "dioceses", "csvs")
-path_dioceses <- here("data", "inputs", "census", "dioceses", "csvs")
-path_dioceses_list <- as.list(dioceses_vector)
-names(path_dioceses_list) <- path_dioceses_list
+dioceses_path <- here("data", "inputs", "census", "dioceses", "csvs")
+dioceses_dirs <- dir_ls(dioceses_path)
 
-dioceses_tables <- lapply(path_dioceses_list, read_census_csvs, "dioceses")
-
+dioceses_tables <- map(dioceses_dirs, read_census_csvs)
 ```
 
 ## Make big list and save
@@ -94,7 +81,6 @@ overall_table <-
     dioceses = dioceses_tables
     )
 
-# overall_table
 saveRDS(
   overall_table,
   file = here("data", "intermediate", "census", "merged-data",
