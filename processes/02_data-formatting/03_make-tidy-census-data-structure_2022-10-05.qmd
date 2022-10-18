@@ -12,7 +12,11 @@ library(here)
 library(vroom)
 ```
 
-## Make CoM name vector
+## Define important variables
+
+### CoM names vector
+
+Make a vector of all CoM names, based on directories in the 'com/csvs' directory
 
 ```{r makeCoMNameVecor}
 ## tiny-helper
@@ -21,17 +25,12 @@ what <- function(...) dir( here(...) )
 com_names_vector <- what("data", "inputs", "census", "com", "csvs")
 ```
 
-```{r settingDirectory}
-path_csvs <- here("data", "inputs", "census", "com", "csvs")
-path_csvs
-```
-
 ## Read csvs
 
-### Create table_read function
+### Create read_census_csvs function
 
 ```{r tableRead}
-table_read <- function(x, address){
+read_census_csvs <- function(x, address){
   
   path_csvs <- here("data", "inputs", "census", address, "csvs", x)
   path_csvs <- dir(path_csvs, full.names = TRUE)
@@ -48,12 +47,15 @@ table_read <- function(x, address){
 
 
 ```{r readCoMCsvs}
+com_vector <- what("data", "inputs", "census", "nations", "csvs")
+path_nation <- here("data", "inputs", "census", "nations", "csvs")
+
 com_paths <- paste(path_csvs, com_names_vector, sep = "/")
 
 com_names_list <- as.list(com_names_vector)
 names(com_names_list) <- com_names_list
 
-com_tables <- lapply(com_names_list, table_read, "com")
+com_tables <- lapply(com_names_list, read_census_csvs, "com")
 
 ```
 
@@ -61,11 +63,11 @@ com_tables <- lapply(com_names_list, table_read, "com")
 
 ```{r readNationcsvs}
 nation_vector <- what("data", "inputs", "census", "nations", "csvs")
-path_nation <- here("data", "inputs", "census", "nations", "csvs")
+
 path_nation_list <- as.list(nation_vector)
 names(path_nation_list) <- path_nation_list
 
-nation_tables <- lapply(path_nation_list, table_read, "nation")
+nation_tables <- lapply(path_nation_list, read_census_csvs, "nation")
 
 ```
 
@@ -77,7 +79,7 @@ path_dioceses <- here("data", "inputs", "census", "dioceses", "csvs")
 path_dioceses_list <- as.list(dioceses_vector)
 names(path_dioceses_list) <- path_dioceses_list
 
-dioceses_tables <- lapply(path_dioceses_list, table_read, "dioceses")
+dioceses_tables <- lapply(path_dioceses_list, read_census_csvs, "dioceses")
 
 ```
 
