@@ -12,15 +12,13 @@ library(here)
 library(vroom)
 ```
 
-### Make CoM name vector
+## Make CoM name vector
 
 ```{r makeCoMNameVecor}
 ## tiny-helper
 what <- function(...) dir( here(...) )
 
 com_names_vector <- what("data", "inputs", "census", "com", "csvs")
-str(com_names_vector)
-
 ```
 
 ```{r settingDirectory}
@@ -28,9 +26,9 @@ path_csvs <- here("data", "inputs", "census", "com", "csvs")
 path_csvs
 ```
 
-### Read CoM csvs
+## Read csvs
 
-#### Create table_read function
+### Create table_read function
 
 ```{r tableRead}
 table_read <- function(x, address){
@@ -43,6 +41,11 @@ table_read <- function(x, address){
 }
 
 ```
+
+
+### Read CoM csvs
+
+
 
 ```{r readCoMCsvs}
 com_paths <- paste(path_csvs, com_names_vector, sep = "/")
@@ -93,7 +96,7 @@ path_nation_list <- as.list(nation_vector)
 names(path_nation_list) <- path_nation_list
 
 nation_tables <- lapply(path_nation_list, table_read, "nation")
-# str(nation_tables)
+
 ```
 
 ### Read Diocese csvs
