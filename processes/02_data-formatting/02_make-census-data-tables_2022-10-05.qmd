@@ -37,11 +37,11 @@ excel_extract <- readRDS(here("functions", "excel-extract.RDS"))
 
 ```{r definePaths}
 ## taking advantage here's (undocument) list-handling behaviour
-census_here <- list("data", "inputs", "census")
+census_path <- list("data", "inputs", "census")
 
-nations_path  <- here(census_here, "nations")
-dioceses_path <- here(census_here, "dioceses")
-coms_path     <- here(census_here, "com")
+nations_path  <- here(census_path, "nations")
+dioceses_path <- here(census_path, "dioceses")
+coms_path     <- here(census_path, "com")
 
 paths <- list(
   nations  = nations_path,
@@ -58,17 +58,27 @@ excels <- lapply(paths, dir, full.names = TRUE, pattern = "\\.xlsx")
 
 ### Convert lists to vectors and name
 
-Currently, `excels` is a 3-length list of vectors. The simplest way to run `excel_extract()` on each file will be to convert the vectors within each list to a set of named vectors
+Currently, `excels` is a 3-length list of vectors. The simplest way to run `excel_extract()` on each file will be to convert the vectors within each list to a set of named vectors.
 
 ```{r convertListsToVectors}
+
+# helper to use in function
+extract_file_name <- function(path) str_extract(path, "(?<=/)[^/]+(?=$)")
+
+get_clean_file_name <- function(path){
+  
+  file_name <- extract_file_name(path)
+  
+  str_remove(file_name, ".xlsx") |>   # remove suffix
+    str_replace_all("&", "and") |>    # recode ampersands
+    str_remove_all("[:punct:]") |>    # strip punctuation
+    str_squish() |>                   # clean up whitespace
+    str_replace_all("[:space:]", "-") # spaces to hypens
+}
+
 listify_files <- function(x){
-  list_names <-
-    str_extract(x, "(?<=/)[^/]+(?=$)") |> #final file name
-    str_remove(".xlsx") |>
-    str_replace_all("&", "and") |> 
-    str_remove_all("[:punct:]") |> 
-    str_squish() |> 
-    str_replace_all("[:space:]", "-")
+  
+  list_names <- get_clean_file_name(x)
   
   out <- as.list(x)
   names(out) <- list_names
@@ -78,6 +88,7 @@ listify_files <- function(x){
 
 excels <- lapply(excels, listify_files)
 
+# take a little look...
 show <- function(x) print(str_c(class(x), length(x), sep = "; "))
 walk(excels,show)
 ```
@@ -100,37 +111,56 @@ census_tables <- lapply(excels, lapply, excel_extract,
 ### Create directories
 
 ```{r createDirs}
+# create nations/dioceses/com directories
 dir_create(unlist(paths), "csvs")
 
-walk2(
-  census_tables,
-  paths,
-  function(table_list, path){
-    path <- path(path, "csvs")
+## TOP LEVEL ## (com, nations, dioceses)
+## For each level, save tables by location ::::::::::::::::::::::::::::::::::
+save_location_tables <- function(locations, this_path){
+  
+  location_names <- as.list(names(locations))
     
-    location_names <- as.list(names(table_list))
+  this_path <- path(this_path, "csvs")
     
-    walk2(table_list, location_names,
+  walk2(.x = locations,
+        .y = location_names,
+        
+        .f = save_each_table, # defined below
           
-      function(location, location_name){
-        
-        sub_dir <- dir_create(path, location_name)
-        
-        stat_names <- as.list(names(location))
-        
-        walk2(location, stat_names,
-              
-              function(stat, stats_name){
-                write_csv(
-                  stat,
-                  str_c(
-                    sub_dir,
-                    str_c(
-                      location_name, "-", stats_name, ".csv"
-                      ),
-                    sep = "/"
-                  ))})
-      })
-  })
+        directory = this_path 
+        )}
+
+## NEST LEVEL 1 ## (england, scotland... // <<dioceses idk>> // blackburn, sligo...)
+## For each location, save all tables (one per statistic) ::::::::::::::::::
+save_each_table <- 
+  function(location_tables, location_name, directory){
+    
+    save_path     <- dir_create(this_path, location_name)
+    location_name <- as.list   (names(location_tables)  )
+    
+    walk2(.x = location_tables,
+          .y = location_names,
+          
+          .f = save_table,   # defined below
+          
+          location  = location_name,
+          directory = save_path
+          )}
+
+## NEST LEVEL 2 ## (health, ethnicity, population ...)
+## For each table, save the table :::::::::::::::::::::::::::::::::::::::::::
+save_table <-
+  function(stat_table, stat_name,
+           location, directory){
+    
+    file_name <- str_c(location, "-", stat_name, ".csv")
+    save_path <-  path(directory, file_name            )
+
+    write_csv(stat, save_path)
+  }
+
+
+## EXECUTE ##
+walk2(census_tables, paths, )
     
 ```
