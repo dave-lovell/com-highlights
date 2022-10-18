@@ -53,34 +53,6 @@ com_paths <- paste(path_csvs, com_names_vector, sep = "/")
 com_names_list <- as.list(com_names_vector)
 names(com_names_list) <- com_names_list
 
-## 1. change names inside function body to be clearer/more general
-## 2. name the function in the above code chunk
-## 3. call the same funciton in each lapply
-## 4. use the function to read Diocese tables
-## 5. Combine all the lists of tables into one big list of 3 (nation, diocese, com)
-## 6. Save the list as an RDS (?saveRDS) "01_sdjkfdsalk_2022-10-12.RDS
-
-# com_tables <- lapply(
-#   com_names_list,
-#   function(x){
-#     path_csvs_langley <- here("data", "inputs", "census", "com", "csvs", x)
-#     langley_sub <- dir(path_csvs_langley, full.names = TRUE)
-#     tables <- lapply(langley_sub, read_csv)
-#     
-#     return(tables)
-#   }
-# )
-
-# toast <- fuction(bread, spread){
-# toast <- toast_this(bread)
-# toast <- spread(toast, spread)
-#return(toast)
-#}
-
-# tell_john_to(bread, toast)
-# tell_john_to(bread, toast, spread = "jam")
-
-
 com_tables <- lapply(com_names_list, table_read, "com")
 
 ```
@@ -89,9 +61,7 @@ com_tables <- lapply(com_names_list, table_read, "com")
 
 ```{r readNationcsvs}
 nation_vector <- what("data", "inputs", "census", "nations", "csvs")
-str(nation_vector)
 path_nation <- here("data", "inputs", "census", "nations", "csvs")
-path_nation
 path_nation_list <- as.list(nation_vector)
 names(path_nation_list) <- path_nation_list
 
@@ -103,9 +73,7 @@ nation_tables <- lapply(path_nation_list, table_read, "nation")
 
 ```{r readDiocesecsvs}
 dioceses_vector <- what("data", "inputs", "census", "dioceses", "csvs")
-# str(dioceses_vector)
 path_dioceses <- here("data", "inputs", "census", "dioceses", "csvs")
-# path_dioceses
 path_dioceses_list <- as.list(dioceses_vector)
 names(path_dioceses_list) <- path_dioceses_list
 
