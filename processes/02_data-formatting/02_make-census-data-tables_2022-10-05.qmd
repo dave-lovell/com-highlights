@@ -170,7 +170,7 @@ save_table <-
     file_name <- str_c(location, "-", stat_name, ".csv")
     save_path <-  path(directory, file_name            )
 
-    vroom_write(stat_table, save_path)
+    vroom_write(stat_table, save_path, delim = ",")
   }
 
 #:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
