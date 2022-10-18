@@ -9,8 +9,7 @@ editor: visual
 
 ```{r libs}
 library(here)
-# library(vroom)
-library(readr)
+library(vroom)
 ```
 
 ### Make CoM name vector
@@ -39,7 +38,7 @@ table_read <- function(x, address){
   path_csvs <- here("data", "inputs", "census", address, "csvs", x)
   path_csvs <- dir(path_csvs, full.names = TRUE)
   
-  tables <- lapply(path_csvs, read_csv) 
+  tables <- lapply(path_csvs, vroom) 
    return(tables)
 }
 
