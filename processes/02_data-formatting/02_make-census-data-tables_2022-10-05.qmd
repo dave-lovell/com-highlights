@@ -11,14 +11,13 @@ editor: visual
 
 ```{r libraries}
 #| message: false
-
 library(here)
 library(dplyr)
 library(readxl)
-library(fs) # check this actually gets used - I'd like to try it
+library(fs)
 library(stringr)
 library(purrr)
-library(readr)
+library(vroom)
 ```
 
 ## Read data using excel_extract()
@@ -171,7 +170,7 @@ save_table <-
     file_name <- str_c(location, "-", stat_name, ".csv")
     save_path <-  path(directory, file_name            )
 
-    write_csv(stat, save_path)
+    vroom(stat, save_path)
   }
 
 #:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
