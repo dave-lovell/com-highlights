@@ -5,26 +5,13 @@ format: html
 editor: visual
 ---
 
-#### libraries
+### Libraries
 
 ```{r libs}
 library(here)
 library(vroom)
 library(fs)
 library(purrr)
-```
-
-## Define important variables
-
-### CoM names vector
-
-Make a vector of all CoM names, based on directories in the 'com/csvs' directory
-
-```{r makeCoMNameVecor}
-## tiny-helper
-what <- function(...) dir( here(...) )
-
-com_names_vector <- what("data", "inputs", "census", "com", "csvs")
 ```
 
 ## Read csvs
