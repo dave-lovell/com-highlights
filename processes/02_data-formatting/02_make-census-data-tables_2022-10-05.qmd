@@ -131,7 +131,7 @@ save_location_tables <- function(locations, this_path){
   walk2(.x = locations,
         .y = location_names,
         
-        .f = save_each_table, # defined below
+        .f = save_all_tables, # defined below
           
         directory = this_path 
   )}
@@ -142,14 +142,14 @@ save_location_tables <- function(locations, this_path){
 ## NEST LEVEL 1 ## (england, scotland... // <<dioceses idk>> // blackburn, sligo...)
 ## For each location, save all tables (one per statistic) :::::::::::::::::::
 
-save_each_table <- 
+save_all_tables <- 
   function(location_tables, location_name, directory){
     
-    save_path     <- dir_create(this_path, location_name)
-    location_name <- as.list   (names(location_tables)  )
+    save_path     <- dir_create(directory, location_name)
+    stat_names <- as.list   (names(location_tables)  )
     
     walk2(.x = location_tables,
-          .y = location_names,
+          .y = stat_names,
           
           .f = save_table,   # defined below
           
@@ -170,7 +170,7 @@ save_table <-
     file_name <- str_c(location, "-", stat_name, ".csv")
     save_path <-  path(directory, file_name            )
 
-    vroom(stat, save_path)
+    vroom(stat_table, save_path)
   }
 
 #:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
