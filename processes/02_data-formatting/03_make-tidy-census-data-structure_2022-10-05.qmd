@@ -25,6 +25,13 @@ read_census_csvs <- function(path){
   path_csvs <- dir(path, full.names = TRUE)
   
   tables <- lapply(path_csvs, vroom, show_col_types = FALSE) # additional arg to avoid huge visual clutter
+  table_names <-
+    str_extract(path_csvs, "[^/]+(?=$)") |>
+    str_remove(".csv") |> 
+    str_extract("[^-]+(?=$)")
+
+  names(tables) <- table_names
+  
   
   return(tables)
 }
