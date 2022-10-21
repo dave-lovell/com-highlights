@@ -44,32 +44,6 @@ wales_com_tables <- com_tables [c("Llandaff", "Gwent-Valley", "Wrexham", "Cross-
 england_com_tables <- com_tables[c("Langley", "Blackpool", "Gloucester-and Forest", "Bradford-sorted", "Leeds", "Scunthorpe", "Liverpool", "Hackney", "Rochdale", "Medway", "Attercliffe-and-Darnall", "sheffield", "Greenwich", "North-Sutton", "Southampton", "Middlesborough", "Selby")]
 ```
 
-## Removing Prefix
-
-```{r remove all column prefix}
-
-# remove_prefix <- function(northernIreland_com_tables, sep, regex = FALSE){
-  
-  if(!regex){ sep <- stringr::fixed(sep) } 
-  
-  sep_end <- stringr::str_locate(x, sep)[, "end"] 
-  
-  if(any(is.na(sep_end))){
-    
-    na_seps <- is.na(sep_end)
-    sep_end[na_seps] <- 0
-    
-    for(i in na_seps) warning("Separator '", sep[i], "' not found in colunm name '", x , "'")
-    }
-  
-  string_out <- str_sub(x, sep_end + 1)
-  
-  return(string_out)
-# }
-  
-
-```
-
 ## Multiply the Com Area proportion with other columns
 
 ```{r multiply across rows in all tables}
