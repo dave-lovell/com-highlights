@@ -4,10 +4,19 @@ format: html
 editor: visual
 ---
 
+#### Libraries
+
+```{r libs}
+library(here)
+```
+
 ## Reading in the Overall Table
 
 ```{r read in Overall Table}
-overall_table
+overall_table <- readRDS(
+  here("data", "intermediate", "census", "merged-data",
+       "01_all-census-data_list_2022-10-12.RDS"
+       ))
 
 ```
 
@@ -61,4 +70,11 @@ england_com_tables <- com_tables[c("Langley", "Blackpool", "Gloucester-and Fores
 
 ```
 
-## Multiply 
+## Multiply the Com Area proportion with other columns
+
+```{r multiply across rows in all tables}
+head("northernIreland_com_tables", n = 3)
+print(overall_table, n = colnames(2))
+multiplier <- matrix(overall_table)
+multiplier[ , 2]
+```
