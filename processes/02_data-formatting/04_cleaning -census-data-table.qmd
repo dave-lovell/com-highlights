@@ -8,6 +8,7 @@ editor: visual
 
 ```{r libs}
 library(here)
+library(dplry)
 ```
 
 ## Reading in the Overall Table
@@ -37,6 +38,8 @@ tolower(com_names_list)
 ## Creating New Dataframe For nations from ComsList
 
 ```{r BreakdownComList}
+comTable <- 
+
 northernIreland_com_tables <- com_tables[c("North-Belfast", "Newry")]
 repIreland_com_tables <- com_tables[c("Cork", "Sligo", "Ballina")]
 scotland_com_tables <- com_tables [c("West-Highlands", "Dundee", "A7", "Central-Fife")]
