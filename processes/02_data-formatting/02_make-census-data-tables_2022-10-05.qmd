@@ -97,7 +97,7 @@ walk(excels,show)
 It's *probably* best to do this one directory at at a time, since there are only 3 directories and each one might want slightly different arguments. NB this code block takes maybe like 15/20 minutes to run.
 
 ```{r readExcels}
-#| cache: true
+#| cache: false
 census_tables <- lapply(excels, lapply, excel_extract,
                         tabs = c(
                           1, "Ethnicity", "Religion", "Health", "Household type"

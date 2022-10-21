@@ -9,6 +9,9 @@ editor: visual
 ```{r libs}
 library(here)
 library(dplry)
+library(vroom)
+library(stringr)
+library(purrr)
 ```
 
 ## Reading in the Overall Table
@@ -38,20 +41,84 @@ tolower(com_names_list)
 ## Creating New Dataframe For nations from ComsList
 
 ```{r BreakdownComList}
-comTable <- 
+com_table <-
+  vroom(
+    here("data", "inputs", "census", "com-diocese-nation-table.csv"),
+    col_types = "cfff"
+    ) |> 
+  rename_with(str_to_lower)  
 
-northernIreland_com_tables <- com_tables[c("North-Belfast", "Newry")]
-repIreland_com_tables <- com_tables[c("Cork", "Sligo", "Ballina")]
-scotland_com_tables <- com_tables [c("West-Highlands", "Dundee", "A7", "Central-Fife")]
-wales_com_tables <- com_tables [c("Llandaff", "Gwent-Valley", "Wrexham", "Cross-Hands", "Haverfordwest", "Llanelli")]
-england_com_tables <- com_tables[c("Langley", "Blackpool", "Gloucester-and Forest", "Bradford-sorted", "Leeds", "Scunthorpe", "Liverpool", "Hackney", "Rochdale", "Medway", "Attercliffe-and-Darnall", "sheffield", "Greenwich", "North-Sutton", "Southampton", "Middlesborough", "Selby")]
+com_table <- rowwise(com_table)
+
+clean_com_name <- function(com_name){
+  
+    str_replace_all(com_name, "&", "and") |>    # recode ampersands
+    str_remove_all("[:punct:]") |>    # strip punctuation
+    str_squish() |>                   # clean up whitespace
+    str_replace_all("[:space:]", "-") # spaces to hypens
+}
+
+com_table <- mutate(com_table, com = clean_com_name(com))
+
+com_table <- mutate(com_table, tables = 
+                      list(
+                        pluck(overall_table, "com", com)
+                        ))
+
+com_table <- group_by(com_table, nation)
+nations <- group_keys(com_table)[["nation"]]
+
+coms_by_nation <- group_split(com_table)
+names(coms_by_nation) <- nations
+rm(nations)
+
+coms_by_nation <- lapply(coms_by_nation, rowwise)
+coms_by_nation <- 
+  lapply(
+    coms_by_nation,
+    mutate,
+    tables = 
+      list(
+        map(tables,
+            mutate,
+            com = com
+            )
+      )
+    )
+coms_by_nation <- lapply(
+  coms_by_nation,
+  mutate,
+  tables =
+    list(map(tables, relocate, com)
+         ))
+
+make_long_tables <- function(x){
+  table_list <- pull(x, tables)
+  
+  pmap(table_list, list) |>
+    map(reduce, rbind)
+}
+
+## FIX THIS ##
+coms_by_nation[["Wales"]] <-
+  coms_by_nation[["Wales"]] |>
+  filter(com != "Llandaff")
+
+warning("We're removing Llandaff's data because of an data quality issue. Not a long term fix.")
+
+coms_by_nation <- lapply(coms_by_nation, make_long_tables)
+
 ```
 
 ## Multiply the Com Area proportion with other columns
 
 ```{r multiply across rows in all tables}
-head("northernIreland_com_tables", n = 3)
-print(overall_table, n = colnames(2))
-multiplier <- matrix(overall_table)
-multiplier[ , 2]
+# head("northernIreland_com_tables", n = 3)
+# print(overall_table, n = colnames(2))
+# multiplier <- matrix(overall_table)
+# multiplier[ , 2]
+# 
+# function(some.tibble ,some.column.name){
+#   mutate(some.tibble, across())
+# }
 ```
