@@ -61,4 +61,4 @@ england_com_tables <- com_tables[c("Langley", "Blackpool", "Gloucester-and Fores
 
 ```
 
-## Multiply 
+## Multiply
