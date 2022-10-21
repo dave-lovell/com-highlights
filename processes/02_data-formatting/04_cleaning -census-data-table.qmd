@@ -70,9 +70,6 @@ england_com_tables <- com_tables[c("Langley", "Blackpool", "Gloucester-and Fores
 
 ```
 
-<<<<<<< HEAD
-## Multiply
-=======
 ## Multiply the Com Area proportion with other columns
 
 ```{r multiply across rows in all tables}
@@ -81,4 +78,3 @@ print(overall_table, n = colnames(2))
 multiplier <- matrix(overall_table)
 multiplier[ , 2]
 ```
->>>>>>> 919a9b293b6dfc0f757c6e787c08d05714266b8e
