@@ -1,0 +1,64 @@
+---
+title: "Cleaning Census Data Table"
+format: html
+editor: visual
+---
+
+## Reading in the Overall Table
+
+```{r read in Overall Table}
+overall_table
+
+```
+
+## Checking for NAs
+
+```{r CheckNas}
+is.na(overall_table)
+
+is.na(com_tables)
+```
+
+## Cleaning of Com names
+
+```{r Data Cleaning}
+tolower(com_names_list)
+```
+
+## Creating New Dataframe For nations from ComsList
+
+```{r BreakdownComList}
+northernIreland_com_tables <- com_tables[c("North-Belfast", "Newry")]
+repIreland_com_tables <- com_tables[c("Cork", "Sligo", "Ballina")]
+scotland_com_tables <- com_tables [c("West-Highlands", "Dundee", "A7", "Central-Fife")]
+wales_com_tables <- com_tables [c("Llandaff", "Gwent-Valley", "Wrexham", "Cross-Hands", "Haverfordwest", "Llanelli")]
+england_com_tables <- com_tables[c("Langley", "Blackpool", "Gloucester-and Forest", "Bradford-sorted", "Leeds", "Scunthorpe", "Liverpool", "Hackney", "Rochdale", "Medway", "Attercliffe-and-Darnall", "sheffield", "Greenwich", "North-Sutton", "Southampton", "Middlesborough", "Selby")]
+```
+
+## Removing Prefix
+
+```{r remove all column prefix}
+
+# remove_prefix <- function(northernIreland_com_tables, sep, regex = FALSE){
+  
+  if(!regex){ sep <- stringr::fixed(sep) } 
+  
+  sep_end <- stringr::str_locate(x, sep)[, "end"] 
+  
+  if(any(is.na(sep_end))){
+    
+    na_seps <- is.na(sep_end)
+    sep_end[na_seps] <- 0
+    
+    for(i in na_seps) warning("Separator '", sep[i], "' not found in colunm name '", x , "'")
+    }
+  
+  string_out <- str_sub(x, sep_end + 1)
+  
+  return(string_out)
+# }
+  
+
+```
+
+## Multiply 
