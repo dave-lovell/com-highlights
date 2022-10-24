@@ -75,7 +75,7 @@ com_table <- mutate(com_table,
                         ),
                     dioceses_tables = 
                       list(
-                        pluck(overall_table, "dioceses", diocese)
+                        pluck(overall_table, "dioceses", diocese) # something wrong here?
                       ))
 ```
 
@@ -136,6 +136,10 @@ coms_by_nation <-
        )
    )
 
+
+coms_by_nation$England$dioceses_tables |> keep(function(x) any(x[[1]][["com"]] == "Greenwich"))
+
+## southwark diocese has data for CoI church????
 ```
 
 Bring new `com` column to the front of each tibble because it's neater.
