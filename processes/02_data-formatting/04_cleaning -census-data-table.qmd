@@ -152,16 +152,3 @@ warning("We're removing Llandaff's data because of an data quality issue. Not a 
 coms_by_nation <- lapply(coms_by_nation, make_long_tables)
 
 ```
-
-## Multiply the Com Area proportion with other columns
-
-```{r multiply across rows in all tables}
-# head("northernIreland_com_tables", n = 3)
-# print(overall_table, n = colnames(2))
-# multiplier <- matrix(overall_table)
-# multiplier[ , 2]
-# 
-# function(some.tibble ,some.column.name){
-#   mutate(some.tibble, across())
-# }
-```
