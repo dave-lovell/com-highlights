@@ -23,11 +23,12 @@ overall_table <- readRDS(
        ))
 
 ```
+
 ## Creating New Dataframe For nations from ComsList
 
-We want to make a 5-length list, the elements of which correspond to the nations of England, Scotland, Northern Ireland, The Republic of Ireland and Wales. Each element of the list is a list of five tibbles, which correspond to stats for ethnicity, population, health, household-composition and religion respectively. 
+We want to make a 5-length list, the elements of which correspond to the nations of England, Scotland, Northern Ireland, The Republic of Ireland and Wales. Each element of the list is a list of five tibbles, which correspond to stats for ethnicity, population, health, household-composition and religion respectively.
 
-Currently we're just doing this for CoM data. Once we done that, we'll look at how to functionalise and repeat for dioceses and nations. 
+Currently we're just doing this for CoM data. Once we done that, we'll look at how to functionalise and repeat for dioceses and nations.
 
 ### Read in table of CoM, dioceses and nations
 
@@ -43,7 +44,7 @@ com_table <-
 
 ```
 
-### Reformat CoM names 
+### Reformat CoM names
 
 We will need to reformat the `com` field of `com_table` so that we can join the com from `overall_table` succesfully.
 
@@ -59,18 +60,25 @@ clean_com_name <- function(com_name){
 
 com_table <- mutate(com_table, com = clean_com_name(com))
 ```
+
 ### 'Join' CoM data to overall_table and split
 
-Not technically _joining_, but we can use `purrr::pluck()` to add a list-column to `com_table`. Each element of this list is itself a list of five tibbles, `pluck()`'ed from `overall_table`.
+Not technically *joining*, but we can use `purrr::pluck()` to add a list-column to `com_table`. Each element of this list is itself a list of five tibbles, `pluck()`'ed from `overall_table`.
 
 ```{r pluckJoinTibbles}
 com_table <- rowwise(com_table)
 
-com_table <- mutate(com_table, tables = 
+com_table <- mutate(com_table, 
+                    com_tables = 
                       list(
                         pluck(overall_table, "com", com)
-                        ))
+                        ),
+                    diocese_tables = 
+                      list(
+                        pluck(overall_table, "dioceses", com)
+                      ))
 ```
+
 We can then use `dplyr::group_split()` and `group_keys()` to split `com_table` into a list of five tibbles, each named after the nation it represents.
 
 ```{r splitTibbles}
@@ -81,6 +89,7 @@ coms_by_nation <- group_split(com_table)
 names(coms_by_nation) <- nations
 rm(nations)
 ```
+
 ### Mutate and Rbind tibble lists
 
 Add a field to each tibble in `coms_by_nation` containing the name of the CoM. We'll need this to know which CoM is which once we `rbind()` the tibbles together.
@@ -104,6 +113,7 @@ coms_by_nation <-
       )
     )
 ```
+
 Bring new `com` column to the front of each tibble because it's neater.
 
 ```{r reloacteCom}
