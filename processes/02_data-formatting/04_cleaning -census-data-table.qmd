@@ -12,6 +12,7 @@ library(dplyr)
 library(vroom)
 library(stringr)
 library(purrr)
+library(rlang) # for nice error handling
 ```
 
 ## Reading in the Overall Table
@@ -21,7 +22,6 @@ overall_table <- readRDS(
   here("data", "intermediate", "census", "merged-data",
        "01_all-census-data_list_2022-10-12.RDS"
        ))
-
 ```
 
 ## Creating New Dataframe For nations from ComsList
@@ -148,20 +148,43 @@ coms_by_nation <- lapply(
 
 This process revealed a data quality issue: inconsistent names for Llandaff CoM's source data. Right now we're ignoring Llandaff, but we'll fix the data in due course.
 
+#### Helper: Rbind warner
+
+A little wrapper around `rbind()` that we can use to ignore bad calls and passes a warning (or, optionally, an error)
+
+```{r rbindWarner}
+rbind_warn <- function(x, y, just_warn = TRUE){
+  
+  tryCatch(
+    expr = {rbind(x,y)},
+    error = function(cnd){
+      bad.names <- names(y)[!names(y) %in% names(x)]
+      warning("Rbind unsucessful. The following names were not r-bindable:",
+              "\n*", 
+              str_c(bad.names, collapse = "\n* ")
+              )
+      return(x)
+    }
+  )
+}
+
+```
+
 ```{r rbindTables}
+
 make_long_tables <- function(x){
   table_list <- pull(x, tables)
   
   pmap(table_list, list) |>
-    map(reduce, rbind)
+    map(reduce, rbind_warn)
 }
 
-## FIX THIS ##
-coms_by_nation[["Wales"]] <-
-  coms_by_nation[["Wales"]] |>
-  filter(com != "Llandaff")
+# ## FIX THIS ##
+# coms_by_nation[["Wales"]] <-
+#   coms_by_nation[["Wales"]] |>
+#   filter(com != "Llandaff")
 
-warning("We're removing Llandaff's data because of an data quality issue. Not a long term fix.")
+# warning("We're removing Llandaff's data because of an data quality issue. Not a long term fix.")
 
 coms_by_nation <- lapply(coms_by_nation, make_long_tables)
 
