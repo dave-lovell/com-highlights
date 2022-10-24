@@ -113,6 +113,7 @@ coms_by_nation <- lapply(coms_by_nation, rowwise)
 #       )
 #     )
 
+
 # mutate(across(c(col1, col2), some_function() ))
 
 add_com_column <- function(this_list, com_name){
@@ -136,17 +137,18 @@ coms_by_nation <-
        com_name = com
        )
    )
+
 ```
 
 Bring new `com` column to the front of each tibble because it's neater.
 
 ```{r reloacteCom}
-coms_by_nation <- lapply(
-  coms_by_nation,
-  mutate,
-  tables =
-    list(map(tables, relocate, com)
-         ))
+# coms_by_nation <- lapply(
+#   coms_by_nation,
+#   mutate,
+#   com_tables =
+#     list(map(com_tables, relocate, com)
+#          ))
 ```
 
 ### Rbind tibbles into long tibbles
