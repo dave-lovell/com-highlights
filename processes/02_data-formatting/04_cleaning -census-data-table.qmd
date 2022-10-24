@@ -73,9 +73,9 @@ com_table <- mutate(com_table,
                       list(
                         pluck(overall_table, "com", com)
                         ),
-                    diocese_tables = 
+                    dioceses_tables = 
                       list(
-                        pluck(overall_table, "dioceses", com)
+                        pluck(overall_table, "dioceses", diocese)
                       ))
 ```
 
