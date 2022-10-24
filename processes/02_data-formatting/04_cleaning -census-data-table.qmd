@@ -24,14 +24,6 @@ overall_table <- readRDS(
 
 ```
 
-## Checking for NAs
-
-```{r CheckNas}
-is.na(overall_table)
-
-is.na(com_tables)
-```
-
 ## Cleaning of Com names
 
 ```{r Data Cleaning}
