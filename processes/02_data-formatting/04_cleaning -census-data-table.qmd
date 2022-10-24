@@ -8,7 +8,7 @@ editor: visual
 
 ```{r libs}
 library(here)
-library(dplry)
+library(dplyr)
 library(vroom)
 library(stringr)
 library(purrr)
