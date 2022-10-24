@@ -40,15 +40,29 @@ tolower(com_names_list)
 
 ## Creating New Dataframe For nations from ComsList
 
-```{r BreakdownComList}
+We want to make a 5-length list, the elements of which correspond to the nations of England, Scotland, Northern Ireland, The Republic of Ireland and Wales. Each element of the list is a list of five tibbles, which correspond to stats for ethnicity, population, health, household-composition and religion respectively. 
+
+Currently we're just doing this for CoM data. Once we done that, we'll look at how to functionalise and repeat for dioceses and nations. 
+
+### Read in table of CoM, dioceses and nations
+
+This will allow us to sort our CoM tables by nation, which is necessary because each nation's statistics are handled differently.
+
+```{r readInComNationDiocesesTable}
 com_table <-
   vroom(
     here("data", "inputs", "census", "com-diocese-nation-table.csv"),
     col_types = "cfff"
     ) |> 
-  rename_with(str_to_lower)  
+  rename_with(str_to_lower) 
 
-com_table <- rowwise(com_table)
+```
+
+### Reformat CoM names 
+
+We will need to reformat the `com` field of `com_table` so that we can join the com from `overall_table` succesfully.
+
+```{r reformatComNames}
 
 clean_com_name <- function(com_name){
   
@@ -59,20 +73,37 @@ clean_com_name <- function(com_name){
 }
 
 com_table <- mutate(com_table, com = clean_com_name(com))
+```
+### 'Join' CoM data to overall_table and split
+
+Not technically _joining_, but we can use `purrr::pluck()` to add a list-column to `com_table`. Each element of this list is itself a list of five tibbles, `pluck()`'ed from `overall_table`.
+
+```{r pluckJoinTibbles}
+com_table <- rowwise(com_table)
 
 com_table <- mutate(com_table, tables = 
                       list(
                         pluck(overall_table, "com", com)
                         ))
+```
+We can then use `dplyr::group_split()` and `group_keys()` to split `com_table` into a list of five tibbles, each named after the nation it represents.
 
+```{r splitTibbles}
 com_table <- group_by(com_table, nation)
 nations <- group_keys(com_table)[["nation"]]
 
 coms_by_nation <- group_split(com_table)
 names(coms_by_nation) <- nations
 rm(nations)
+```
+### Mutate and Rbind tibble lists
 
+Add a field to each tibble in `coms_by_nation` containing the name of the CoM. We'll need this to know which CoM is which once we `rbind()` the tibbles together.
+
+```{r addComField}
 coms_by_nation <- lapply(coms_by_nation, rowwise)
+
+## Add column to each tibble - recycle the name of the CoM
 coms_by_nation <- 
   lapply(
     coms_by_nation,
@@ -81,17 +112,29 @@ coms_by_nation <-
       list(
         map(tables,
             mutate,
-            com = com
+            # Explicitly using '.env' for clarity, but this will work fine without.
+            # Note the tibbles comprising coms_by_nation function as the environment here.
+            com = .env[["com"]]
             )
       )
     )
+```
+Bring new `com` column to the front of each tibble because it's neater.
+
+```{r reloacteCom}
 coms_by_nation <- lapply(
   coms_by_nation,
   mutate,
   tables =
     list(map(tables, relocate, com)
          ))
+```
 
+### Rbind tibbles into long tibbles
+
+This process revealed a data quality issue: inconsistent names for Llandaff CoM's source data. Right now we're ignoring Llandaff, but we'll fix the data in due course.
+
+```{r rbindTables}
 make_long_tables <- function(x){
   table_list <- pull(x, tables)
   
