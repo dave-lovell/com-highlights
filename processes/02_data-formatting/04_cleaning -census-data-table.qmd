@@ -23,13 +23,6 @@ overall_table <- readRDS(
        ))
 
 ```
-
-## Cleaning of Com names
-
-```{r Data Cleaning}
-tolower(com_names_list)
-```
-
 ## Creating New Dataframe For nations from ComsList
 
 We want to make a 5-length list, the elements of which correspond to the nations of England, Scotland, Northern Ireland, The Republic of Ireland and Wales. Each element of the list is a list of five tibbles, which correspond to stats for ethnicity, population, health, household-composition and religion respectively. 
