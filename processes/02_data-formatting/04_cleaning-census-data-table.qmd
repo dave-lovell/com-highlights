@@ -15,8 +15,6 @@ library(purrr)
 library(rlang) # for nice error handling
 ```
 
-\
-
 ## Reading in the Overall Table
 
 ```{r read in Overall Table}
@@ -165,12 +163,15 @@ rbind_warn <- function(x, y, just_warn = TRUE){
   tryCatch(
     expr = {rbind(x,y)},
     error = function(cnd){
+      
       bad.names <- names(y)[!names(y) %in% names(x)]
-      warning("Rbind unsucessful. The following names were not r-bindable:",
-              "\n*", 
-              str_c(bad.names, collapse = "\n* ")
-              )
+      warning("Rbind unsucessful in ", unique(y[["com"]]),
+              "\nThe following names were not r-bindable:",
+              "\n* ", 
+              str_c(bad.names, collapse = "\n* "),
+              "\n------------------------------------------------------\n\n")
       return(x)
+      
     }
   )
 }
@@ -180,10 +181,13 @@ rbind_warn <- function(x, y, just_warn = TRUE){
 ```{r rbindTables}
 
 make_long_tables <- function(x){
-  table_list <- pull(x, tables)
   
-  pmap(table_list, list) |>
-    map(reduce, rbind_warn)
+  tables_to_bind <- select(x, com_tables, dioceses_tables)
+
+  map(tables_to_bind,
+    ~ pmap(.x, list) |>
+      map(reduce, rbind_warn)
+  )
 }
 
 # ## FIX THIS ##
@@ -194,5 +198,4 @@ make_long_tables <- function(x){
 # warning("We're removing Llandaff's data because of an data quality issue. Not a long term fix.")
 
 coms_by_nation <- lapply(coms_by_nation, make_long_tables)
-
 ```
