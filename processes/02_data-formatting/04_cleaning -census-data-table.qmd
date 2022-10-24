@@ -98,20 +98,27 @@ Add a field to each tibble in `coms_by_nation` containing the name of the CoM. W
 coms_by_nation <- lapply(coms_by_nation, rowwise)
 
 ## Add column to each tibble - recycle the name of the CoM
-coms_by_nation <- 
-  lapply(
-    coms_by_nation,
-    mutate,
-    tables = 
-      list(
-        map(tables,
-            mutate,
-            # Explicitly using '.env' for clarity, but this will work fine without.
-            # Note the tibbles comprising coms_by_nation function as the environment here.
-            com = .env[["com"]]
-            )
-      )
-    )
+
+# some_function <- 
+#       list(
+#         map(tables,
+#             mutate,
+#             # Explicitly using '.env' for clarity, but this will work fine without.
+#             # Note the tibbles comprising coms_by_nation function as the environment here.
+#             com = .env[["com"]]
+#             )
+#       )
+
+
+# coms_by_nation <- 
+#   lapply(
+#     coms_by_nation,
+#     mutate,
+#     across(
+#       c(com_table, dioceses_tables),
+#       some_function 
+#       )
+#     )
 ```
 
 Bring new `com` column to the front of each tibble because it's neater.
