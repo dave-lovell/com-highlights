@@ -119,6 +119,18 @@ coms_by_nation <- lapply(coms_by_nation, rowwise)
 #       some_function 
 #       )
 #     )
+
+coms_by_nation <- 
+   lapply(
+     coms_by_nation,
+     mutate,
+     across(
+       c(com_table, dioceses_tables),
+       function(coms_by_nation){
+         com_table <- mutate()
+       }
+       )
+   )
 ```
 
 Bring new `com` column to the front of each tibble because it's neater.
