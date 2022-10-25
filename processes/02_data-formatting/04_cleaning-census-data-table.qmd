@@ -196,7 +196,7 @@ rbind_warn <- function(x, y){
 ```{r rbindTables}
 
 make_long_tables <- function(x){
-  
+
   tables_to_bind <- 
     list(
       com      =
