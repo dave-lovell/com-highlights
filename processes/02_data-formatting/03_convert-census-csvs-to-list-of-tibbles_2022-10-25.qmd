@@ -12,6 +12,7 @@ library(here)
 library(vroom)
 library(fs)
 library(purrr)
+library(stringr)
 ```
 
 ## Read csvs
@@ -24,8 +25,23 @@ read_census_csvs <- function(path){
   path_csvs <- dir(path, full.names = TRUE)
   
   tables <- lapply(path_csvs, vroom, show_col_types = FALSE) # additional arg to avoid huge visual clutter
+  table_names <-
+    str_extract(path_csvs, "[^/]+(?=$)") |>
+    str_remove(".csv") |> 
+    str_extract("[^-]+(?=$)")
+
+  names(tables) <- table_names
+  
   
   return(tables)
+}
+
+rename_list <- function(x, paths){
+  new_names <- str_extract(paths, "[^/]+(?=$)")
+  
+  names(x) <- new_names
+  
+  return(x)
 }
 
 ```
@@ -36,8 +52,9 @@ read_census_csvs <- function(path){
 com_path <- here("data", "inputs", "census", "com", "csvs")
 com_dirs <- dir_ls(com_path)
 
-com_tables <- map(com_dirs, read_census_csvs)
-
+com_tables <-
+  map(com_dirs, read_census_csvs) |>
+  rename_list(com_dirs)
 ```
 
 ### Read Nation csvs
@@ -46,7 +63,9 @@ com_tables <- map(com_dirs, read_census_csvs)
 nation_path <- here("data", "inputs", "census", "nations", "csvs")
 nation_dirs <- dir_ls(nation_path)
 
-nation_tables <- map(nation_dirs, read_census_csvs)
+nation_tables <-
+  map(nation_dirs, read_census_csvs) |> 
+  rename_list(nation_dirs)
 ```
 
 ### Read Diocese csvs
@@ -55,7 +74,9 @@ nation_tables <- map(nation_dirs, read_census_csvs)
 dioceses_path <- here("data", "inputs", "census", "dioceses", "csvs")
 dioceses_dirs <- dir_ls(dioceses_path)
 
-dioceses_tables <- map(dioceses_dirs, read_census_csvs)
+dioceses_tables <-
+  map(dioceses_dirs, read_census_csvs) |> 
+  rename_list(dioceses_dirs)
 ```
 
 ## Make big list and save
