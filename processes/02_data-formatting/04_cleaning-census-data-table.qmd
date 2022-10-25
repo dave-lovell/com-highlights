@@ -7,15 +7,15 @@ editor: visual
 #### Libraries
 
 ```{r libs}
+#| message: false
 library(here)
 library(dplyr)
 library(vroom)
 library(stringr)
 library(purrr)
 library(rlang) # for nice error handling
+library(lobstr)
 ```
-
-\
 
 ## Reading in the Overall Table
 
@@ -40,7 +40,7 @@ This will allow us to sort our CoM tables by nation, which is necessary because 
 com_table <-
   vroom(
     here("data", "inputs", "census", "com-diocese-nation-table.csv"),
-    col_types = "cfff"
+    col_types = "cccc"
     ) |> 
   rename_with(str_to_lower) 
 
@@ -60,7 +60,24 @@ clean_com_name <- function(com_name){
     str_replace_all("[:space:]", "-") # spaces to hypens
 }
 
-com_table <- mutate(com_table, com = clean_com_name(com))
+clean_diocese_name <- function(diocese_name){
+  str_squish(diocese_name) |> 
+    str_to_title() |> 
+    str_replace_all("&", "and") |>
+    str_replace_all(" And ", " and ") |> 
+    str_remove_all("[:punct:]") |> 
+    str_replace_all("[:space:]", "-")
+}
+
+clean_nation_name <- function(nation_name){
+  str_squish(nation_name) |> 
+    str_replace_all("[:space:]", "-")
+}
+
+com_table <- mutate(com_table, 
+                    com     = clean_com_name(com),
+                    diocese = clean_diocese_name(diocese),
+                    nation  = clean_nation_name(nation))
 ```
 
 ### 'Join' CoM data to overall_table and split
@@ -77,7 +94,11 @@ com_table <- mutate(com_table,
                         ),
                     dioceses_tables = 
                       list(
-                        pluck(overall_table, "dioceses", diocese)
+                        pluck(overall_table, "dioceses", diocese) # something wrong here?
+                      ),
+                    nations_tables = 
+                      list(
+                        pluck(overall_table, "nation", nation)
                       ))
 ```
 
@@ -94,61 +115,52 @@ rm(nations)
 
 ### Mutate and Rbind tibble lists
 
+#### Add com, diocese and nation columns to each tibble
+
 Add a field to each tibble in `coms_by_nation` containing the name of the CoM. We'll need this to know which CoM is which once we `rbind()` the tibbles together.
 
 ```{r addComField}
 coms_by_nation <- lapply(coms_by_nation, rowwise)
 
-## Add column to each tibble - recycle the name of the CoM
-
-
-
-# coms_by_nation <- 
-#   lapply(
-#     coms_by_nation,
-#     mutate,
-#     across(
-#       c(com_table, dioceses_tables),
-#       some_function 
-#       )
-#     )
-
-
-# mutate(across(c(col1, col2), some_function() ))
-
-add_com_column <- function(this_list, com_name){
+add_column <- function(this_list, col_name, value){
+  
+  col_name <- enexpr(col_name)
   
   list(
     map(
       this_list,
       mutate,
-      com = com_name
+      !!col_name := value
     ) |> 
-      map(relocate, com)
+      map(relocate, !!col_name)
     )}
+
+coms_by_nation <- 
+  lapply(
+    coms_by_nation,
+    mutate,
+    across(
+      c(com_tables, dioceses_tables, nations_tables),
+      add_column, nation, nation
+    )
+  )
+
+coms_by_nation <- 
+  lapply(
+    coms_by_nation,
+    mutate,
+    across(
+      c(com_tables, dioceses_tables),
+      add_column, diocese, diocese
+      )
+  )
 
 coms_by_nation <- 
    lapply(
      coms_by_nation,
      mutate,
-     across(
-       c(com_tables, dioceses_tables),
-       add_com_column,
-       com_name = com
-       )
-   )
-
-```
-
-Bring new `com` column to the front of each tibble because it's neater.
-
-```{r reloacteCom}
-# coms_by_nation <- lapply(
-#   coms_by_nation,
-#   mutate,
-#   com_tables =
-#     list(map(com_tables, relocate, com)
-#          ))
+     com_tables = add_column(com_tables, com, com)
+     )
 ```
 
 ### Rbind tibbles into long tibbles
@@ -160,17 +172,21 @@ This process revealed a data quality issue: inconsistent names for Llandaff CoM'
 A little wrapper around `rbind()` that we can use to ignore bad calls and passes a warning (or, optionally, an error)
 
 ```{r rbindWarner}
-rbind_warn <- function(x, y, just_warn = TRUE){
+rbind_warn <- function(x, y){
   
   tryCatch(
     expr = {rbind(x,y)},
     error = function(cnd){
       bad.names <- names(y)[!names(y) %in% names(x)]
-      warning("Rbind unsucessful. The following names were not r-bindable:",
-              "\n*", 
-              str_c(bad.names, collapse = "\n* ")
-              )
+      warning("Rbind unsucessful in ",
+              str_c(unique(y[["nation"]]), unique(y[["diocese"]]), unique(y[["com"]]),
+                    sep = ":"),
+              "\nThe following names were not r-bindable:",
+              "\n* ", 
+              str_c(bad.names, collapse = "\n* "),
+              "\n------------------------------------------------------\n\n")
       return(x)
+      
     }
   )
 }
@@ -180,19 +196,33 @@ rbind_warn <- function(x, y, just_warn = TRUE){
 ```{r rbindTables}
 
 make_long_tables <- function(x){
-  table_list <- pull(x, tables)
-  
-  pmap(table_list, list) |>
-    map(reduce, rbind_warn)
+
+  tables_to_bind <- 
+    list(
+      com      =
+        pull(x, com_tables),
+      dioceses = 
+        group_by(x, diocese) |> 
+        summarise(dioceses_tables = unique(dioceses_tables)) |> 
+        pull(),
+      nations  = 
+        group_by(x, nation) |> 
+        summarise(nations_tables = unique(nations_tables)) |> 
+        pull()
+    )
+
+  map(tables_to_bind,
+    ~ pmap(.x, list) |>
+      map(reduce, rbind_warn)
+  )
 }
 
-# ## FIX THIS ##
-# coms_by_nation[["Wales"]] <-
-#   coms_by_nation[["Wales"]] |>
-#   filter(com != "Llandaff")
+coms_by_nation <- map(coms_by_nation, make_long_tables)
+lobstr::tree(coms_by_nation, max_depth = 3)
+```
 
-# warning("We're removing Llandaff's data because of an data quality issue. Not a long term fix.")
+## Save data
 
-coms_by_nation <- lapply(coms_by_nation, make_long_tables)
-
+```{r saveData}
+saveRDS(coms_by_nation, here("data", "intermediate", "census", "merged-data", "02_grouped-by-level-and-nation_2022-10-25.RDS"))
 ```
