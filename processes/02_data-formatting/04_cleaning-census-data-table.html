@@ -125,7 +125,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(vroom)</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(stringr)</span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(purrr)</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rlang) <span class="co"># for nice error handling</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rlang) <span class="co"># for nice error handling</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lobstr)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="reading-in-the-overall-table" class="level2">
@@ -165,7 +166,24 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">str_replace_all</span>(<span class="st">"[:space:]"</span>, <span class="st">"-"</span>) <span class="co"># spaces to hypens</span></span>
 <span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>}</span>
 <span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>com_table <span class="ot">&lt;-</span> <span class="fu">mutate</span>(com_table, <span class="at">com =</span> <span class="fu">clean_com_name</span>(com))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>clean_diocese_name <span class="ot">&lt;-</span> <span class="cf">function</span>(diocese_name){</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">str_squish</span>(diocese_name) <span class="sc">|&gt;</span> </span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">str_to_title</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">str_replace_all</span>(<span class="st">"&amp;"</span>, <span class="st">"and"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>    <span class="fu">str_replace_all</span>(<span class="st">" And "</span>, <span class="st">" and "</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>    <span class="fu">str_remove_all</span>(<span class="st">"[:punct:]"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>    <span class="fu">str_replace_all</span>(<span class="st">"[:space:]"</span>, <span class="st">"-"</span>)</span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>clean_nation_name <span class="ot">&lt;-</span> <span class="cf">function</span>(nation_name){</span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">str_squish</span>(nation_name) <span class="sc">|&gt;</span> </span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>    <span class="fu">str_replace_all</span>(<span class="st">"[:space:]"</span>, <span class="st">"-"</span>)</span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>com_table <span class="ot">&lt;-</span> <span class="fu">mutate</span>(com_table, </span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>                    <span class="at">com     =</span> <span class="fu">clean_com_name</span>(com),</span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>                    <span class="at">diocese =</span> <span class="fu">clean_diocese_name</span>(diocese),</span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>                    <span class="at">nation  =</span> <span class="fu">clean_nation_name</span>(nation))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="join-com-data-to-overall_table-and-split" class="level3">
@@ -182,7 +200,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>                    <span class="at">dioceses_tables =</span> </span>
 <span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>                      <span class="fu">list</span>(</span>
 <span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>                        <span class="fu">pluck</span>(overall_table, <span class="st">"dioceses"</span>, diocese) <span class="co"># something wrong here?</span></span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>                      ))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>                      ),</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>                    <span class="at">nations_tables =</span> </span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>                      <span class="fu">list</span>(</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>                        <span class="fu">pluck</span>(overall_table, <span class="st">"nation"</span>, nation)</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>                      ))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>We can then use <code>dplyr::group_split()</code> and <code>group_keys()</code> to split <code>com_table</code> into a list of five tibbles, each named after the nation it represents.</p>
 <div class="cell">
@@ -196,49 +218,53 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </section>
 <section id="mutate-and-rbind-tibble-lists" class="level3">
 <h3 class="anchored" data-anchor-id="mutate-and-rbind-tibble-lists">Mutate and Rbind tibble lists</h3>
+<section id="add-com-diocese-and-nation-columns-to-each-tibble" class="level4">
+<h4 class="anchored" data-anchor-id="add-com-diocese-and-nation-columns-to-each-tibble">Add com, diocese and nation columns to each tibble</h4>
 <p>Add a field to each tibble in <code>coms_by_nation</code> containing the name of the CoM. We’ll need this to know which CoM is which once we <code>rbind()</code> the tibbles together.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>coms_by_nation <span class="ot">&lt;-</span> <span class="fu">lapply</span>(coms_by_nation, rowwise)</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="do">## Add column to each tibble - recycle the name of the CoM</span></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="co"># coms_by_nation &lt;- </span></span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="co">#   lapply(</span></span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="co">#     coms_by_nation,</span></span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="co">#     mutate,</span></span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="co">#     across(</span></span>
-<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a><span class="co">#       c(com_table, dioceses_tables),</span></span>
-<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="co">#       some_function </span></span>
-<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a><span class="co">#       )</span></span>
-<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a><span class="co">#     )</span></span>
-<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a><span class="co"># mutate(across(c(col1, col2), some_function() ))</span></span>
-<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>add_com_column <span class="ot">&lt;-</span> <span class="cf">function</span>(this_list, com_name){</span>
-<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">list</span>(</span>
-<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>    <span class="fu">map</span>(</span>
-<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a>      this_list,</span>
-<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a>      mutate,</span>
-<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a>      <span class="at">com =</span> com_name</span>
-<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">|&gt;</span> </span>
-<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a>      <span class="fu">map</span>(relocate, com)</span>
-<span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a>    )}</span>
-<span id="cb7-30"><a href="#cb7-30" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-31"><a href="#cb7-31" aria-hidden="true" tabindex="-1"></a>coms_by_nation <span class="ot">&lt;-</span> </span>
-<span id="cb7-32"><a href="#cb7-32" aria-hidden="true" tabindex="-1"></a>   <span class="fu">lapply</span>(</span>
-<span id="cb7-33"><a href="#cb7-33" aria-hidden="true" tabindex="-1"></a>     coms_by_nation,</span>
-<span id="cb7-34"><a href="#cb7-34" aria-hidden="true" tabindex="-1"></a>     mutate,</span>
-<span id="cb7-35"><a href="#cb7-35" aria-hidden="true" tabindex="-1"></a>     <span class="fu">across</span>(</span>
-<span id="cb7-36"><a href="#cb7-36" aria-hidden="true" tabindex="-1"></a>       <span class="fu">c</span>(com_tables, dioceses_tables),</span>
-<span id="cb7-37"><a href="#cb7-37" aria-hidden="true" tabindex="-1"></a>       add_com_column,</span>
-<span id="cb7-38"><a href="#cb7-38" aria-hidden="true" tabindex="-1"></a>       <span class="at">com_name =</span> com</span>
-<span id="cb7-39"><a href="#cb7-39" aria-hidden="true" tabindex="-1"></a>       )</span>
-<span id="cb7-40"><a href="#cb7-40" aria-hidden="true" tabindex="-1"></a>   )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>add_column <span class="ot">&lt;-</span> <span class="cf">function</span>(this_list, col_name, value){</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  col_name <span class="ot">&lt;-</span> <span class="fu">enexpr</span>(col_name)</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">list</span>(</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">map</span>(</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>      this_list,</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>      mutate,</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>      <span class="sc">!!</span><span class="at">col_name :=</span> value</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">|&gt;</span> </span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>      <span class="fu">map</span>(relocate, <span class="sc">!!</span>col_name)</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>    )}</span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>coms_by_nation <span class="ot">&lt;-</span> </span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">lapply</span>(</span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>    coms_by_nation,</span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>    mutate,</span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>    <span class="fu">across</span>(</span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>      <span class="fu">c</span>(com_tables, dioceses_tables, nations_tables),</span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>      add_column, nation, nation</span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a>coms_by_nation <span class="ot">&lt;-</span> </span>
+<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">lapply</span>(</span>
+<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a>    coms_by_nation,</span>
+<span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a>    mutate,</span>
+<span id="cb7-30"><a href="#cb7-30" aria-hidden="true" tabindex="-1"></a>    <span class="fu">across</span>(</span>
+<span id="cb7-31"><a href="#cb7-31" aria-hidden="true" tabindex="-1"></a>      <span class="fu">c</span>(com_tables, dioceses_tables),</span>
+<span id="cb7-32"><a href="#cb7-32" aria-hidden="true" tabindex="-1"></a>      add_column, diocese, diocese</span>
+<span id="cb7-33"><a href="#cb7-33" aria-hidden="true" tabindex="-1"></a>      )</span>
+<span id="cb7-34"><a href="#cb7-34" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb7-35"><a href="#cb7-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-36"><a href="#cb7-36" aria-hidden="true" tabindex="-1"></a>coms_by_nation <span class="ot">&lt;-</span> </span>
+<span id="cb7-37"><a href="#cb7-37" aria-hidden="true" tabindex="-1"></a>   <span class="fu">lapply</span>(</span>
+<span id="cb7-38"><a href="#cb7-38" aria-hidden="true" tabindex="-1"></a>     coms_by_nation,</span>
+<span id="cb7-39"><a href="#cb7-39" aria-hidden="true" tabindex="-1"></a>     mutate,</span>
+<span id="cb7-40"><a href="#cb7-40" aria-hidden="true" tabindex="-1"></a>     <span class="at">com_tables =</span> <span class="fu">add_column</span>(com_tables, com, com)</span>
+<span id="cb7-41"><a href="#cb7-41" aria-hidden="true" tabindex="-1"></a>     )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+</section>
 </section>
 <section id="rbind-tibbles-into-long-tibbles" class="level3">
 <h3 class="anchored" data-anchor-id="rbind-tibbles-into-long-tibbles">Rbind tibbles into long tibbles</h3>
@@ -247,38 +273,51 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h4 class="anchored" data-anchor-id="helper-rbind-warner">Helper: Rbind warner</h4>
 <p>A little wrapper around <code>rbind()</code> that we can use to ignore bad calls and passes a warning (or, optionally, an error)</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>rbind_warn <span class="ot">&lt;-</span> <span class="cf">function</span>(x, y, <span class="at">just_warn =</span> <span class="cn">TRUE</span>){</span>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>rbind_warn <span class="ot">&lt;-</span> <span class="cf">function</span>(x, y){</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  </span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tryCatch</span>(</span>
 <span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">expr =</span> {<span class="fu">rbind</span>(x,y)},</span>
 <span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">error =</span> <span class="cf">function</span>(cnd){</span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>      </span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>      bad.names <span class="ot">&lt;-</span> <span class="fu">names</span>(y)[<span class="sc">!</span><span class="fu">names</span>(y) <span class="sc">%in%</span> <span class="fu">names</span>(x)]</span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>      <span class="fu">warning</span>(<span class="st">"Rbind unsucessful in "</span>, <span class="fu">unique</span>(y[[<span class="st">"com"</span>]]),</span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>              <span class="st">"</span><span class="sc">\n</span><span class="st">The following names were not r-bindable:"</span>,</span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>              <span class="st">"</span><span class="sc">\n</span><span class="st">* "</span>, </span>
-<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>              <span class="fu">str_c</span>(bad.names, <span class="at">collapse =</span> <span class="st">"</span><span class="sc">\n</span><span class="st">* "</span>),</span>
-<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>              <span class="st">"</span><span class="sc">\n</span><span class="st">------------------------------------------------------</span><span class="sc">\n\n</span><span class="st">"</span>)</span>
-<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>      <span class="fu">return</span>(x)</span>
-<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>      </span>
-<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>      bad.names <span class="ot">&lt;-</span> <span class="fu">names</span>(y)[<span class="sc">!</span><span class="fu">names</span>(y) <span class="sc">%in%</span> <span class="fu">names</span>(x)]</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>      <span class="fu">warning</span>(<span class="st">"Rbind unsucessful in "</span>,</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>              <span class="fu">str_c</span>(<span class="fu">unique</span>(y[[<span class="st">"nation"</span>]]), <span class="fu">unique</span>(y[[<span class="st">"diocese"</span>]]), <span class="fu">unique</span>(y[[<span class="st">"com"</span>]]),</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>                    <span class="at">sep =</span> <span class="st">":"</span>),</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>              <span class="st">"</span><span class="sc">\n</span><span class="st">The following names were not r-bindable:"</span>,</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>              <span class="st">"</span><span class="sc">\n</span><span class="st">* "</span>, </span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>              <span class="fu">str_c</span>(bad.names, <span class="at">collapse =</span> <span class="st">"</span><span class="sc">\n</span><span class="st">* "</span>),</span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>              <span class="st">"</span><span class="sc">\n</span><span class="st">------------------------------------------------------</span><span class="sc">\n\n</span><span class="st">"</span>)</span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>      <span class="fu">return</span>(x)</span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>      </span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>make_long_tables <span class="ot">&lt;-</span> <span class="cf">function</span>(x){</span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  tables_to_bind <span class="ot">&lt;-</span> <span class="fu">select</span>(x, com_tables, dioceses_tables)</span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">map</span>(tables_to_bind,</span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>    <span class="sc">~</span> <span class="fu">pmap</span>(.x, list) <span class="sc">|&gt;</span></span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>      <span class="fu">map</span>(reduce, rbind_warn)</span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>coms_by_nation <span class="ot">&lt;-</span> <span class="fu">map</span>(coms_by_nation, make_long_tables)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  tables_to_bind <span class="ot">&lt;-</span> </span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">list</span>(</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>      <span class="at">com      =</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>        <span class="fu">pull</span>(x, com_tables),</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>      <span class="at">dioceses =</span> </span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>        <span class="fu">group_by</span>(x, diocese) <span class="sc">|&gt;</span> </span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>        <span class="fu">summarise</span>(<span class="at">dioceses_tables =</span> <span class="fu">unique</span>(dioceses_tables)) <span class="sc">|&gt;</span> </span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>        <span class="fu">pull</span>(),</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>      <span class="at">nations  =</span> </span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>        <span class="fu">group_by</span>(x, nation) <span class="sc">|&gt;</span> </span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>        <span class="fu">summarise</span>(<span class="at">nations_tables =</span> <span class="fu">unique</span>(nations_tables)) <span class="sc">|&gt;</span> </span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>        <span class="fu">pull</span>()</span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">map</span>(tables_to_bind,</span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>    <span class="sc">~</span> <span class="fu">pmap</span>(.x, list) <span class="sc">|&gt;</span></span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a>      <span class="fu">map</span>(reduce, rbind_warn)</span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a>coms_by_nation <span class="ot">&lt;-</span> <span class="fu">map</span>(coms_by_nation, make_long_tables)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
-<pre><code>Warning in value[[3L]](cond): Rbind unsucessful in Llandaff
+<pre><code>Warning in value[[3L]](cond): Rbind unsucessful in Wales:Llandaff:Llandaff
 The following names were not r-bindable:
 * ethn..ethnic_group_e_s_w_white_english_welsh_scottish_northern_irish_british_unit_persons
 * ethn..ethnic_group_e_s_w_white_irish_unit_persons
@@ -301,15 +340,210 @@ The following names were not r-bindable:
 ------------------------------------------------------</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>Warning in value[[3L]](cond): Rbind unsucessful in Llandaff
+<pre><code>Warning in value[[3L]](cond): Rbind unsucessful in Wales:Llandaff:Llandaff
 The following names were not r-bindable:
 * pop..males
 * pop..females
 ------------------------------------------------------</code></pre>
 </div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in value[[3L]](cond): Rbind unsucessful in Wales:Monmouth
+The following names were not r-bindable:
+* 
+------------------------------------------------------</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in value[[3L]](cond): Rbind unsucessful in Wales:St-Asaph
+The following names were not r-bindable:
+* 
+------------------------------------------------------</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in value[[3L]](cond): Rbind unsucessful in Wales:St-Davids
+The following names were not r-bindable:
+* 
+------------------------------------------------------</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in value[[3L]](cond): Rbind unsucessful in Wales:Monmouth
+The following names were not r-bindable:
+* 
+------------------------------------------------------</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in value[[3L]](cond): Rbind unsucessful in Wales:St-Asaph
+The following names were not r-bindable:
+* 
+------------------------------------------------------</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in value[[3L]](cond): Rbind unsucessful in Wales:St-Davids
+The following names were not r-bindable:
+* 
+------------------------------------------------------</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in value[[3L]](cond): Rbind unsucessful in Wales:Monmouth
+The following names were not r-bindable:
+* 
+------------------------------------------------------</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in value[[3L]](cond): Rbind unsucessful in Wales:St-Asaph
+The following names were not r-bindable:
+* 
+------------------------------------------------------</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in value[[3L]](cond): Rbind unsucessful in Wales:St-Davids
+The following names were not r-bindable:
+* 
+------------------------------------------------------</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in value[[3L]](cond): Rbind unsucessful in Wales:Monmouth
+The following names were not r-bindable:
+* 
+------------------------------------------------------</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in value[[3L]](cond): Rbind unsucessful in Wales:St-Asaph
+The following names were not r-bindable:
+* 
+------------------------------------------------------</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in value[[3L]](cond): Rbind unsucessful in Wales:St-Davids
+The following names were not r-bindable:
+* 
+------------------------------------------------------</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in value[[3L]](cond): Rbind unsucessful in Wales:Monmouth
+The following names were not r-bindable:
+* 
+------------------------------------------------------</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in value[[3L]](cond): Rbind unsucessful in Wales:St-Asaph
+The following names were not r-bindable:
+* 
+------------------------------------------------------</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in value[[3L]](cond): Rbind unsucessful in Wales:St-Davids
+The following names were not r-bindable:
+* 
+------------------------------------------------------</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>lobstr<span class="sc">::</span><span class="fu">tree</span>(coms_by_nation, <span class="at">max_depth =</span> <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>&lt;list&gt;
+├─England: &lt;list&gt;
+│ ├─com: &lt;list&gt;
+│ │ ├─ethn: S3&lt;spec_tbl_df/tbl_df/tbl/data.frame&gt;...
+│ │ ├─health: S3&lt;spec_tbl_df/tbl_df/tbl/data.frame&gt;...
+│ │ ├─house: S3&lt;spec_tbl_df/tbl_df/tbl/data.frame&gt;...
+│ │ ├─pop: S3&lt;spec_tbl_df/tbl_df/tbl/data.frame&gt;...
+│ │ └─rel: S3&lt;spec_tbl_df/tbl_df/tbl/data.frame&gt;...
+│ ├─dioceses: &lt;list&gt;
+│ │ ├─ethn: S3&lt;spec_tbl_df/tbl_df/tbl/data.frame&gt;...
+│ │ ├─health: S3&lt;spec_tbl_df/tbl_df/tbl/data.frame&gt;...
+│ │ ├─house: S3&lt;spec_tbl_df/tbl_df/tbl/data.frame&gt;...
+│ │ ├─pop: S3&lt;spec_tbl_df/tbl_df/tbl/data.frame&gt;...
+│ │ └─rel: S3&lt;spec_tbl_df/tbl_df/tbl/data.frame&gt;...
+│ └─nations: &lt;list&gt;
+│   ├─ethn: S3&lt;spec_tbl_df/tbl_df/tbl/data.frame&gt;...
+│   ├─health: S3&lt;spec_tbl_df/tbl_df/tbl/data.frame&gt;...
+│   ├─house: S3&lt;spec_tbl_df/tbl_df/tbl/data.frame&gt;...
+│   ├─pop: S3&lt;spec_tbl_df/tbl_df/tbl/data.frame&gt;...
+│   └─rel: S3&lt;spec_tbl_df/tbl_df/tbl/data.frame&gt;...
+├─Northern-Ireland: &lt;list&gt;
+│ ├─com: &lt;list&gt;
+│ │ ├─ethn: S3&lt;spec_tbl_df/tbl_df/tbl/data.frame&gt;...
+│ │ ├─health: S3&lt;spec_tbl_df/tbl_df/tbl/data.frame&gt;...
+│ │ ├─house: S3&lt;spec_tbl_df/tbl_df/tbl/data.frame&gt;...
+│ │ ├─pop: S3&lt;spec_tbl_df/tbl_df/tbl/data.frame&gt;...
+│ │ └─rel: S3&lt;spec_tbl_df/tbl_df/tbl/data.frame&gt;...
+│ ├─dioceses: &lt;list&gt;
+│ │ ├─ethn: S3&lt;spec_tbl_df/tbl_df/tbl/data.frame&gt;...
+│ │ ├─health: S3&lt;spec_tbl_df/tbl_df/tbl/data.frame&gt;...
+│ │ ├─house: S3&lt;spec_tbl_df/tbl_df/tbl/data.frame&gt;...
+│ │ ├─pop: S3&lt;spec_tbl_df/tbl_df/tbl/data.frame&gt;...
+│ │ └─rel: S3&lt;spec_tbl_df/tbl_df/tbl/data.frame&gt;...
+│ └─nations: &lt;list&gt;
+│   ├─ethn: S3&lt;spec_tbl_df/tbl_df/tbl/data.frame&gt;...
+│   ├─health: S3&lt;spec_tbl_df/tbl_df/tbl/data.frame&gt;...
+│   ├─house: S3&lt;spec_tbl_df/tbl_df/tbl/data.frame&gt;...
+│   ├─pop: S3&lt;spec_tbl_df/tbl_df/tbl/data.frame&gt;...
+│   └─rel: S3&lt;spec_tbl_df/tbl_df/tbl/data.frame&gt;...
+├─Republic-of-Ireland: &lt;list&gt;
+│ ├─com: &lt;list&gt;
+│ │ ├─ethn: S3&lt;spec_tbl_df/tbl_df/tbl/data.frame&gt;...
+│ │ ├─health: S3&lt;spec_tbl_df/tbl_df/tbl/data.frame&gt;...
+│ │ ├─house: S3&lt;spec_tbl_df/tbl_df/tbl/data.frame&gt;...
+│ │ ├─pop: S3&lt;spec_tbl_df/tbl_df/tbl/data.frame&gt;...
+│ │ └─rel: S3&lt;spec_tbl_df/tbl_df/tbl/data.frame&gt;...
+│ ├─dioceses: &lt;list&gt;
+│ │ ├─ethn: S3&lt;spec_tbl_df/tbl_df/tbl/data.frame&gt;...
+│ │ ├─health: S3&lt;spec_tbl_df/tbl_df/tbl/data.frame&gt;...
+│ │ ├─house: S3&lt;spec_tbl_df/tbl_df/tbl/data.frame&gt;...
+│ │ ├─pop: S3&lt;spec_tbl_df/tbl_df/tbl/data.frame&gt;...
+│ │ └─rel: S3&lt;spec_tbl_df/tbl_df/tbl/data.frame&gt;...
+│ └─nations: &lt;list&gt;
+│   ├─ethn: S3&lt;spec_tbl_df/tbl_df/tbl/data.frame&gt;...
+│   ├─health: S3&lt;spec_tbl_df/tbl_df/tbl/data.frame&gt;...
+│   ├─house: S3&lt;spec_tbl_df/tbl_df/tbl/data.frame&gt;...
+│   ├─pop: S3&lt;spec_tbl_df/tbl_df/tbl/data.frame&gt;...
+│   └─rel: S3&lt;spec_tbl_df/tbl_df/tbl/data.frame&gt;...
+├─Scotland: &lt;list&gt;
+│ ├─com: &lt;list&gt;
+│ │ ├─ethn: S3&lt;spec_tbl_df/tbl_df/tbl/data.frame&gt;...
+│ │ ├─health: S3&lt;spec_tbl_df/tbl_df/tbl/data.frame&gt;...
+│ │ ├─house: S3&lt;spec_tbl_df/tbl_df/tbl/data.frame&gt;...
+│ │ ├─pop: S3&lt;spec_tbl_df/tbl_df/tbl/data.frame&gt;...
+│ │ └─rel: S3&lt;spec_tbl_df/tbl_df/tbl/data.frame&gt;...
+│ ├─dioceses: &lt;list&gt;
+│ │ ├─ethn: S3&lt;spec_tbl_df/tbl_df/tbl/data.frame&gt;...
+│ │ ├─health: S3&lt;spec_tbl_df/tbl_df/tbl/data.frame&gt;...
+│ │ ├─house: S3&lt;spec_tbl_df/tbl_df/tbl/data.frame&gt;...
+│ │ ├─pop: S3&lt;spec_tbl_df/tbl_df/tbl/data.frame&gt;...
+│ │ └─rel: S3&lt;spec_tbl_df/tbl_df/tbl/data.frame&gt;...
+│ └─nations: &lt;list&gt;
+│   ├─ethn: S3&lt;spec_tbl_df/tbl_df/tbl/data.frame&gt;...
+│   ├─health: S3&lt;spec_tbl_df/tbl_df/tbl/data.frame&gt;...
+│   ├─house: S3&lt;spec_tbl_df/tbl_df/tbl/data.frame&gt;...
+│   ├─pop: S3&lt;spec_tbl_df/tbl_df/tbl/data.frame&gt;...
+│   └─rel: S3&lt;spec_tbl_df/tbl_df/tbl/data.frame&gt;...
+└─Wales: &lt;list&gt;
+  ├─com: &lt;list&gt;
+  │ ├─ethn: S3&lt;spec_tbl_df/tbl_df/tbl/data.frame&gt;...
+  │ ├─health: S3&lt;spec_tbl_df/tbl_df/tbl/data.frame&gt;...
+  │ ├─house: S3&lt;spec_tbl_df/tbl_df/tbl/data.frame&gt;...
+  │ ├─pop: S3&lt;spec_tbl_df/tbl_df/tbl/data.frame&gt;...
+  │ └─rel: S3&lt;spec_tbl_df/tbl_df/tbl/data.frame&gt;...
+  ├─dioceses: &lt;list&gt;
+  │ ├─ethn: S3&lt;spec_tbl_df/tbl_df/tbl/data.frame&gt;...
+  │ ├─health: S3&lt;spec_tbl_df/tbl_df/tbl/data.frame&gt;...
+  │ ├─house: S3&lt;spec_tbl_df/tbl_df/tbl/data.frame&gt;...
+  │ ├─pop: S3&lt;spec_tbl_df/tbl_df/tbl/data.frame&gt;...
+  │ └─rel: S3&lt;spec_tbl_df/tbl_df/tbl/data.frame&gt;...
+  └─nations: &lt;list&gt;
+    ├─ethn: S3&lt;spec_tbl_df/tbl_df/tbl/data.frame&gt;...
+    ├─health: S3&lt;spec_tbl_df/tbl_df/tbl/data.frame&gt;...
+    ├─house: S3&lt;spec_tbl_df/tbl_df/tbl/data.frame&gt;...
+    ├─pop: S3&lt;spec_tbl_df/tbl_df/tbl/data.frame&gt;...
+    └─rel: S3&lt;spec_tbl_df/tbl_df/tbl/data.frame&gt;...</code></pre>
+</div>
 </div>
 </section>
 </section>
+</section>
+<section id="save-data" class="level2">
+<h2 class="anchored" data-anchor-id="save-data">Save data</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">saveRDS</span>(coms_by_nation, <span class="fu">here</span>(<span class="st">"data"</span>, <span class="st">"intermediate"</span>, <span class="st">"census"</span>, <span class="st">"merged-data"</span>, <span class="st">"02_grouped-by-level-and-nation_2022-10-25.RDS"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 </section>
 
 </main>
