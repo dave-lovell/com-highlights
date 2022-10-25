@@ -77,6 +77,10 @@ com_table <- mutate(com_table,
                     dioceses_tables = 
                       list(
                         pluck(overall_table, "dioceses", diocese) # something wrong here?
+                      ),
+                    nations_tables = 
+                      list(
+                        pluck(overall_table, "nation", nation)
                       ))
 ```
 
@@ -114,7 +118,7 @@ coms_by_nation <-
      coms_by_nation,
      mutate,
      across(
-       c(com_tables, dioceses_tables),
+       c(com_tables, dioceses_tables, nations_tables),
        add_com_column,
        com_name = com
        )
@@ -154,7 +158,7 @@ rbind_warn <- function(x, y, just_warn = TRUE){
 
 make_long_tables <- function(x){
   
-  tables_to_bind <- select(x, com_tables, dioceses_tables)
+  tables_to_bind <- select(x, com_tables, dioceses_tables, nations_tables)
 
   map(tables_to_bind,
     ~ pmap(.x, list) |>
@@ -163,12 +167,10 @@ make_long_tables <- function(x){
 }
 
 coms_by_nation <- map(coms_by_nation, make_long_tables)
-
-
 ```
 
 ## Save data
 
 ```{r saveData}
-saveRDS("data", "intermediate", "census", "merged-data", "02_")
+saveRDS(coms_by_nation, here("data", "intermediate", "census", "merged-data", "02_grouped-by-level-and-nation_2022-10-25.RDS"))
 ```
