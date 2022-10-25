@@ -120,48 +120,21 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <section id="libraries" class="level4">
 <h4 class="anchored" data-anchor-id="libraries">Libraries</h4>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(here)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>here() starts at C:/Users/david.lovell/OneDrive - Church Army/Documents/repos/com-highlights</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>
-Attaching package: 'dplyr'</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>The following objects are masked from 'package:stats':
-
-    filter, lag</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>The following objects are masked from 'package:base':
-
-    intersect, setdiff, setequal, union</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(vroom)</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(stringr)</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(purrr)</span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rlang) <span class="co"># for nice error handling</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>
-Attaching package: 'rlang'</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>The following objects are masked from 'package:purrr':
-
-    %@%, as_function, flatten, flatten_chr, flatten_dbl, flatten_int,
-    flatten_lgl, flatten_raw, invoke, splice</code></pre>
-</div>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(here)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(vroom)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(stringr)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(purrr)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rlang) <span class="co"># for nice error handling</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="reading-in-the-overall-table" class="level2">
 <h2 class="anchored" data-anchor-id="reading-in-the-overall-table">Reading in the Overall Table</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>overall_table <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(</span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">here</span>(<span class="st">"data"</span>, <span class="st">"intermediate"</span>, <span class="st">"census"</span>, <span class="st">"merged-data"</span>,</span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>       <span class="st">"01_all-census-data_list_2022-10-12.RDS"</span></span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>       ))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>overall_table <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">here</span>(<span class="st">"data"</span>, <span class="st">"intermediate"</span>, <span class="st">"census"</span>, <span class="st">"merged-data"</span>,</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>       <span class="st">"01_all-census-data_list_2022-10-12.RDS"</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>       ))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="creating-new-dataframe-for-nations-from-comslist" class="level2">
@@ -172,108 +145,99 @@ Attaching package: 'rlang'</code></pre>
 <h3 class="anchored" data-anchor-id="read-in-table-of-com-dioceses-and-nations">Read in table of CoM, dioceses and nations</h3>
 <p>This will allow us to sort our CoM tables by nation, which is necessary because each nation’s statistics are handled differently.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>com_table <span class="ot">&lt;-</span></span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">vroom</span>(</span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">here</span>(<span class="st">"data"</span>, <span class="st">"inputs"</span>, <span class="st">"census"</span>, <span class="st">"com-diocese-nation-table.csv"</span>),</span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">col_types =</span> <span class="st">"cfff"</span></span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">|&gt;</span> </span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename_with</span>(str_to_lower) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>com_table <span class="ot">&lt;-</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">vroom</span>(</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">here</span>(<span class="st">"data"</span>, <span class="st">"inputs"</span>, <span class="st">"census"</span>, <span class="st">"com-diocese-nation-table.csv"</span>),</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">col_types =</span> <span class="st">"cccc"</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">|&gt;</span> </span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename_with</span>(str_to_lower) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="reformat-com-names" class="level3">
 <h3 class="anchored" data-anchor-id="reformat-com-names">Reformat CoM names</h3>
 <p>We will need to reformat the <code>com</code> field of <code>com_table</code> so that we can join the com from <code>overall_table</code> succesfully.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>clean_com_name <span class="ot">&lt;-</span> <span class="cf">function</span>(com_name){</span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">str_replace_all</span>(com_name, <span class="st">"&amp;"</span>, <span class="st">"and"</span>) <span class="sc">|&gt;</span>    <span class="co"># recode ampersands</span></span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">str_remove_all</span>(<span class="st">"[:punct:]"</span>) <span class="sc">|&gt;</span>    <span class="co"># strip punctuation</span></span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">str_squish</span>() <span class="sc">|&gt;</span>                   <span class="co"># clean up whitespace</span></span>
-<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">str_replace_all</span>(<span class="st">"[:space:]"</span>, <span class="st">"-"</span>) <span class="co"># spaces to hypens</span></span>
-<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>com_table <span class="ot">&lt;-</span> <span class="fu">mutate</span>(com_table, <span class="at">com =</span> <span class="fu">clean_com_name</span>(com))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>clean_com_name <span class="ot">&lt;-</span> <span class="cf">function</span>(com_name){</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">str_replace_all</span>(com_name, <span class="st">"&amp;"</span>, <span class="st">"and"</span>) <span class="sc">|&gt;</span>    <span class="co"># recode ampersands</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">str_remove_all</span>(<span class="st">"[:punct:]"</span>) <span class="sc">|&gt;</span>    <span class="co"># strip punctuation</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">str_squish</span>() <span class="sc">|&gt;</span>                   <span class="co"># clean up whitespace</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">str_replace_all</span>(<span class="st">"[:space:]"</span>, <span class="st">"-"</span>) <span class="co"># spaces to hypens</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>com_table <span class="ot">&lt;-</span> <span class="fu">mutate</span>(com_table, <span class="at">com =</span> <span class="fu">clean_com_name</span>(com))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="join-com-data-to-overall_table-and-split" class="level3">
 <h3 class="anchored" data-anchor-id="join-com-data-to-overall_table-and-split">‘Join’ CoM data to overall_table and split</h3>
 <p>Not technically <em>joining</em>, but we can use <code>purrr::pluck()</code> to add a list-column to <code>com_table</code>. Each element of this list is itself a list of five tibbles, <code>pluck()</code>’ed from <code>overall_table</code>.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>com_table <span class="ot">&lt;-</span> <span class="fu">rowwise</span>(com_table)</span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>com_table <span class="ot">&lt;-</span> <span class="fu">mutate</span>(com_table, </span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>                    <span class="at">com_tables =</span> </span>
-<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>                      <span class="fu">list</span>(</span>
-<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>                        <span class="fu">pluck</span>(overall_table, <span class="st">"com"</span>, com)</span>
-<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>                        ),</span>
-<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>                    <span class="at">dioceses_tables =</span> </span>
-<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>                      <span class="fu">list</span>(</span>
-<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>                        <span class="fu">pluck</span>(overall_table, <span class="st">"dioceses"</span>, diocese)</span>
-<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>                      ))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>com_table <span class="ot">&lt;-</span> <span class="fu">rowwise</span>(com_table)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>com_table <span class="ot">&lt;-</span> <span class="fu">mutate</span>(com_table, </span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>                    <span class="at">com_tables =</span> </span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>                      <span class="fu">list</span>(</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>                        <span class="fu">pluck</span>(overall_table, <span class="st">"com"</span>, com)</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>                        ),</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>                    <span class="at">dioceses_tables =</span> </span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>                      <span class="fu">list</span>(</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>                        <span class="fu">pluck</span>(overall_table, <span class="st">"dioceses"</span>, diocese) <span class="co"># something wrong here?</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>                      ))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>We can then use <code>dplyr::group_split()</code> and <code>group_keys()</code> to split <code>com_table</code> into a list of five tibbles, each named after the nation it represents.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>com_table <span class="ot">&lt;-</span> <span class="fu">group_by</span>(com_table, nation)</span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>nations <span class="ot">&lt;-</span> <span class="fu">group_keys</span>(com_table)[[<span class="st">"nation"</span>]]</span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>coms_by_nation <span class="ot">&lt;-</span> <span class="fu">group_split</span>(com_table)</span>
-<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(coms_by_nation) <span class="ot">&lt;-</span> nations</span>
-<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span>(nations)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>com_table <span class="ot">&lt;-</span> <span class="fu">group_by</span>(com_table, nation)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>nations <span class="ot">&lt;-</span> <span class="fu">group_keys</span>(com_table)[[<span class="st">"nation"</span>]]</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>coms_by_nation <span class="ot">&lt;-</span> <span class="fu">group_split</span>(com_table)</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(coms_by_nation) <span class="ot">&lt;-</span> nations</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span>(nations)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="mutate-and-rbind-tibble-lists" class="level3">
 <h3 class="anchored" data-anchor-id="mutate-and-rbind-tibble-lists">Mutate and Rbind tibble lists</h3>
 <p>Add a field to each tibble in <code>coms_by_nation</code> containing the name of the CoM. We’ll need this to know which CoM is which once we <code>rbind()</code> the tibbles together.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>coms_by_nation <span class="ot">&lt;-</span> <span class="fu">lapply</span>(coms_by_nation, rowwise)</span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="do">## Add column to each tibble - recycle the name of the CoM</span></span>
-<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a><span class="co"># coms_by_nation &lt;- </span></span>
-<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a><span class="co">#   lapply(</span></span>
-<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a><span class="co">#     coms_by_nation,</span></span>
-<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a><span class="co">#     mutate,</span></span>
-<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a><span class="co">#     across(</span></span>
-<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a><span class="co">#       c(com_table, dioceses_tables),</span></span>
-<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a><span class="co">#       some_function </span></span>
-<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a><span class="co">#       )</span></span>
-<span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a><span class="co">#     )</span></span>
-<span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-17"><a href="#cb15-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-18"><a href="#cb15-18" aria-hidden="true" tabindex="-1"></a><span class="co"># mutate(across(c(col1, col2), some_function() ))</span></span>
-<span id="cb15-19"><a href="#cb15-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-20"><a href="#cb15-20" aria-hidden="true" tabindex="-1"></a>add_com_column <span class="ot">&lt;-</span> <span class="cf">function</span>(this_list, com_name){</span>
-<span id="cb15-21"><a href="#cb15-21" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb15-22"><a href="#cb15-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">list</span>(</span>
-<span id="cb15-23"><a href="#cb15-23" aria-hidden="true" tabindex="-1"></a>    <span class="fu">map</span>(</span>
-<span id="cb15-24"><a href="#cb15-24" aria-hidden="true" tabindex="-1"></a>      this_list,</span>
-<span id="cb15-25"><a href="#cb15-25" aria-hidden="true" tabindex="-1"></a>      mutate,</span>
-<span id="cb15-26"><a href="#cb15-26" aria-hidden="true" tabindex="-1"></a>      <span class="at">com =</span> com_name</span>
-<span id="cb15-27"><a href="#cb15-27" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">|&gt;</span> </span>
-<span id="cb15-28"><a href="#cb15-28" aria-hidden="true" tabindex="-1"></a>      <span class="fu">map</span>(relocate, com)</span>
-<span id="cb15-29"><a href="#cb15-29" aria-hidden="true" tabindex="-1"></a>    )}</span>
-<span id="cb15-30"><a href="#cb15-30" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-31"><a href="#cb15-31" aria-hidden="true" tabindex="-1"></a>coms_by_nation <span class="ot">&lt;-</span> </span>
-<span id="cb15-32"><a href="#cb15-32" aria-hidden="true" tabindex="-1"></a>   <span class="fu">lapply</span>(</span>
-<span id="cb15-33"><a href="#cb15-33" aria-hidden="true" tabindex="-1"></a>     coms_by_nation,</span>
-<span id="cb15-34"><a href="#cb15-34" aria-hidden="true" tabindex="-1"></a>     mutate,</span>
-<span id="cb15-35"><a href="#cb15-35" aria-hidden="true" tabindex="-1"></a>     <span class="fu">across</span>(</span>
-<span id="cb15-36"><a href="#cb15-36" aria-hidden="true" tabindex="-1"></a>       <span class="fu">c</span>(com_tables, dioceses_tables),</span>
-<span id="cb15-37"><a href="#cb15-37" aria-hidden="true" tabindex="-1"></a>       add_com_column,</span>
-<span id="cb15-38"><a href="#cb15-38" aria-hidden="true" tabindex="-1"></a>       <span class="at">com_name =</span> com</span>
-<span id="cb15-39"><a href="#cb15-39" aria-hidden="true" tabindex="-1"></a>       )</span>
-<span id="cb15-40"><a href="#cb15-40" aria-hidden="true" tabindex="-1"></a>   )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<p>Bring new <code>com</code> column to the front of each tibble because it’s neater.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># coms_by_nation &lt;- lapply(</span></span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="co">#   coms_by_nation,</span></span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="co">#   mutate,</span></span>
-<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="co">#   com_tables =</span></span>
-<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a><span class="co">#     list(map(com_tables, relocate, com)</span></span>
-<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a><span class="co">#          ))</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>coms_by_nation <span class="ot">&lt;-</span> <span class="fu">lapply</span>(coms_by_nation, rowwise)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="do">## Add column to each tibble - recycle the name of the CoM</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="co"># coms_by_nation &lt;- </span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="co">#   lapply(</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="co">#     coms_by_nation,</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="co">#     mutate,</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="co">#     across(</span></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a><span class="co">#       c(com_table, dioceses_tables),</span></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="co">#       some_function </span></span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a><span class="co">#       )</span></span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a><span class="co">#     )</span></span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a><span class="co"># mutate(across(c(col1, col2), some_function() ))</span></span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>add_com_column <span class="ot">&lt;-</span> <span class="cf">function</span>(this_list, com_name){</span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">list</span>(</span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>    <span class="fu">map</span>(</span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a>      this_list,</span>
+<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a>      mutate,</span>
+<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a>      <span class="at">com =</span> com_name</span>
+<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">|&gt;</span> </span>
+<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a>      <span class="fu">map</span>(relocate, com)</span>
+<span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a>    )}</span>
+<span id="cb7-30"><a href="#cb7-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-31"><a href="#cb7-31" aria-hidden="true" tabindex="-1"></a>coms_by_nation <span class="ot">&lt;-</span> </span>
+<span id="cb7-32"><a href="#cb7-32" aria-hidden="true" tabindex="-1"></a>   <span class="fu">lapply</span>(</span>
+<span id="cb7-33"><a href="#cb7-33" aria-hidden="true" tabindex="-1"></a>     coms_by_nation,</span>
+<span id="cb7-34"><a href="#cb7-34" aria-hidden="true" tabindex="-1"></a>     mutate,</span>
+<span id="cb7-35"><a href="#cb7-35" aria-hidden="true" tabindex="-1"></a>     <span class="fu">across</span>(</span>
+<span id="cb7-36"><a href="#cb7-36" aria-hidden="true" tabindex="-1"></a>       <span class="fu">c</span>(com_tables, dioceses_tables),</span>
+<span id="cb7-37"><a href="#cb7-37" aria-hidden="true" tabindex="-1"></a>       add_com_column,</span>
+<span id="cb7-38"><a href="#cb7-38" aria-hidden="true" tabindex="-1"></a>       <span class="at">com_name =</span> com</span>
+<span id="cb7-39"><a href="#cb7-39" aria-hidden="true" tabindex="-1"></a>       )</span>
+<span id="cb7-40"><a href="#cb7-40" aria-hidden="true" tabindex="-1"></a>   )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="rbind-tibbles-into-long-tibbles" class="level3">
@@ -283,920 +247,36 @@ Attaching package: 'rlang'</code></pre>
 <h4 class="anchored" data-anchor-id="helper-rbind-warner">Helper: Rbind warner</h4>
 <p>A little wrapper around <code>rbind()</code> that we can use to ignore bad calls and passes a warning (or, optionally, an error)</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>rbind_warn <span class="ot">&lt;-</span> <span class="cf">function</span>(x, y, <span class="at">just_warn =</span> <span class="cn">TRUE</span>){</span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tryCatch</span>(</span>
-<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">expr =</span> {<span class="fu">rbind</span>(x,y)},</span>
-<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">error =</span> <span class="cf">function</span>(cnd){</span>
-<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>      </span>
-<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>      bad.names <span class="ot">&lt;-</span> <span class="fu">names</span>(y)[<span class="sc">!</span><span class="fu">names</span>(y) <span class="sc">%in%</span> <span class="fu">names</span>(x)]</span>
-<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>      <span class="fu">warning</span>(<span class="st">"Rbind unsucessful in "</span>, <span class="fu">unique</span>(y[[<span class="st">"com"</span>]]),</span>
-<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>              <span class="st">"</span><span class="sc">\n</span><span class="st">The following names were not r-bindable:"</span>,</span>
-<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>              <span class="st">"</span><span class="sc">\n</span><span class="st">* "</span>, </span>
-<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a>              <span class="fu">str_c</span>(bad.names, <span class="at">collapse =</span> <span class="st">"</span><span class="sc">\n</span><span class="st">* "</span>),</span>
-<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a>              <span class="st">"</span><span class="sc">\n</span><span class="st">------------------------------------------------------</span><span class="sc">\n\n</span><span class="st">"</span>)</span>
-<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a>      <span class="fu">return</span>(x)</span>
-<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a>      </span>
-<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb17-17"><a href="#cb17-17" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>rbind_warn <span class="ot">&lt;-</span> <span class="cf">function</span>(x, y, <span class="at">just_warn =</span> <span class="cn">TRUE</span>){</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tryCatch</span>(</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">expr =</span> {<span class="fu">rbind</span>(x,y)},</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">error =</span> <span class="cf">function</span>(cnd){</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>      </span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>      bad.names <span class="ot">&lt;-</span> <span class="fu">names</span>(y)[<span class="sc">!</span><span class="fu">names</span>(y) <span class="sc">%in%</span> <span class="fu">names</span>(x)]</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>      <span class="fu">warning</span>(<span class="st">"Rbind unsucessful in "</span>, <span class="fu">unique</span>(y[[<span class="st">"com"</span>]]),</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>              <span class="st">"</span><span class="sc">\n</span><span class="st">The following names were not r-bindable:"</span>,</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>              <span class="st">"</span><span class="sc">\n</span><span class="st">* "</span>, </span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>              <span class="fu">str_c</span>(bad.names, <span class="at">collapse =</span> <span class="st">"</span><span class="sc">\n</span><span class="st">* "</span>),</span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>              <span class="st">"</span><span class="sc">\n</span><span class="st">------------------------------------------------------</span><span class="sc">\n\n</span><span class="st">"</span>)</span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>      <span class="fu">return</span>(x)</span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>      </span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>make_long_tables <span class="ot">&lt;-</span> <span class="cf">function</span>(x){</span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>  tables_to_bind <span class="ot">&lt;-</span> <span class="fu">select</span>(x, com_tables, dioceses_tables)</span>
-<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">map</span>(tables_to_bind,</span>
-<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>    <span class="sc">~</span> <span class="fu">pmap</span>(.x, list) <span class="sc">|&gt;</span></span>
-<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>      <span class="fu">map</span>(reduce, rbind_warn)</span>
-<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a><span class="co"># ## FIX THIS ##</span></span>
-<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a><span class="co"># coms_by_nation[["Wales"]] &lt;-</span></span>
-<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a><span class="co">#   coms_by_nation[["Wales"]] |&gt;</span></span>
-<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a><span class="co">#   filter(com != "Llandaff")</span></span>
-<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a><span class="co"># warning("We're removing Llandaff's data because of an data quality issue. Not a long term fix.")</span></span>
-<span id="cb18-17"><a href="#cb18-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-18"><a href="#cb18-18" aria-hidden="true" tabindex="-1"></a>coms_by_nation <span class="ot">&lt;-</span> <span class="fu">lapply</span>(coms_by_nation, make_long_tables)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in value[[3L]](cond): Rbind unsucessful in Blackpool
-The following names were not r-bindable:
-* ethn..parish_code
-* ethn..parish_legal_name
-* ethn..deanery_name
-* ethn..diocese_name
-* ethn..population
-* ethn..ethnicity_asian_bangladeshi
-* ethn..ethnicity_asian_chinese
-* ethn..ethnicity_asian_indian
-* ethn..ethnicity_asian_other
-* ethn..ethnicity_asian_pakistani
-* ethn..ethnicity_back_african
-* ethn..ethnicity_black_british
-* ethn..ethnicity_black_caribbean
-* ethn..ethnicity_mixed_other
-* ethn..ethnicity_mixed_white_asian
-* ethn..ethnicity_mixed_white_black_african
-* ethn..ethnicity_mixed_white_black_caribbean
-* ethn..ethnicity_other_arab
-* ethn..ethnicity_other_other
-* ethn..ethnicity_white_british
-* ethn..ethnicity_white_gypsy_or_irish_traveller
-* ethn..ethnicity_white_irish
-* ethn..ethnicity_white_other
-------------------------------------------------------</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in value[[3L]](cond): Rbind unsucessful in Bradford-Sorted
-The following names were not r-bindable:
-* ethn..parish_code
-* ethn..parish_legal_name
-* ethn..deanery_name
-* ethn..diocese_name
-* ethn..population
-* ethn..ethnicity_asian_bangladeshi
-* ethn..ethnicity_asian_chinese
-* ethn..ethnicity_asian_indian
-* ethn..ethnicity_asian_other
-* ethn..ethnicity_asian_pakistani
-* ethn..ethnicity_back_african
-* ethn..ethnicity_black_british
-* ethn..ethnicity_black_caribbean
-* ethn..ethnicity_mixed_other
-* ethn..ethnicity_mixed_white_asian
-* ethn..ethnicity_mixed_white_black_african
-* ethn..ethnicity_mixed_white_black_caribbean
-* ethn..ethnicity_other_arab
-* ethn..ethnicity_other_other
-* ethn..ethnicity_white_british
-* ethn..ethnicity_white_gypsy_or_irish_traveller
-* ethn..ethnicity_white_irish
-* ethn..ethnicity_white_other
-------------------------------------------------------</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in value[[3L]](cond): Rbind unsucessful in Greenwich
-The following names were not r-bindable:
-* ethn..geo_code
-* ethn..ethnic_group_white
-* ethn..ethnic_group_chinese
-* ethn..ethnic_group_irish_traveller
-* ethn..ethnic_group_indian
-* ethn..ethnic_group_pakistani
-* ethn..ethnic_group_bangladeshi
-* ethn..ethnic_group_other_asian
-* ethn..ethnic_group_black_caribbean
-* ethn..ethnic_group_black_african
-* ethn..ethnic_group_black_other
-* ethn..ethnic_group_mixed
-* ethn..ethnic_group_other
-* ethn..white_or_white_british_or_white_irish
-* ethn..black_or_black_british_or_black_irish
-* ethn..asian_or_asian_british_or_asian_irish
-------------------------------------------------------</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in value[[3L]](cond): Rbind unsucessful in Hackney
-The following names were not r-bindable:
-* ethn..white_or_white_irish
-* ethn..black_or_black_irish
-* ethn..asian_or_asian_irish
-* ethn..mixed_other_ethnicity
-* ethn..not_stated
-------------------------------------------------------</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in value[[3L]](cond): Rbind unsucessful in Langley
-The following names were not r-bindable:
-* ethn..geo_code
-* ethn..ethnic_group_white
-* ethn..ethnic_group_chinese
-* ethn..ethnic_group_irish_traveller
-* ethn..ethnic_group_indian
-* ethn..ethnic_group_pakistani
-* ethn..ethnic_group_bangladeshi
-* ethn..ethnic_group_other_asian
-* ethn..ethnic_group_black_caribbean
-* ethn..ethnic_group_black_african
-* ethn..ethnic_group_black_other
-* ethn..ethnic_group_mixed
-* ethn..ethnic_group_other
-* ethn..white_or_white_british_or_white_irish
-* ethn..black_or_black_british_or_black_irish
-* ethn..asian_or_asian_british_or_asian_irish
-------------------------------------------------------</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in value[[3L]](cond): Rbind unsucessful in Leeds
-The following names were not r-bindable:
-* ethn..parish_code
-* ethn..parish_legal_name
-* ethn..deanery_name
-* ethn..diocese_name
-* ethn..population
-* ethn..ethnicity_asian_bangladeshi
-* ethn..ethnicity_asian_chinese
-* ethn..ethnicity_asian_indian
-* ethn..ethnicity_asian_other
-* ethn..ethnicity_asian_pakistani
-* ethn..ethnicity_back_african
-* ethn..ethnicity_black_british
-* ethn..ethnicity_black_caribbean
-* ethn..ethnicity_mixed_other
-* ethn..ethnicity_mixed_white_asian
-* ethn..ethnicity_mixed_white_black_african
-* ethn..ethnicity_mixed_white_black_caribbean
-* ethn..ethnicity_other_arab
-* ethn..ethnicity_other_other
-* ethn..ethnicity_white_british
-* ethn..ethnicity_white_gypsy_or_irish_traveller
-* ethn..ethnicity_white_irish
-* ethn..ethnicity_white_other
-------------------------------------------------------</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in value[[3L]](cond): Rbind unsucessful in Medway
-The following names were not r-bindable:
-* ethn..parish_code
-* ethn..parish_legal_name
-* ethn..deanery_name
-* ethn..diocese_name
-* ethn..population
-* ethn..ethnicity_asian_bangladeshi
-* ethn..ethnicity_asian_chinese
-* ethn..ethnicity_asian_indian
-* ethn..ethnicity_asian_other
-* ethn..ethnicity_asian_pakistani
-* ethn..ethnicity_back_african
-* ethn..ethnicity_black_british
-* ethn..ethnicity_black_caribbean
-* ethn..ethnicity_mixed_other
-* ethn..ethnicity_mixed_white_asian
-* ethn..ethnicity_mixed_white_black_african
-* ethn..ethnicity_mixed_white_black_caribbean
-* ethn..ethnicity_other_arab
-* ethn..ethnicity_other_other
-* ethn..ethnicity_white_british
-* ethn..ethnicity_white_gypsy_or_irish_traveller
-* ethn..ethnicity_white_irish
-* ethn..ethnicity_white_other
-------------------------------------------------------</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in value[[3L]](cond): Rbind unsucessful in Middlesbrough
-The following names were not r-bindable:
-* ethn..white_or_white_irish
-* ethn..black_or_black_irish
-* ethn..asian_or_asian_irish
-* ethn..mixed_other_ethnicity
-* ethn..not_stated
-------------------------------------------------------</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in value[[3L]](cond): Rbind unsucessful in North-Sutton
-The following names were not r-bindable:
-* ethn..geo_code
-* ethn..ethnic_group_white
-* ethn..ethnic_group_chinese
-* ethn..ethnic_group_irish_traveller
-* ethn..ethnic_group_indian
-* ethn..ethnic_group_pakistani
-* ethn..ethnic_group_bangladeshi
-* ethn..ethnic_group_other_asian
-* ethn..ethnic_group_black_caribbean
-* ethn..ethnic_group_black_african
-* ethn..ethnic_group_black_other
-* ethn..ethnic_group_mixed
-* ethn..ethnic_group_other
-* ethn..white_or_white_british_or_white_irish
-* ethn..black_or_black_british_or_black_irish
-* ethn..asian_or_asian_british_or_asian_irish
-------------------------------------------------------</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in value[[3L]](cond): Rbind unsucessful in Rochdale
-The following names were not r-bindable:
-* ethn..parish_code
-* ethn..parish_legal_name
-* ethn..deanery_name
-* ethn..diocese_name
-* ethn..population
-* ethn..ethnicity_asian_bangladeshi
-* ethn..ethnicity_asian_chinese
-* ethn..ethnicity_asian_indian
-* ethn..ethnicity_asian_other
-* ethn..ethnicity_asian_pakistani
-* ethn..ethnicity_back_african
-* ethn..ethnicity_black_british
-* ethn..ethnicity_black_caribbean
-* ethn..ethnicity_mixed_other
-* ethn..ethnicity_mixed_white_asian
-* ethn..ethnicity_mixed_white_black_african
-* ethn..ethnicity_mixed_white_black_caribbean
-* ethn..ethnicity_other_arab
-* ethn..ethnicity_other_other
-* ethn..ethnicity_white_british
-* ethn..ethnicity_white_gypsy_or_irish_traveller
-* ethn..ethnicity_white_irish
-* ethn..ethnicity_white_other
-------------------------------------------------------</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in value[[3L]](cond): Rbind unsucessful in Scunthorpe
-The following names were not r-bindable:
-* ethn..parish_code
-* ethn..parish_legal_name
-* ethn..deanery_name
-* ethn..diocese_name
-* ethn..population
-* ethn..ethnicity_asian_bangladeshi
-* ethn..ethnicity_asian_chinese
-* ethn..ethnicity_asian_indian
-* ethn..ethnicity_asian_other
-* ethn..ethnicity_asian_pakistani
-* ethn..ethnicity_back_african
-* ethn..ethnicity_black_british
-* ethn..ethnicity_black_caribbean
-* ethn..ethnicity_mixed_other
-* ethn..ethnicity_mixed_white_asian
-* ethn..ethnicity_mixed_white_black_african
-* ethn..ethnicity_mixed_white_black_caribbean
-* ethn..ethnicity_other_arab
-* ethn..ethnicity_other_other
-* ethn..ethnicity_white_british
-* ethn..ethnicity_white_gypsy_or_irish_traveller
-* ethn..ethnicity_white_irish
-* ethn..ethnicity_white_other
-------------------------------------------------------</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in value[[3L]](cond): Rbind unsucessful in Selby
-The following names were not r-bindable:
-* ethn..white_or_white_irish
-* ethn..black_or_black_irish
-* ethn..asian_or_asian_irish
-* ethn..mixed_other_ethnicity
-* ethn..not_stated
-------------------------------------------------------</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in value[[3L]](cond): Rbind unsucessful in Southampton
-The following names were not r-bindable:
-* ethn..parish_code
-* ethn..parish_legal_name
-* ethn..deanery_name
-* ethn..diocese_name
-* ethn..population
-* ethn..ethnicity_asian_bangladeshi
-* ethn..ethnicity_asian_chinese
-* ethn..ethnicity_asian_indian
-* ethn..ethnicity_asian_other
-* ethn..ethnicity_asian_pakistani
-* ethn..ethnicity_back_african
-* ethn..ethnicity_black_british
-* ethn..ethnicity_black_caribbean
-* ethn..ethnicity_mixed_other
-* ethn..ethnicity_mixed_white_asian
-* ethn..ethnicity_mixed_white_black_african
-* ethn..ethnicity_mixed_white_black_caribbean
-* ethn..ethnicity_other_arab
-* ethn..ethnicity_other_other
-* ethn..ethnicity_white_british
-* ethn..ethnicity_white_gypsy_or_irish_traveller
-* ethn..ethnicity_white_irish
-* ethn..ethnicity_white_other
-------------------------------------------------------</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in value[[3L]](cond): Rbind unsucessful in Blackpool
-The following names were not r-bindable:
-* health..oa_id
-------------------------------------------------------</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in value[[3L]](cond): Rbind unsucessful in Bradford-Sorted
-The following names were not r-bindable:
-* health..oa_id
-------------------------------------------------------</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in value[[3L]](cond): Rbind unsucessful in Hackney
-The following names were not r-bindable:
-* health..not_stated
-------------------------------------------------------</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in value[[3L]](cond): Rbind unsucessful in Leeds
-The following names were not r-bindable:
-* health..oa_id
-------------------------------------------------------</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in value[[3L]](cond): Rbind unsucessful in Medway
-The following names were not r-bindable:
-* health..oa_id
-------------------------------------------------------</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in value[[3L]](cond): Rbind unsucessful in Middlesbrough
-The following names were not r-bindable:
-* health..not_stated
-------------------------------------------------------</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in value[[3L]](cond): Rbind unsucessful in Rochdale
-The following names were not r-bindable:
-* health..oa_id
-------------------------------------------------------</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in value[[3L]](cond): Rbind unsucessful in Scunthorpe
-The following names were not r-bindable:
-* health..oa_id
-------------------------------------------------------</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in value[[3L]](cond): Rbind unsucessful in Selby
-The following names were not r-bindable:
-* health..not_stated
-------------------------------------------------------</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in value[[3L]](cond): Rbind unsucessful in Southampton
-The following names were not r-bindable:
-* health..oa_id
-------------------------------------------------------</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in value[[3L]](cond): Rbind unsucessful in Blackpool
-The following names were not r-bindable:
-* house..oa_id
-------------------------------------------------------</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in value[[3L]](cond): Rbind unsucessful in Bradford-Sorted
-The following names were not r-bindable:
-* house..oa_id
-------------------------------------------------------</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in value[[3L]](cond): Rbind unsucessful in Hackney
-The following names were not r-bindable:
-* house..one_person_household
-------------------------------------------------------</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in value[[3L]](cond): Rbind unsucessful in Leeds
-The following names were not r-bindable:
-* house..oa_id
-------------------------------------------------------</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in value[[3L]](cond): Rbind unsucessful in Medway
-The following names were not r-bindable:
-* house..oa_id
-------------------------------------------------------</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in value[[3L]](cond): Rbind unsucessful in Middlesbrough
-The following names were not r-bindable:
-* house..one_person_household
-------------------------------------------------------</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in value[[3L]](cond): Rbind unsucessful in Rochdale
-The following names were not r-bindable:
-* house..oa_id
-------------------------------------------------------</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in value[[3L]](cond): Rbind unsucessful in Scunthorpe
-The following names were not r-bindable:
-* house..oa_id
-------------------------------------------------------</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in value[[3L]](cond): Rbind unsucessful in Selby
-The following names were not r-bindable:
-* house..one_person_household
-------------------------------------------------------</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in value[[3L]](cond): Rbind unsucessful in Southampton
-The following names were not r-bindable:
-* house..oa_id
-------------------------------------------------------</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in value[[3L]](cond): Rbind unsucessful in Blackpool
-The following names were not r-bindable:
-* pop..lsoa_code
-------------------------------------------------------</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in value[[3L]](cond): Rbind unsucessful in Bradford-Sorted
-The following names were not r-bindable:
-* pop..lsoa_code
-------------------------------------------------------</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in value[[3L]](cond): Rbind unsucessful in Greenwich
-The following names were not r-bindable:
-* pop..soa_code
-* pop..x0_15_years
-* pop..x16_39_years
-* pop..x40_64_years
-* pop..x65_years
-------------------------------------------------------</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in value[[3L]](cond): Rbind unsucessful in Hackney
-The following names were not r-bindable:
-* pop..sa_code
-------------------------------------------------------</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in value[[3L]](cond): Rbind unsucessful in Langley
-The following names were not r-bindable:
-* pop..soa_code
-* pop..x0_15_years
-* pop..x16_39_years
-* pop..x40_64_years
-* pop..x65_years
-------------------------------------------------------</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in value[[3L]](cond): Rbind unsucessful in Leeds
-The following names were not r-bindable:
-* pop..lsoa_code
-------------------------------------------------------</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in value[[3L]](cond): Rbind unsucessful in Medway
-The following names were not r-bindable:
-* pop..lsoa_code
-------------------------------------------------------</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in value[[3L]](cond): Rbind unsucessful in Middlesbrough
-The following names were not r-bindable:
-* pop..sa_code
-------------------------------------------------------</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in value[[3L]](cond): Rbind unsucessful in North-Sutton
-The following names were not r-bindable:
-* pop..soa_code
-* pop..x0_15_years
-* pop..x16_39_years
-* pop..x40_64_years
-* pop..x65_years
-------------------------------------------------------</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in value[[3L]](cond): Rbind unsucessful in Rochdale
-The following names were not r-bindable:
-* pop..lsoa_code
-------------------------------------------------------</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in value[[3L]](cond): Rbind unsucessful in Scunthorpe
-The following names were not r-bindable:
-* pop..lsoa_code
-------------------------------------------------------</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in value[[3L]](cond): Rbind unsucessful in Selby
-The following names were not r-bindable:
-* pop..sa_code
-------------------------------------------------------</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in value[[3L]](cond): Rbind unsucessful in Southampton
-The following names were not r-bindable:
-* pop..lsoa_code
-------------------------------------------------------</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in value[[3L]](cond): Rbind unsucessful in Blackpool
-The following names were not r-bindable:
-* rel..parish_code
-* rel..parish_legal_name
-* rel..deanery_name
-* rel..diocese_name
-* rel..population
-* rel..christian
-* rel..religion_buddhist
-* rel..religion_christian
-* rel..religion_hindu
-* rel..religion_jewish
-* rel..religion_muslim
-* rel..religion_no_religion
-* rel..religion_not_stated_2
-* rel..religion_other
-* rel..religion_sikh
-------------------------------------------------------</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in value[[3L]](cond): Rbind unsucessful in Bradford-Sorted
-The following names were not r-bindable:
-* rel..parish_code
-* rel..parish_legal_name
-* rel..deanery_name
-* rel..diocese_name
-* rel..population
-* rel..christian
-* rel..religion_buddhist
-* rel..religion_christian
-* rel..religion_hindu
-* rel..religion_jewish
-* rel..religion_muslim
-* rel..religion_no_religion
-* rel..religion_not_stated_2
-* rel..religion_other
-* rel..religion_sikh
-------------------------------------------------------</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in value[[3L]](cond): Rbind unsucessful in Greenwich
-The following names were not r-bindable:
-* rel..religion_catholic
-* rel..religion_presbyterian_church_in_ireland
-* rel..religion_church_of_ireland
-* rel..religion_methodist_church_in_ireland
-* rel..religion_other_christian_including_christian_related
-* rel..religion_other_religions
-* rel..religion_no_religion
-* rel..religion_religion_not_stated
-------------------------------------------------------</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in value[[3L]](cond): Rbind unsucessful in Hackney
-The following names were not r-bindable:
-* rel..religion_catholic
-* rel..religion_other_religions
-* rel..religion_no_religion
-* rel..religion_religion_not_stated
-------------------------------------------------------</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in value[[3L]](cond): Rbind unsucessful in Langley
-The following names were not r-bindable:
-* rel..religion_catholic
-* rel..religion_presbyterian_church_in_ireland
-* rel..religion_church_of_ireland
-* rel..religion_methodist_church_in_ireland
-* rel..religion_other_christian_including_christian_related
-* rel..religion_other_religions
-* rel..religion_no_religion
-* rel..religion_religion_not_stated
-------------------------------------------------------</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in value[[3L]](cond): Rbind unsucessful in Leeds
-The following names were not r-bindable:
-* rel..parish_code
-* rel..parish_legal_name
-* rel..deanery_name
-* rel..diocese_name
-* rel..population
-* rel..christian
-* rel..religion_buddhist
-* rel..religion_christian
-* rel..religion_hindu
-* rel..religion_jewish
-* rel..religion_muslim
-* rel..religion_no_religion
-* rel..religion_not_stated_2
-* rel..religion_other
-* rel..religion_sikh
-------------------------------------------------------</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in value[[3L]](cond): Rbind unsucessful in Medway
-The following names were not r-bindable:
-* rel..parish_code
-* rel..parish_legal_name
-* rel..deanery_name
-* rel..diocese_name
-* rel..population
-* rel..christian
-* rel..religion_buddhist
-* rel..religion_christian
-* rel..religion_hindu
-* rel..religion_jewish
-* rel..religion_muslim
-* rel..religion_no_religion
-* rel..religion_not_stated_2
-* rel..religion_other
-* rel..religion_sikh
-------------------------------------------------------</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in value[[3L]](cond): Rbind unsucessful in Middlesbrough
-The following names were not r-bindable:
-* rel..religion_catholic
-* rel..religion_other_religions
-* rel..religion_no_religion
-* rel..religion_religion_not_stated
-------------------------------------------------------</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in value[[3L]](cond): Rbind unsucessful in North-Sutton
-The following names were not r-bindable:
-* rel..religion_catholic
-* rel..religion_presbyterian_church_in_ireland
-* rel..religion_church_of_ireland
-* rel..religion_methodist_church_in_ireland
-* rel..religion_other_christian_including_christian_related
-* rel..religion_other_religions
-* rel..religion_no_religion
-* rel..religion_religion_not_stated
-------------------------------------------------------</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in value[[3L]](cond): Rbind unsucessful in Rochdale
-The following names were not r-bindable:
-* rel..parish_code
-* rel..parish_legal_name
-* rel..deanery_name
-* rel..diocese_name
-* rel..population
-* rel..christian
-* rel..religion_buddhist
-* rel..religion_christian
-* rel..religion_hindu
-* rel..religion_jewish
-* rel..religion_muslim
-* rel..religion_no_religion
-* rel..religion_not_stated_2
-* rel..religion_other
-* rel..religion_sikh
-------------------------------------------------------</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in value[[3L]](cond): Rbind unsucessful in Scunthorpe
-The following names were not r-bindable:
-* rel..parish_code
-* rel..parish_legal_name
-* rel..deanery_name
-* rel..diocese_name
-* rel..population
-* rel..christian
-* rel..religion_buddhist
-* rel..religion_christian
-* rel..religion_hindu
-* rel..religion_jewish
-* rel..religion_muslim
-* rel..religion_no_religion
-* rel..religion_not_stated_2
-* rel..religion_other
-* rel..religion_sikh
-------------------------------------------------------</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in value[[3L]](cond): Rbind unsucessful in Selby
-The following names were not r-bindable:
-* rel..religion_catholic
-* rel..religion_other_religions
-* rel..religion_no_religion
-* rel..religion_religion_not_stated
-------------------------------------------------------</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in value[[3L]](cond): Rbind unsucessful in Southampton
-The following names were not r-bindable:
-* rel..parish_code
-* rel..parish_legal_name
-* rel..deanery_name
-* rel..diocese_name
-* rel..population
-* rel..christian
-* rel..religion_buddhist
-* rel..religion_christian
-* rel..religion_hindu
-* rel..religion_jewish
-* rel..religion_muslim
-* rel..religion_no_religion
-* rel..religion_not_stated_2
-* rel..religion_other
-* rel..religion_sikh
-------------------------------------------------------</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in value[[3L]](cond): Rbind unsucessful in North-Belfast
-The following names were not r-bindable:
-* ethn..parish_code
-* ethn..parish_legal_name
-* ethn..deanery_name
-* ethn..diocese_name
-* ethn..population
-* ethn..ethnicity_asian_bangladeshi
-* ethn..ethnicity_asian_chinese
-* ethn..ethnicity_asian_indian
-* ethn..ethnicity_asian_other
-* ethn..ethnicity_asian_pakistani
-* ethn..ethnicity_back_african
-* ethn..ethnicity_black_british
-* ethn..ethnicity_black_caribbean
-* ethn..ethnicity_mixed_other
-* ethn..ethnicity_mixed_white_asian
-* ethn..ethnicity_mixed_white_black_african
-* ethn..ethnicity_mixed_white_black_caribbean
-* ethn..ethnicity_other_arab
-* ethn..ethnicity_other_other
-* ethn..ethnicity_white_british
-* ethn..ethnicity_white_gypsy_or_irish_traveller
-* ethn..ethnicity_white_irish
-* ethn..ethnicity_white_other
-------------------------------------------------------</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in value[[3L]](cond): Rbind unsucessful in North-Belfast
-The following names were not r-bindable:
-* 
-------------------------------------------------------
-
-Warning in value[[3L]](cond): Rbind unsucessful in North-Belfast
-The following names were not r-bindable:
-* 
-------------------------------------------------------
-
-Warning in value[[3L]](cond): Rbind unsucessful in North-Belfast
-The following names were not r-bindable:
-* 
-------------------------------------------------------</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in value[[3L]](cond): Rbind unsucessful in North-Belfast
-The following names were not r-bindable:
-* rel..parish_code
-* rel..parish_legal_name
-* rel..deanery_name
-* rel..diocese_name
-* rel..population
-* rel..religion_buddhist
-* rel..religion_christian
-* rel..religion_hindu
-* rel..religion_jewish
-* rel..religion_muslim
-* rel..religion_no_religion
-* rel..religion_not_stated_2
-* rel..religion_other
-* rel..religion_sikh
-------------------------------------------------------</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in value[[3L]](cond): Rbind unsucessful in Cork
-The following names were not r-bindable:
-* ethn..geo_code
-* ethn..total_persons
-* ethn..ethnic_group_e_s_w_white_english_welsh_scottish_northern_irish_british_unit_persons
-* ethn..ethnic_group_e_s_w_white_irish_unit_persons
-* ethn..ethnic_group_e_s_w_white_gypsy_or_irish_traveller_unit_persons
-* ethn..ethnic_group_e_s_w_white_other_white_unit_persons
-* ethn..ethnic_group_e_s_w_mixed_multiple_ethnic_group_white_and_black_caribbean_unit_persons
-* ethn..ethnic_group_e_s_w_mixed_multiple_ethnic_group_white_and_black_african_unit_persons
-* ethn..ethnic_group_e_s_w_mixed_multiple_ethnic_group_white_and_asian_unit_persons
-* ethn..ethnic_group_e_s_w_mixed_multiple_ethnic_group_other_mixed_unit_persons
-* ethn..ethnic_group_e_s_w_asian_asian_british_indian_unit_persons
-* ethn..ethnic_group_e_s_w_asian_asian_british_pakistani_unit_persons
-* ethn..ethnic_group_e_s_w_asian_asian_british_bangladeshi_unit_persons
-* ethn..ethnic_group_e_s_w_asian_asian_british_chinese_unit_persons
-* ethn..ethnic_group_e_s_w_asian_asian_british_other_asian_unit_persons
-* ethn..ethnic_group_e_s_w_black_african_caribbean_black_british_african_unit_persons
-* ethn..ethnic_group_e_s_w_black_african_caribbean_black_british_caribbean_unit_persons
-* ethn..ethnic_group_e_s_w_black_african_caribbean_black_british_other_black_unit_persons
-* ethn..ethnic_group_e_s_w_other_ethnic_group_arab_unit_persons
-* ethn..ethnic_group_e_s_w_other_ethnic_group_any_other_ethnic_group_unit_persons
-------------------------------------------------------</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in value[[3L]](cond): Rbind unsucessful in Cork
-The following names were not r-bindable:
-* rel..oa_id
-* rel..total_persons
-------------------------------------------------------</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in value[[3L]](cond): Rbind unsucessful in Dundee
-The following names were not r-bindable:
-* ethn..sa_id
-* ethn..total_persons
-* ethn..ethnic_group_e_s_w_white_unit_persons
-* ethn..ethnic_group_e_s_w_white_gypsy_or_irish_traveller_unit_persons
-* ethn..ethnic_group_e_s_w_mixed_multiple_ethnic_group_unit_persons
-* ethn..ethnic_group_e_s_w_asian_asian_british_indian_unit_persons
-* ethn..ethnic_group_e_s_w_asian_asian_british_pakistani_unit_persons
-* ethn..ethnic_group_e_s_w_asian_asian_british_bangladeshi_unit_persons
-* ethn..ethnic_group_e_s_w_asian_asian_british_chinese_unit_persons
-* ethn..ethnic_group_e_s_w_asian_asian_british_other_asian_unit_persons
-* ethn..ethnic_group_e_s_w_black_african_caribbean_black_british_unit_persons
-* ethn..ethnic_group_e_s_w_other_ethnic_group_any_other_ethnic_group_unit_persons
-------------------------------------------------------</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in value[[3L]](cond): Rbind unsucessful in West-Highlands
-The following names were not r-bindable:
-* ethn..geo_code
-* ethn..total_persons
-* ethn..ethnic_group_e_s_w_white_english_welsh_scottish_northern_irish_british_unit_persons
-* ethn..ethnic_group_e_s_w_white_irish_unit_persons
-* ethn..ethnic_group_e_s_w_white_gypsy_or_irish_traveller_unit_persons
-* ethn..ethnic_group_e_s_w_white_other_white_unit_persons
-* ethn..ethnic_group_e_s_w_mixed_multiple_ethnic_group_white_and_black_caribbean_unit_persons
-* ethn..ethnic_group_e_s_w_mixed_multiple_ethnic_group_white_and_black_african_unit_persons
-* ethn..ethnic_group_e_s_w_mixed_multiple_ethnic_group_white_and_asian_unit_persons
-* ethn..ethnic_group_e_s_w_mixed_multiple_ethnic_group_other_mixed_unit_persons
-* ethn..ethnic_group_e_s_w_asian_asian_british_indian_unit_persons
-* ethn..ethnic_group_e_s_w_asian_asian_british_pakistani_unit_persons
-* ethn..ethnic_group_e_s_w_asian_asian_british_bangladeshi_unit_persons
-* ethn..ethnic_group_e_s_w_asian_asian_british_chinese_unit_persons
-* ethn..ethnic_group_e_s_w_asian_asian_british_other_asian_unit_persons
-* ethn..ethnic_group_e_s_w_black_african_caribbean_black_british_african_unit_persons
-* ethn..ethnic_group_e_s_w_black_african_caribbean_black_british_caribbean_unit_persons
-* ethn..ethnic_group_e_s_w_black_african_caribbean_black_british_other_black_unit_persons
-* ethn..ethnic_group_e_s_w_other_ethnic_group_arab_unit_persons
-* ethn..ethnic_group_e_s_w_other_ethnic_group_any_other_ethnic_group_unit_persons
-------------------------------------------------------</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in value[[3L]](cond): Rbind unsucessful in Dundee
-The following names were not r-bindable:
-* health..sa_id
-------------------------------------------------------</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in value[[3L]](cond): Rbind unsucessful in Dundee
-The following names were not r-bindable:
-* house..sa_id
-------------------------------------------------------</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in value[[3L]](cond): Rbind unsucessful in Dundee
-The following names were not r-bindable:
-* pop..dz_code
-------------------------------------------------------</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in value[[3L]](cond): Rbind unsucessful in Dundee
-The following names were not r-bindable:
-* rel..sa_id
-* rel..total_persons
-* rel..christian_church_of_scotland
-* rel..christian_roman_catholic
-* rel..christian_other_christian
-------------------------------------------------------</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in value[[3L]](cond): Rbind unsucessful in West-Highlands
-The following names were not r-bindable:
-* rel..oa_id
-* rel..total_persons
-------------------------------------------------------</code></pre>
-</div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>make_long_tables <span class="ot">&lt;-</span> <span class="cf">function</span>(x){</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  tables_to_bind <span class="ot">&lt;-</span> <span class="fu">select</span>(x, com_tables, dioceses_tables)</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">map</span>(tables_to_bind,</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>    <span class="sc">~</span> <span class="fu">pmap</span>(.x, list) <span class="sc">|&gt;</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>      <span class="fu">map</span>(reduce, rbind_warn)</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>coms_by_nation <span class="ot">&lt;-</span> <span class="fu">map</span>(coms_by_nation, make_long_tables)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Warning in value[[3L]](cond): Rbind unsucessful in Llandaff
 The following names were not r-bindable:
@@ -1225,141 +305,6 @@ The following names were not r-bindable:
 The following names were not r-bindable:
 * pop..males
 * pop..females
-------------------------------------------------------</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in value[[3L]](cond): Rbind unsucessful in Gwent-Valley
-The following names were not r-bindable:
-* ethn..sa_id
-* ethn..white_or_white_irish
-* ethn..black_or_black_irish
-* ethn..asian_or_asian_irish
-* ethn..mixed_other_ethnicity
-* ethn..not_stated
-------------------------------------------------------</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in value[[3L]](cond): Rbind unsucessful in Llandaff
-The following names were not r-bindable:
-* ethn..parish_code
-* ethn..parish_legal_name
-* ethn..deanery_name
-* ethn..diocese_name
-* ethn..population
-* ethn..ethnicity_asian_bangladeshi
-* ethn..ethnicity_asian_chinese
-* ethn..ethnicity_asian_indian
-* ethn..ethnicity_asian_other
-* ethn..ethnicity_asian_pakistani
-* ethn..ethnicity_back_african
-* ethn..ethnicity_black_british
-* ethn..ethnicity_black_caribbean
-* ethn..ethnicity_mixed_other
-* ethn..ethnicity_mixed_white_asian
-* ethn..ethnicity_mixed_white_black_african
-* ethn..ethnicity_mixed_white_black_caribbean
-* ethn..ethnicity_other_arab
-* ethn..ethnicity_other_other
-* ethn..ethnicity_white_british
-* ethn..ethnicity_white_gypsy_or_irish_traveller
-* ethn..ethnicity_white_irish
-* ethn..ethnicity_white_other
-------------------------------------------------------</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in value[[3L]](cond): Rbind unsucessful in Wrexham
-The following names were not r-bindable:
-* ethn..parish_code
-* ethn..parish_legal_name
-* ethn..deanery_name
-* ethn..diocese_name
-* ethn..population
-* ethn..ethnicity_asian_bangladeshi
-* ethn..ethnicity_asian_chinese
-* ethn..ethnicity_asian_indian
-* ethn..ethnicity_asian_other
-* ethn..ethnicity_asian_pakistani
-* ethn..ethnicity_back_african
-* ethn..ethnicity_black_british
-* ethn..ethnicity_black_caribbean
-* ethn..ethnicity_mixed_other
-* ethn..ethnicity_mixed_white_asian
-* ethn..ethnicity_mixed_white_black_african
-* ethn..ethnicity_mixed_white_black_caribbean
-* ethn..ethnicity_other_arab
-* ethn..ethnicity_other_other
-* ethn..ethnicity_white_british
-* ethn..ethnicity_white_gypsy_or_irish_traveller
-* ethn..ethnicity_white_irish
-* ethn..ethnicity_white_other
-------------------------------------------------------</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in value[[3L]](cond): Rbind unsucessful in Gwent-Valley
-The following names were not r-bindable:
-* health..sa_id
-* health..not_stated
-------------------------------------------------------</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in value[[3L]](cond): Rbind unsucessful in Gwent-Valley
-The following names were not r-bindable:
-* house..sa_id
-* house..one_person_household
-------------------------------------------------------</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in value[[3L]](cond): Rbind unsucessful in Gwent-Valley
-The following names were not r-bindable:
-* pop..sa_code
-------------------------------------------------------</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in value[[3L]](cond): Rbind unsucessful in Gwent-Valley
-The following names were not r-bindable:
-* rel..sa_id
-* rel..religion_catholic
-* rel..religion_other_religions
-* rel..religion_no_religion
-* rel..religion_religion_not_stated
-------------------------------------------------------</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in value[[3L]](cond): Rbind unsucessful in Llandaff
-The following names were not r-bindable:
-* rel..parish_code
-* rel..parish_legal_name
-* rel..deanery_name
-* rel..diocese_name
-* rel..population
-* rel..religion_buddhist
-* rel..religion_christian
-* rel..religion_hindu
-* rel..religion_jewish
-* rel..religion_muslim
-* rel..religion_no_religion
-* rel..religion_not_stated_2
-* rel..religion_other
-* rel..religion_sikh
-------------------------------------------------------</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in value[[3L]](cond): Rbind unsucessful in Wrexham
-The following names were not r-bindable:
-* rel..parish_code
-* rel..parish_legal_name
-* rel..deanery_name
-* rel..diocese_name
-* rel..population
-* rel..religion_buddhist
-* rel..religion_christian
-* rel..religion_hindu
-* rel..religion_jewish
-* rel..religion_muslim
-* rel..religion_no_religion
-* rel..religion_not_stated_2
-* rel..religion_other
-* rel..religion_sikh
 ------------------------------------------------------</code></pre>
 </div>
 </div>

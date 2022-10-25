@@ -7,6 +7,7 @@ editor: visual
 #### Libraries
 
 ```{r libs}
+#| message: false
 library(here)
 library(dplyr)
 library(vroom)
@@ -38,7 +39,7 @@ This will allow us to sort our CoM tables by nation, which is necessary because 
 com_table <-
   vroom(
     here("data", "inputs", "census", "com-diocese-nation-table.csv"),
-    col_types = "cfff"
+    col_types = "cccc"
     ) |> 
   rename_with(str_to_lower) 
 
@@ -97,23 +98,6 @@ Add a field to each tibble in `coms_by_nation` containing the name of the CoM. W
 ```{r addComField}
 coms_by_nation <- lapply(coms_by_nation, rowwise)
 
-## Add column to each tibble - recycle the name of the CoM
-
-
-
-# coms_by_nation <- 
-#   lapply(
-#     coms_by_nation,
-#     mutate,
-#     across(
-#       c(com_table, dioceses_tables),
-#       some_function 
-#       )
-#     )
-
-
-# mutate(across(c(col1, col2), some_function() ))
-
 add_com_column <- function(this_list, com_name){
   
   list(
@@ -135,22 +119,6 @@ coms_by_nation <-
        com_name = com
        )
    )
-
-
-coms_by_nation$England$dioceses_tables |> keep(function(x) any(x[[1]][["com"]] == "Greenwich"))
-
-## southwark diocese has data for CoI church????
-```
-
-Bring new `com` column to the front of each tibble because it's neater.
-
-```{r reloacteCom}
-# coms_by_nation <- lapply(
-#   coms_by_nation,
-#   mutate,
-#   com_tables =
-#     list(map(com_tables, relocate, com)
-#          ))
 ```
 
 ### Rbind tibbles into long tibbles
@@ -194,12 +162,13 @@ make_long_tables <- function(x){
   )
 }
 
-# ## FIX THIS ##
-# coms_by_nation[["Wales"]] <-
-#   coms_by_nation[["Wales"]] |>
-#   filter(com != "Llandaff")
+coms_by_nation <- map(coms_by_nation, make_long_tables)
 
-# warning("We're removing Llandaff's data because of an data quality issue. Not a long term fix.")
 
-coms_by_nation <- lapply(coms_by_nation, make_long_tables)
+```
+
+## Save data
+
+```{r saveData}
+saveRDS("data", "intermediate", "census", "merged-data", "02_")
 ```
