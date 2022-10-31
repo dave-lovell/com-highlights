@@ -1,0 +1,71 @@
+---
+title: "Making tibble indexer"
+author: "Dave"
+format: html
+editor: visual
+---
+
+## Read in Data
+
+For testing
+
+```{r libraries}
+library(here)
+library(purrr)
+library(lobstr)
+library(dplyr)
+library(stringr)
+library(rlang)
+```
+
+```{r}
+census_tibbles <- readRDS(
+  here("data", "intermediate", "census", "merged-data",
+       "02_grouped-by-level-and-nation_2022-10-25.RDS")
+)
+
+tree(census_tibbles, max_depth = 3)
+```
+
+### Make function
+
+```{r makeFunction}
+modify_census_tibbles <-
+  function(x,
+           modify_func = NULL,
+           ...,
+           nations = c("England", "Northern-Ireland", "Republic-of-Ireland",
+                       "Scotland", "Wales"),
+           levels  = c("com", "dioceses", "nations"),
+           stats   = c("ethn", "health", "house", "pop", "rel")
+           
+  ){
+    for(nation in nations){
+      for(level in levels){
+        for(stat in stats){
+          x[[nation]][[level]][[stat]] <-
+            modify_func(x[[nation]][[level]][[stat]], ...)
+        }}}
+    return(x)
+  }
+```
+
+### Test
+
+```{r testFunction}
+
+modify_census_tibbles(census_tibbles,
+                      modify_func = rename_with,
+                      str_to_upper
+                      ) |> 
+  tree(max_depth = 5)
+```
+Nice! Took me so long to realise that a for-loop was appropriate here, and much simper than trying to `walk` along indeces, `pluck`-assigning variables into x and trying to pull make it all happen in the right enviroment.
+
+## Save
+
+```{r saveIt}
+saveRDS(modify_census_tibbles, here("functions", "modify-census.RDS"))
+```
+
+
