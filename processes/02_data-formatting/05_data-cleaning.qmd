@@ -1,0 +1,134 @@
+---
+title: "05_data cleaning"
+format: html
+editor: visual
+---
+
+```{r libs}
+
+library(here)
+library(dplyr)
+library(vroom)
+library(stringr)
+library(purrr)
+library(rlang) # for nice error handling
+library(lobstr)
+```
+
+```{r read In Census Table }
+census_table <- saveRDS(coms_by_nation, here("data", "intermediate", "census", "merged-data", "02_grouped-by-level-and-nation_2022-10-25.RDS"))
+```
+
+```{r renamingColoumns}
+
+remove_prefix <- function(x, sep, regex = FALSE){
+  
+    if(!regex){ sep <- stringr::fixed(sep) }
+  sep_end <- stringr::str_locate(x, sep)[, "end"] 
+  
+  if(any(is.na(sep_end))){
+    
+    na_seps <- which(is.na(sep_end))
+    sep_end[na_seps] <- 0
+    
+    # for(i in na_seps) warning("Separator '", sep, "' not found in colunm name '", x[[i]] , "'")
+    }
+  
+  string_out <- str_sub(x, sep_end + 1)
+  
+  return(string_out)
+                 
+}
+
+coms_by_nation <-
+coms_by_nation |>
+  map(
+    map,
+    map,
+    rename_with,
+    .fn = remove_prefix, 
+    .cols = everything(),
+    sep = ".."
+  )
+
+#   rename_with(overall_table, .fn = remove_prefix, .cols = everything(), "...")
+# 
+# rename_with(x, str_replace, everything(), "..", "_")
+# 
+# 
+# }
+# 
+# colnames(com_tables$Ethnicity$England$Wales) <- c("total", "welshirish", "whiteirish", "gypsy", "whiteother", "mmcarribean", 
+#                                                 "mmafrica", "mmwhiteasia","mmothers", "abindian", "abpakistian", "abbangladesh", 
+#                                                 "abchinese", "abothers", "bbafrican", "bbcaribian", "otherblack", "grouparab", 
+#                                                 "otherethnic", "white", "black", "asian", "mixedmultiple", "other")
+# colnames(com_tables$Ethnicity$Scotland) <- c("total", "white", "gypsy", "mixedmultiple", "asbindian", "asbpakistian", 
+#                                              "asbbangladesh", "asbchinese", "asbothers","afbcarribaens", "othergroups", 
+#                                              "white", "black", "asian", "mixedmultiple", "othergroups")
+# colnames(com_tables$Ethinicity$NorthernIreland) <- c("total", "white", "chinese", "irish", "indian", "pakistiani", "bangladesh", 
+#                                                      "otherasian", "carribean", "african", "blackothers", "mixedgroups", "groupothers", 
+#                                                      "white", "black", "asian", "mixedmultiple", "others")
+# colnames(com_table$RepublicofIreland) <- c("total", "white", "black", "asian", "mixedothers", "notstated")
+# 
+# 
+# colnames(com_tables$Health$Wales$Scotland$NorthernIreland$England) <- c("total", "verygood", "good", "fair", "bad", "verybad")
+# colnames(com_tables$Health$RepulblicofIreland) <- c("total", "verygood", "good", "fair", "bad", "verybad", "notstated")
+# 
+# colnames(com_tables$House$Wales$Scotland$NorthernIreland$England) <- c("total", "65", "64", "couple", "coupleDependant", 
+#                                                                        "loneparent", "othernodependant", "otherdependant")
+# colnames(com_tables$House$RepulblicofIreland) <- c("couple", "coupleDependant","loneparent", "othernodependant", "otherdependant")
+# 
+# colnames(com_tables$Population$Wales$Scotland$NorthernIreland$England) <- c("0-4", "5-11", "12-17", "18-29", "30-39", 
+#                                                                        "40-59", "60-74", "over75")
+# colnames(com_tables$Population$RepulblicofIreland) <- c("0-15", "16-39","40-64", "65&above", "otherdependant")
+
+## dplyr::rename
+## dplyr::rename_with
+## stringr (str_remove, str_replace, str_remove_all, str_replace_all)
+## regex
+
+```
+
+```{r multiply the proportion across all columns}
+
+multiplier <- function(x){
+  
+  prop_column = df[ , 5]
+  
+  round(prop_column) <- function(prop_column)
+    round((prop_column), digits = 0)
+          if prop_column > 1
+          else round((prop_column), 1)}
+  
+  
+  df(prop_column) %>% mutate_at(vars(starts_with("[ , 6]")), ~.*deflator)
+  ## instead of mutate_at, use mutate(across())
+  ## starts_with wants a character string
+  
+  x <- some_table_nice
+  
+  x <- mutate(x, prop_column = min(prop_column, 1))
+  
+  require(magritrr)
+  
+  x <- mutate(x, 
+              across(
+                where(is.numeric),
+                multiply_by, 
+                prop_column))
+  
+  
+  round(df[ , 5], digits = 1) -> exceed 1
+}
+  
+map(coms_by_nation, 
+    
+    ## not sure what goes here...
+    
+    mutate,
+    across(where(is.numeric)),
+    multiply_by,
+    proportion_of_oa_within_co_m_boundary
+    )
+
+```
