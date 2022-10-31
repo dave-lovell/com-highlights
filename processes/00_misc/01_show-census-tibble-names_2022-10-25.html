@@ -1,0 +1,1310 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.0.36">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Dave">
+
+<title>Census Tibble Names</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="01_show-census-tibble-names_2022-10-25_files/libs/clipboard/clipboard.min.js"></script>
+<script src="01_show-census-tibble-names_2022-10-25_files/libs/quarto-html/quarto.js"></script>
+<script src="01_show-census-tibble-names_2022-10-25_files/libs/quarto-html/popper.min.js"></script>
+<script src="01_show-census-tibble-names_2022-10-25_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="01_show-census-tibble-names_2022-10-25_files/libs/quarto-html/anchor.min.js"></script>
+<link href="01_show-census-tibble-names_2022-10-25_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="01_show-census-tibble-names_2022-10-25_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="01_show-census-tibble-names_2022-10-25_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="01_show-census-tibble-names_2022-10-25_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="01_show-census-tibble-names_2022-10-25_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+
+
+</head>
+
+<body class="fullcontent">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Census Tibble Names</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Dave </p>
+          </div>
+  </div>
+    
+    
+  </div>
+  
+
+</header>
+
+<p>There are lots of different column names for the various tibbles we have. Each nation has a different naming convention, and there is some variation between the levels of the names. This document shows all the names</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(purrr)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(here)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>here() starts at C:/Users/david.lovell/OneDrive - Church Army/Documents/repos/com-highlights</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>census_tibbles <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">here</span>(<span class="st">"data"</span>, <span class="st">"intermediate"</span>, <span class="st">"census"</span>, <span class="st">"merged-data"</span>,</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>       <span class="st">"02_grouped-by-level-and-nation_2022-10-25.RDS"</span>)</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>census_names <span class="ot">&lt;-</span> <span class="fu">map</span>(census_tibbles, map, map, names)</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>census_names</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>$England
+$England$com
+$England$com$ethn
+ [1] "com"                                                        
+ [2] "diocese"                                                    
+ [3] "nation"                                                     
+ [4] "ethn..oa_id"                                                
+ [5] "ethn..proportion_of_oa_within_co_m_boundary"                
+ [6] "ethn..total_persons"                                        
+ [7] "ethn..white_english_welsh_scottish_northern_irish_british"  
+ [8] "ethn..white_irish"                                          
+ [9] "ethn..white_gypsy_or_irish_traveller"                       
+[10] "ethn..white_other_white"                                    
+[11] "ethn..mixed_multiple_ethnic_group_white_and_black_caribbean"
+[12] "ethn..mixed_multiple_ethnic_group_white_and_black_african"  
+[13] "ethn..mixed_multiple_ethnic_group_white_and_asian"          
+[14] "ethn..mixed_multiple_ethnic_group_other_mixed"              
+[15] "ethn..asian_asian_british_indian"                           
+[16] "ethn..asian_asian_british_pakistani"                        
+[17] "ethn..asian_asian_british_bangladeshi"                      
+[18] "ethn..asian_asian_british_chinese"                          
+[19] "ethn..asian_asian_british_other_asian"                      
+[20] "ethn..black_african_caribbean_black_british_african"        
+[21] "ethn..black_african_caribbean_black_british_caribbean"      
+[22] "ethn..black_african_caribbean_black_british_other_black"    
+[23] "ethn..other_ethnic_group_arab"                              
+[24] "ethn..other_ethnic_group_any_other_ethnic_group"            
+[25] "ethn..white_or_white_british"                               
+[26] "ethn..black_or_black_british"                               
+[27] "ethn..asian_or_asian_british"                               
+[28] "ethn..mixed_multiple_ethnicity"                             
+[29] "ethn..other_ethnicity"                                      
+
+$England$com$health
+ [1] "com"                                          
+ [2] "diocese"                                      
+ [3] "nation"                                       
+ [4] "health..oa_id"                                
+ [5] "health..proportion_of_oa_within_co_m_boundary"
+ [6] "health..total_persons"                        
+ [7] "health..very_good_health"                     
+ [8] "health..good_health"                          
+ [9] "health..fair_health"                          
+[10] "health..bad_health"                           
+[11] "health..very_bad_health"                      
+
+$England$com$house
+ [1] "com"                                         
+ [2] "diocese"                                     
+ [3] "nation"                                      
+ [4] "house..oa_id"                                
+ [5] "house..proportion_of_oa_within_co_m_boundary"
+ [6] "house..total_households"                     
+ [7] "house..one_person_household_65"              
+ [8] "house..one_person_household_64"              
+ [9] "house..couple_no_dependent_children"         
+[10] "house..couple_dependent_children"            
+[11] "house..lone_parent_dependent_children"       
+[12] "house..other_household_no_dependent_children"
+[13] "house..other_household_dependent_children"   
+
+$England$com$pop
+ [1] "com"                                         
+ [2] "diocese"                                     
+ [3] "nation"                                      
+ [4] "pop..lsoa_id"                                
+ [5] "pop..proportion_of_lsoa_within_co_m_boundary"
+ [6] "pop..total_persons"                          
+ [7] "pop..male_persons"                           
+ [8] "pop..female_persons"                         
+ [9] "pop..x0_4_years"                             
+[10] "pop..x5_11_years"                            
+[11] "pop..x12_17_years"                           
+[12] "pop..x18_29_years"                           
+[13] "pop..x30_39_years"                           
+[14] "pop..x40_59_years"                           
+[15] "pop..x60_74_years"                           
+[16] "pop..x75_years"                              
+
+$England$com$rel
+ [1] "com"                                       
+ [2] "diocese"                                   
+ [3] "nation"                                    
+ [4] "rel..oa_id"                                
+ [5] "rel..proportion_of_oa_within_co_m_boundary"
+ [6] "rel..total_persons"                        
+ [7] "rel..christian"                            
+ [8] "rel..buddhist"                             
+ [9] "rel..hindu"                                
+[10] "rel..jewish"                               
+[11] "rel..muslim"                               
+[12] "rel..sikh"                                 
+[13] "rel..other_religion"                       
+[14] "rel..no_religion"                          
+[15] "rel..religion_not_stated"                  
+
+
+$England$dioceses
+$England$dioceses$ethn
+ [1] "diocese"                                       
+ [2] "nation"                                        
+ [3] "ethn..parish_code"                             
+ [4] "ethn..parish_legal_name"                       
+ [5] "ethn..deanery_name"                            
+ [6] "ethn..diocese_name"                            
+ [7] "ethn..population"                              
+ [8] "ethn..white_or_white_british"                  
+ [9] "ethn..black_or_black_british"                  
+[10] "ethn..asian_or_asian_british"                  
+[11] "ethn..mixed_multiple_ethnicity"                
+[12] "ethn..other_ethnicity"                         
+[13] "ethn..ethnicity_asian_bangladeshi"             
+[14] "ethn..ethnicity_asian_chinese"                 
+[15] "ethn..ethnicity_asian_indian"                  
+[16] "ethn..ethnicity_asian_other"                   
+[17] "ethn..ethnicity_asian_pakistani"               
+[18] "ethn..ethnicity_back_african"                  
+[19] "ethn..ethnicity_black_british"                 
+[20] "ethn..ethnicity_black_caribbean"               
+[21] "ethn..ethnicity_mixed_other"                   
+[22] "ethn..ethnicity_mixed_white_asian"             
+[23] "ethn..ethnicity_mixed_white_black_african"     
+[24] "ethn..ethnicity_mixed_white_black_caribbean"   
+[25] "ethn..ethnicity_other_arab"                    
+[26] "ethn..ethnicity_other_other"                   
+[27] "ethn..ethnicity_white_british"                 
+[28] "ethn..ethnicity_white_gypsy_or_irish_traveller"
+[29] "ethn..ethnicity_white_irish"                   
+[30] "ethn..ethnicity_white_other"                   
+
+$England$dioceses$health
+[1] "diocese"                  "nation"                  
+[3] "health..oa_id"            "health..total_persons"   
+[5] "health..very_good_health" "health..good_health"     
+[7] "health..fair_health"      "health..bad_health"      
+[9] "health..very_bad_health" 
+
+$England$dioceses$house
+ [1] "diocese"                                     
+ [2] "nation"                                      
+ [3] "house..oa_id"                                
+ [4] "house..total_households"                     
+ [5] "house..one_person_household_65"              
+ [6] "house..one_person_household_64"              
+ [7] "house..couple_no_dependent_children"         
+ [8] "house..couple_dependent_children"            
+ [9] "house..lone_parent_dependent_children"       
+[10] "house..other_household_no_dependent_children"
+[11] "house..other_household_dependent_children"   
+
+$England$dioceses$pop
+ [1] "diocese"            "nation"             "pop..lsoa_code"    
+ [4] "pop..total_persons" "pop..males"         "pop..females"      
+ [7] "pop..x0_4_years"    "pop..x5_11_years"   "pop..x12_17_years" 
+[10] "pop..x18_29_years"  "pop..x30_39_years"  "pop..x40_59_years" 
+[13] "pop..x60_74_years"  "pop..x75_years"    
+
+$England$dioceses$rel
+ [1] "diocese"                    "nation"                    
+ [3] "rel..parish_code"           "rel..parish_legal_name"    
+ [5] "rel..deanery_name"          "rel..diocese_name"         
+ [7] "rel..population"            "rel..christian"            
+ [9] "rel..buddhist"              "rel..hindu"                
+[11] "rel..jewish"                "rel..muslim"               
+[13] "rel..sikh"                  "rel..other_religion"       
+[15] "rel..no_religion"           "rel..religion_not_stated"  
+[17] "rel..religion_buddhist"     "rel..religion_christian"   
+[19] "rel..religion_hindu"        "rel..religion_jewish"      
+[21] "rel..religion_muslim"       "rel..religion_no_religion" 
+[23] "rel..religion_not_stated_2" "rel..religion_other"       
+[25] "rel..religion_sikh"        
+
+
+$England$nations
+$England$nations$ethn
+ [1] "nation"                                                                                     
+ [2] "ethn..geo_code"                                                                             
+ [3] "ethn..total_persons"                                                                        
+ [4] "ethn..ethnic_group_e_s_w_white_english_welsh_scottish_northern_irish_british_unit_persons"  
+ [5] "ethn..ethnic_group_e_s_w_white_irish_unit_persons"                                          
+ [6] "ethn..ethnic_group_e_s_w_white_gypsy_or_irish_traveller_unit_persons"                       
+ [7] "ethn..ethnic_group_e_s_w_white_other_white_unit_persons"                                    
+ [8] "ethn..ethnic_group_e_s_w_mixed_multiple_ethnic_group_white_and_black_caribbean_unit_persons"
+ [9] "ethn..ethnic_group_e_s_w_mixed_multiple_ethnic_group_white_and_black_african_unit_persons"  
+[10] "ethn..ethnic_group_e_s_w_mixed_multiple_ethnic_group_white_and_asian_unit_persons"          
+[11] "ethn..ethnic_group_e_s_w_mixed_multiple_ethnic_group_other_mixed_unit_persons"              
+[12] "ethn..ethnic_group_e_s_w_asian_asian_british_indian_unit_persons"                           
+[13] "ethn..ethnic_group_e_s_w_asian_asian_british_pakistani_unit_persons"                        
+[14] "ethn..ethnic_group_e_s_w_asian_asian_british_bangladeshi_unit_persons"                      
+[15] "ethn..ethnic_group_e_s_w_asian_asian_british_chinese_unit_persons"                          
+[16] "ethn..ethnic_group_e_s_w_asian_asian_british_other_asian_unit_persons"                      
+[17] "ethn..ethnic_group_e_s_w_black_african_caribbean_black_british_african_unit_persons"        
+[18] "ethn..ethnic_group_e_s_w_black_african_caribbean_black_british_caribbean_unit_persons"      
+[19] "ethn..ethnic_group_e_s_w_black_african_caribbean_black_british_other_black_unit_persons"    
+[20] "ethn..ethnic_group_e_s_w_other_ethnic_group_arab_unit_persons"                              
+[21] "ethn..ethnic_group_e_s_w_other_ethnic_group_any_other_ethnic_group_unit_persons"            
+[22] "ethn..white_or_white_british"                                                               
+[23] "ethn..black_or_black_british"                                                               
+[24] "ethn..asian_or_asian_british"                                                               
+[25] "ethn..mixed_multiple_ethnicity"                                                             
+[26] "ethn..other_ethnicity"                                                                      
+
+$England$nations$health
+[1] "nation"                   "health..oa_id"           
+[3] "health..total_persons"    "health..very_good_health"
+[5] "health..good_health"      "health..fair_health"     
+[7] "health..bad_health"       "health..very_bad_health" 
+
+$England$nations$house
+ [1] "nation"                                      
+ [2] "house..oa_id"                                
+ [3] "house..total_households"                     
+ [4] "house..one_person_household_65"              
+ [5] "house..one_person_household_64"              
+ [6] "house..couple_no_dependent_children"         
+ [7] "house..couple_dependent_children"            
+ [8] "house..lone_parent_dependent_children"       
+ [9] "house..other_household_no_dependent_children"
+[10] "house..other_household_dependent_children"   
+
+$England$nations$pop
+ [1] "nation"             "pop..lsoa_code"     "pop..total_persons"
+ [4] "pop..males"         "pop..females"       "pop..x0_4_years"   
+ [7] "pop..x5_11_years"   "pop..x12_17_years"  "pop..x18_29_years" 
+[10] "pop..x30_39_years"  "pop..x40_59_years"  "pop..x60_74_years" 
+[13] "pop..x75_years"    
+
+$England$nations$rel
+ [1] "nation"                   "rel..oa_id"              
+ [3] "rel..total_persons"       "rel..christian"          
+ [5] "rel..buddhist"            "rel..hindu"              
+ [7] "rel..jewish"              "rel..muslim"             
+ [9] "rel..sikh"                "rel..other_religion"     
+[11] "rel..no_religion"         "rel..religion_not_stated"
+
+
+
+$`Northern-Ireland`
+$`Northern-Ireland`$com
+$`Northern-Ireland`$com$ethn
+ [1] "com"                                        
+ [2] "diocese"                                    
+ [3] "nation"                                     
+ [4] "ethn..sa_id"                                
+ [5] "ethn..proportion_of_sa_within_co_m_boundary"
+ [6] "ethn..total_persons"                        
+ [7] "ethn..ethnic_group_white"                   
+ [8] "ethn..ethnic_group_chinese"                 
+ [9] "ethn..ethnic_group_irish_traveller"         
+[10] "ethn..ethnic_group_indian"                  
+[11] "ethn..ethnic_group_pakistani"               
+[12] "ethn..ethnic_group_bangladeshi"             
+[13] "ethn..ethnic_group_other_asian"             
+[14] "ethn..ethnic_group_black_caribbean"         
+[15] "ethn..ethnic_group_black_african"           
+[16] "ethn..ethnic_group_black_other"             
+[17] "ethn..ethnic_group_mixed"                   
+[18] "ethn..ethnic_group_other"                   
+[19] "ethn..white_or_white_british_or_white_irish"
+[20] "ethn..black_or_black_british_or_black_irish"
+[21] "ethn..asian_or_asian_british_or_asian_irish"
+[22] "ethn..mixed_multiple_ethnicity"             
+[23] "ethn..other_ethnicity"                      
+
+$`Northern-Ireland`$com$health
+ [1] "com"                                          
+ [2] "diocese"                                      
+ [3] "nation"                                       
+ [4] "health..sa_id"                                
+ [5] "health..proportion_of_sa_within_co_m_boundary"
+ [6] "health..total_persons"                        
+ [7] "health..very_good_health"                     
+ [8] "health..good_health"                          
+ [9] "health..fair_health"                          
+[10] "health..bad_health"                           
+[11] "health..very_bad_health"                      
+
+$`Northern-Ireland`$com$house
+ [1] "com"                                         
+ [2] "diocese"                                     
+ [3] "nation"                                      
+ [4] "house..sa_id"                                
+ [5] "house..proportion_of_sa_within_co_m_boundary"
+ [6] "house..total_households"                     
+ [7] "house..one_person_household_65"              
+ [8] "house..one_person_household_64"              
+ [9] "house..couple_no_dependent_children"         
+[10] "house..couple_dependent_children"            
+[11] "house..lone_parent_dependent_children"       
+[12] "house..other_household_no_dependent_children"
+[13] "house..other_household_dependent_children"   
+
+$`Northern-Ireland`$com$pop
+ [1] "com"                                        
+ [2] "diocese"                                    
+ [3] "nation"                                     
+ [4] "pop..soa_code"                              
+ [5] "pop..proportion_of_soa_within_co_m_boundary"
+ [6] "pop..total_persons"                         
+ [7] "pop..males"                                 
+ [8] "pop..females"                               
+ [9] "pop..x0_15_years"                           
+[10] "pop..x16_39_years"                          
+[11] "pop..x40_64_years"                          
+[12] "pop..x65_years"                             
+
+$`Northern-Ireland`$com$rel
+ [1] "com"                                                      
+ [2] "diocese"                                                  
+ [3] "nation"                                                   
+ [4] "rel..sa_id"                                               
+ [5] "rel..proportion_of_sa_within_co_m_boundary"               
+ [6] "rel..total_persons"                                       
+ [7] "rel..religion_catholic"                                   
+ [8] "rel..religion_presbyterian_church_in_ireland"             
+ [9] "rel..religion_church_of_ireland"                          
+[10] "rel..religion_methodist_church_in_ireland"                
+[11] "rel..religion_other_christian_including_christian_related"
+[12] "rel..religion_other_religions"                            
+[13] "rel..religion_no_religion"                                
+[14] "rel..religion_religion_not_stated"                        
+
+
+$`Northern-Ireland`$dioceses
+$`Northern-Ireland`$dioceses$ethn
+ [1] "diocese"                                    
+ [2] "nation"                                     
+ [3] "ethn..geo_code"                             
+ [4] "ethn..total_persons"                        
+ [5] "ethn..ethnic_group_white"                   
+ [6] "ethn..ethnic_group_chinese"                 
+ [7] "ethn..ethnic_group_irish_traveller"         
+ [8] "ethn..ethnic_group_indian"                  
+ [9] "ethn..ethnic_group_pakistani"               
+[10] "ethn..ethnic_group_bangladeshi"             
+[11] "ethn..ethnic_group_other_asian"             
+[12] "ethn..ethnic_group_black_caribbean"         
+[13] "ethn..ethnic_group_black_african"           
+[14] "ethn..ethnic_group_black_other"             
+[15] "ethn..ethnic_group_mixed"                   
+[16] "ethn..ethnic_group_other"                   
+[17] "ethn..white_or_white_british_or_white_irish"
+[18] "ethn..black_or_black_british_or_black_irish"
+[19] "ethn..asian_or_asian_british_or_asian_irish"
+[20] "ethn..mixed_multiple_ethnicity"             
+[21] "ethn..other_ethnicity"                      
+
+$`Northern-Ireland`$dioceses$health
+[1] "diocese"                  "nation"                  
+[3] "health..sa_id"            "health..total_persons"   
+[5] "health..very_good_health" "health..good_health"     
+[7] "health..fair_health"      "health..bad_health"      
+[9] "health..very_bad_health" 
+
+$`Northern-Ireland`$dioceses$house
+ [1] "diocese"                                     
+ [2] "nation"                                      
+ [3] "house..sa_id"                                
+ [4] "house..total_households"                     
+ [5] "house..one_person_household_65"              
+ [6] "house..one_person_household_64"              
+ [7] "house..couple_no_dependent_children"         
+ [8] "house..couple_dependent_children"            
+ [9] "house..lone_parent_dependent_children"       
+[10] "house..other_household_no_dependent_children"
+[11] "house..other_household_dependent_children"   
+
+$`Northern-Ireland`$dioceses$pop
+ [1] "diocese"            "nation"             "pop..soa_code"     
+ [4] "pop..total_persons" "pop..males"         "pop..females"      
+ [7] "pop..x0_15_years"   "pop..x16_39_years"  "pop..x40_64_years" 
+[10] "pop..x65_years"    
+
+$`Northern-Ireland`$dioceses$rel
+ [1] "diocese"                                                  
+ [2] "nation"                                                   
+ [3] "rel..sa_id"                                               
+ [4] "rel..total_persons"                                       
+ [5] "rel..religion_catholic"                                   
+ [6] "rel..religion_presbyterian_church_in_ireland"             
+ [7] "rel..religion_church_of_ireland"                          
+ [8] "rel..religion_methodist_church_in_ireland"                
+ [9] "rel..religion_other_christian_including_christian_related"
+[10] "rel..religion_other_religions"                            
+[11] "rel..religion_no_religion"                                
+[12] "rel..religion_religion_not_stated"                        
+
+
+$`Northern-Ireland`$nations
+$`Northern-Ireland`$nations$ethn
+ [1] "nation"                                     
+ [2] "ethn..geo_code"                             
+ [3] "ethn..total_persons"                        
+ [4] "ethn..ethnic_group_white"                   
+ [5] "ethn..ethnic_group_chinese"                 
+ [6] "ethn..ethnic_group_irish_traveller"         
+ [7] "ethn..ethnic_group_indian"                  
+ [8] "ethn..ethnic_group_pakistani"               
+ [9] "ethn..ethnic_group_bangladeshi"             
+[10] "ethn..ethnic_group_other_asian"             
+[11] "ethn..ethnic_group_black_caribbean"         
+[12] "ethn..ethnic_group_black_african"           
+[13] "ethn..ethnic_group_black_other"             
+[14] "ethn..ethnic_group_mixed"                   
+[15] "ethn..ethnic_group_other"                   
+[16] "ethn..white_or_white_british_or_white_irish"
+[17] "ethn..black_or_black_british_or_black_irish"
+[18] "ethn..asian_or_asian_british_or_asian_irish"
+[19] "ethn..mixed_multiple_ethnicity"             
+[20] "ethn..other_ethnicity"                      
+
+$`Northern-Ireland`$nations$health
+[1] "nation"                   "health..sa_id"           
+[3] "health..total_persons"    "health..very_good_health"
+[5] "health..good_health"      "health..fair_health"     
+[7] "health..bad_health"       "health..very_bad_health" 
+
+$`Northern-Ireland`$nations$house
+ [1] "nation"                                      
+ [2] "house..sa_id"                                
+ [3] "house..total_households"                     
+ [4] "house..one_person_household_65"              
+ [5] "house..one_person_household_64"              
+ [6] "house..couple_no_dependent_children"         
+ [7] "house..couple_dependent_children"            
+ [8] "house..lone_parent_dependent_children"       
+ [9] "house..other_household_no_dependent_children"
+[10] "house..other_household_dependent_children"   
+
+$`Northern-Ireland`$nations$pop
+[1] "nation"             "pop..soa_code"      "pop..total_persons"
+[4] "pop..males"         "pop..females"       "pop..x0_15_years"  
+[7] "pop..x16_39_years"  "pop..x40_64_years"  "pop..x65_years"    
+
+$`Northern-Ireland`$nations$rel
+ [1] "nation"                                                   
+ [2] "rel..sa_id"                                               
+ [3] "rel..total_persons"                                       
+ [4] "rel..religion_catholic"                                   
+ [5] "rel..religion_presbyterian_church_in_ireland"             
+ [6] "rel..religion_church_of_ireland"                          
+ [7] "rel..religion_methodist_church_in_ireland"                
+ [8] "rel..religion_other_christian_including_christian_related"
+ [9] "rel..religion_other_religions"                            
+[10] "rel..religion_no_religion"                                
+[11] "rel..religion_religion_not_stated"                        
+
+
+
+$`Republic-of-Ireland`
+$`Republic-of-Ireland`$com
+$`Republic-of-Ireland`$com$ethn
+ [1] "com"                                        
+ [2] "diocese"                                    
+ [3] "nation"                                     
+ [4] "ethn..geo_code"                             
+ [5] "ethn..proportion_of_sa_within_co_m_boundary"
+ [6] "ethn..total_persons"                        
+ [7] "ethn..white_or_white_irish"                 
+ [8] "ethn..black_or_black_irish"                 
+ [9] "ethn..asian_or_asian_irish"                 
+[10] "ethn..mixed_other_ethnicity"                
+[11] "ethn..not_stated"                           
+
+$`Republic-of-Ireland`$com$health
+ [1] "com"                                          
+ [2] "diocese"                                      
+ [3] "nation"                                       
+ [4] "health..sa_id"                                
+ [5] "health..proportion_of_sa_within_co_m_boundary"
+ [6] "health..total_persons"                        
+ [7] "health..very_good_health"                     
+ [8] "health..good_health"                          
+ [9] "health..fair_health"                          
+[10] "health..bad_health"                           
+[11] "health..very_bad_health"                      
+[12] "health..not_stated"                           
+
+$`Republic-of-Ireland`$com$house
+ [1] "com"                                         
+ [2] "diocese"                                     
+ [3] "nation"                                      
+ [4] "house..sa_id"                                
+ [5] "house..proportion_of_sa_within_co_m_boundary"
+ [6] "house..total_households"                     
+ [7] "house..one_person_household"                 
+ [8] "house..couple_no_dependent_children"         
+ [9] "house..couple_dependent_children"            
+[10] "house..lone_parent_dependent_children"       
+[11] "house..other_household_no_dependent_children"
+[12] "house..other_household_dependent_children"   
+
+$`Republic-of-Ireland`$com$pop
+ [1] "com"                                       
+ [2] "diocese"                                   
+ [3] "nation"                                    
+ [4] "pop..sa_code"                              
+ [5] "pop..proportion_of_sa_within_co_m_boundary"
+ [6] "pop..total_persons"                        
+ [7] "pop..males"                                
+ [8] "pop..females"                              
+ [9] "pop..x0_4_years"                           
+[10] "pop..x5_11_years"                          
+[11] "pop..x12_17_years"                         
+[12] "pop..x18_29_years"                         
+[13] "pop..x30_39_years"                         
+[14] "pop..x40_59_years"                         
+[15] "pop..x60_74_years"                         
+[16] "pop..x75_years"                            
+
+$`Republic-of-Ireland`$com$rel
+ [1] "com"                                       
+ [2] "diocese"                                   
+ [3] "nation"                                    
+ [4] "rel..sa_id"                                
+ [5] "rel..proportion_of_sa_within_co_m_boundary"
+ [6] "rel..total_persons"                        
+ [7] "rel..religion_catholic"                    
+ [8] "rel..religion_other_religions"             
+ [9] "rel..religion_no_religion"                 
+[10] "rel..religion_religion_not_stated"         
+
+
+$`Republic-of-Ireland`$dioceses
+$`Republic-of-Ireland`$dioceses$ethn
+[1] "diocese"                     "nation"                     
+[3] "ethn..sa_id"                 "ethn..total_persons"        
+[5] "ethn..white_or_white_irish"  "ethn..black_or_black_irish" 
+[7] "ethn..asian_or_asian_irish"  "ethn..mixed_other_ethnicity"
+[9] "ethn..not_stated"           
+
+$`Republic-of-Ireland`$dioceses$health
+ [1] "diocese"                  "nation"                  
+ [3] "health..sa_id"            "health..total_persons"   
+ [5] "health..very_good_health" "health..good_health"     
+ [7] "health..fair_health"      "health..bad_health"      
+ [9] "health..very_bad_health"  "health..not_stated"      
+
+$`Republic-of-Ireland`$dioceses$house
+ [1] "diocese"                                     
+ [2] "nation"                                      
+ [3] "house..sa_id"                                
+ [4] "house..total_households"                     
+ [5] "house..one_person_household"                 
+ [6] "house..couple_no_dependent_children"         
+ [7] "house..couple_dependent_children"            
+ [8] "house..lone_parent_dependent_children"       
+ [9] "house..other_household_no_dependent_children"
+[10] "house..other_household_dependent_children"   
+
+$`Republic-of-Ireland`$dioceses$pop
+ [1] "diocese"            "nation"             "pop..sa_code"      
+ [4] "pop..total_persons" "pop..males"         "pop..females"      
+ [7] "pop..x0_4_years"    "pop..x5_11_years"   "pop..x12_17_years" 
+[10] "pop..x18_29_years"  "pop..x30_39_years"  "pop..x40_59_years" 
+[13] "pop..x60_74_years"  "pop..x75_years"    
+
+$`Republic-of-Ireland`$dioceses$rel
+[1] "diocese"                           "nation"                           
+[3] "rel..sa_id"                        "rel..total_persons"               
+[5] "rel..religion_catholic"            "rel..religion_other_religions"    
+[7] "rel..religion_no_religion"         "rel..religion_religion_not_stated"
+
+
+$`Republic-of-Ireland`$nations
+$`Republic-of-Ireland`$nations$ethn
+[1] "nation"                      "ethn..sa_id"                
+[3] "ethn..total_persons"         "ethn..white_or_white_irish" 
+[5] "ethn..black_or_black_irish"  "ethn..asian_or_asian_irish" 
+[7] "ethn..mixed_other_ethnicity" "ethn..not_stated"           
+
+$`Republic-of-Ireland`$nations$health
+[1] "nation"                   "health..sa_id"           
+[3] "health..total_persons"    "health..very_good_health"
+[5] "health..good_health"      "health..fair_health"     
+[7] "health..bad_health"       "health..very_bad_health" 
+[9] "health..not_stated"      
+
+$`Republic-of-Ireland`$nations$house
+[1] "nation"                                      
+[2] "house..sa_id"                                
+[3] "house..total_households"                     
+[4] "house..one_person_household"                 
+[5] "house..couple_no_dependent_children"         
+[6] "house..couple_dependent_children"            
+[7] "house..lone_parent_dependent_children"       
+[8] "house..other_household_no_dependent_children"
+[9] "house..other_household_dependent_children"   
+
+$`Republic-of-Ireland`$nations$pop
+ [1] "nation"             "pop..sa_code"       "pop..total_persons"
+ [4] "pop..males"         "pop..females"       "pop..x0_4_years"   
+ [7] "pop..x5_11_years"   "pop..x12_17_years"  "pop..x18_29_years" 
+[10] "pop..x30_39_years"  "pop..x40_59_years"  "pop..x60_74_years" 
+[13] "pop..x75_years"    
+
+$`Republic-of-Ireland`$nations$rel
+[1] "nation"                            "rel..sa_id"                       
+[3] "rel..total_persons"                "rel..religion_catholic"           
+[5] "rel..religion_other_religions"     "rel..religion_no_religion"        
+[7] "rel..religion_religion_not_stated"
+
+
+
+$Scotland
+$Scotland$com
+$Scotland$com$ethn
+ [1] "com"                                            
+ [2] "diocese"                                        
+ [3] "nation"                                         
+ [4] "ethn..oa_id"                                    
+ [5] "ethn..proportion_of_oa_within_co_m_boundary"    
+ [6] "ethn..total_persons"                            
+ [7] "ethn..white"                                    
+ [8] "ethn..white_gypsy_or_irish_traveller"           
+ [9] "ethn..mixed_multiple_ethnic_group"              
+[10] "ethn..asian_asian_british_indian"               
+[11] "ethn..asian_asian_british_pakistani"            
+[12] "ethn..asian_asian_british_bangladeshi"          
+[13] "ethn..asian_asian_british_chinese"              
+[14] "ethn..asian_asian_british_other_asian"          
+[15] "ethn..black_african_caribbean_black_british"    
+[16] "ethn..other_ethnic_group_any_other_ethnic_group"
+[17] "ethn..white_or_white_british"                   
+[18] "ethn..black_or_black_british"                   
+[19] "ethn..asian_or_asian_british"                   
+[20] "ethn..mixed_multiple_ethnicity"                 
+[21] "ethn..other_ethnicity"                          
+
+$Scotland$com$health
+ [1] "com"                                          
+ [2] "diocese"                                      
+ [3] "nation"                                       
+ [4] "health..oa_id"                                
+ [5] "health..proportion_of_oa_within_co_m_boundary"
+ [6] "health..total_persons"                        
+ [7] "health..very_good_health"                     
+ [8] "health..good_health"                          
+ [9] "health..fair_health"                          
+[10] "health..bad_health"                           
+[11] "health..very_bad_health"                      
+
+$Scotland$com$house
+ [1] "com"                                         
+ [2] "diocese"                                     
+ [3] "nation"                                      
+ [4] "house..oa_id"                                
+ [5] "house..proportion_of_oa_within_co_m_boundary"
+ [6] "house..total_households"                     
+ [7] "house..one_person_household_65"              
+ [8] "house..one_person_household_64"              
+ [9] "house..couple_no_dependent_children"         
+[10] "house..couple_dependent_children"            
+[11] "house..lone_parent_dependent_children"       
+[12] "house..other_household_no_dependent_children"
+[13] "house..other_household_dependent_children"   
+
+$Scotland$com$pop
+ [1] "com"                                       
+ [2] "diocese"                                   
+ [3] "nation"                                    
+ [4] "pop..dz_id"                                
+ [5] "pop..proportion_of_dz_within_co_m_boundary"
+ [6] "pop..total_persons"                        
+ [7] "pop..male_persons"                         
+ [8] "pop..female_persons"                       
+ [9] "pop..x0_4_years"                           
+[10] "pop..x5_11_years"                          
+[11] "pop..x12_17_years"                         
+[12] "pop..x18_29_years"                         
+[13] "pop..x30_39_years"                         
+[14] "pop..x40_59_years"                         
+[15] "pop..x60_74_years"                         
+[16] "pop..x75_years"                            
+
+$Scotland$com$rel
+ [1] "com"                                       
+ [2] "diocese"                                   
+ [3] "nation"                                    
+ [4] "rel..oa_id"                                
+ [5] "rel..proportion_of_oa_within_co_m_boundary"
+ [6] "rel..total_persons"                        
+ [7] "rel..christian_church_of_scotland"         
+ [8] "rel..christian_roman_catholic"             
+ [9] "rel..christian_other_christian"            
+[10] "rel..buddhist"                             
+[11] "rel..hindu"                                
+[12] "rel..jewish"                               
+[13] "rel..muslim"                               
+[14] "rel..sikh"                                 
+[15] "rel..other_religion"                       
+[16] "rel..no_religion"                          
+[17] "rel..religion_not_stated"                  
+
+
+$Scotland$dioceses
+$Scotland$dioceses$ethn
+ [1] "diocese"                                                                        
+ [2] "nation"                                                                         
+ [3] "ethn..sa_id"                                                                    
+ [4] "ethn..total_persons"                                                            
+ [5] "ethn..ethnic_group_e_s_w_white_unit_persons"                                    
+ [6] "ethn..ethnic_group_e_s_w_white_gypsy_or_irish_traveller_unit_persons"           
+ [7] "ethn..ethnic_group_e_s_w_mixed_multiple_ethnic_group_unit_persons"              
+ [8] "ethn..ethnic_group_e_s_w_asian_asian_british_indian_unit_persons"               
+ [9] "ethn..ethnic_group_e_s_w_asian_asian_british_pakistani_unit_persons"            
+[10] "ethn..ethnic_group_e_s_w_asian_asian_british_bangladeshi_unit_persons"          
+[11] "ethn..ethnic_group_e_s_w_asian_asian_british_chinese_unit_persons"              
+[12] "ethn..ethnic_group_e_s_w_asian_asian_british_other_asian_unit_persons"          
+[13] "ethn..ethnic_group_e_s_w_black_african_caribbean_black_british_unit_persons"    
+[14] "ethn..ethnic_group_e_s_w_other_ethnic_group_any_other_ethnic_group_unit_persons"
+[15] "ethn..white_or_white_british"                                                   
+[16] "ethn..black_or_black_british"                                                   
+[17] "ethn..asian_or_asian_british"                                                   
+[18] "ethn..mixed_multiple_ethnicity"                                                 
+[19] "ethn..other_ethnicity"                                                          
+
+$Scotland$dioceses$health
+[1] "diocese"                  "nation"                  
+[3] "health..sa_id"            "health..total_persons"   
+[5] "health..very_good_health" "health..good_health"     
+[7] "health..fair_health"      "health..bad_health"      
+[9] "health..very_bad_health" 
+
+$Scotland$dioceses$house
+ [1] "diocese"                                     
+ [2] "nation"                                      
+ [3] "house..sa_id"                                
+ [4] "house..total_households"                     
+ [5] "house..one_person_household_65"              
+ [6] "house..one_person_household_64"              
+ [7] "house..couple_no_dependent_children"         
+ [8] "house..couple_dependent_children"            
+ [9] "house..lone_parent_dependent_children"       
+[10] "house..other_household_no_dependent_children"
+[11] "house..other_household_dependent_children"   
+
+$Scotland$dioceses$pop
+ [1] "diocese"            "nation"             "pop..dz_code"      
+ [4] "pop..total_persons" "pop..males"         "pop..females"      
+ [7] "pop..x0_4_years"    "pop..x5_11_years"   "pop..x12_17_years" 
+[10] "pop..x18_29_years"  "pop..x30_39_years"  "pop..x40_59_years" 
+[13] "pop..x60_74_years"  "pop..x75_years"    
+
+$Scotland$dioceses$rel
+ [1] "diocese"                           "nation"                           
+ [3] "rel..sa_id"                        "rel..total_persons"               
+ [5] "rel..christian_church_of_scotland" "rel..christian_roman_catholic"    
+ [7] "rel..christian_other_christian"    "rel..buddhist"                    
+ [9] "rel..hindu"                        "rel..jewish"                      
+[11] "rel..muslim"                       "rel..sikh"                        
+[13] "rel..other_religion"               "rel..no_religion"                 
+[15] "rel..religion_not_stated"         
+
+
+$Scotland$nations
+$Scotland$nations$ethn
+ [1] "nation"                                                                         
+ [2] "ethn..sa_id"                                                                    
+ [3] "ethn..total_persons"                                                            
+ [4] "ethn..ethnic_group_e_s_w_white_unit_persons"                                    
+ [5] "ethn..ethnic_group_e_s_w_white_gypsy_or_irish_traveller_unit_persons"           
+ [6] "ethn..ethnic_group_e_s_w_mixed_multiple_ethnic_group_unit_persons"              
+ [7] "ethn..ethnic_group_e_s_w_asian_asian_british_indian_unit_persons"               
+ [8] "ethn..ethnic_group_e_s_w_asian_asian_british_pakistani_unit_persons"            
+ [9] "ethn..ethnic_group_e_s_w_asian_asian_british_bangladeshi_unit_persons"          
+[10] "ethn..ethnic_group_e_s_w_asian_asian_british_chinese_unit_persons"              
+[11] "ethn..ethnic_group_e_s_w_asian_asian_british_other_asian_unit_persons"          
+[12] "ethn..ethnic_group_e_s_w_black_african_caribbean_black_british_unit_persons"    
+[13] "ethn..ethnic_group_e_s_w_other_ethnic_group_any_other_ethnic_group_unit_persons"
+[14] "ethn..white_or_white_british"                                                   
+[15] "ethn..black_or_black_british"                                                   
+[16] "ethn..asian_or_asian_british"                                                   
+[17] "ethn..mixed_multiple_ethnicity"                                                 
+[18] "ethn..other_ethnicity"                                                          
+
+$Scotland$nations$health
+[1] "nation"                   "health..sa_id"           
+[3] "health..total_persons"    "health..very_good_health"
+[5] "health..good_health"      "health..fair_health"     
+[7] "health..bad_health"       "health..very_bad_health" 
+
+$Scotland$nations$house
+ [1] "nation"                                      
+ [2] "house..sa_id"                                
+ [3] "house..total_households"                     
+ [4] "house..one_person_household_65"              
+ [5] "house..one_person_household_64"              
+ [6] "house..couple_no_dependent_children"         
+ [7] "house..couple_dependent_children"            
+ [8] "house..lone_parent_dependent_children"       
+ [9] "house..other_household_no_dependent_children"
+[10] "house..other_household_dependent_children"   
+
+$Scotland$nations$pop
+ [1] "nation"             "pop..dz_code"       "pop..total_persons"
+ [4] "pop..males"         "pop..females"       "pop..x0_4_years"   
+ [7] "pop..x5_11_years"   "pop..x12_17_years"  "pop..x18_29_years" 
+[10] "pop..x30_39_years"  "pop..x40_59_years"  "pop..x60_74_years" 
+[13] "pop..x75_years"    
+
+$Scotland$nations$rel
+ [1] "nation"                            "rel..sa_id"                       
+ [3] "rel..total_persons"                "rel..christian_church_of_scotland"
+ [5] "rel..christian_roman_catholic"     "rel..christian_other_christian"   
+ [7] "rel..buddhist"                     "rel..hindu"                       
+ [9] "rel..jewish"                       "rel..muslim"                      
+[11] "rel..sikh"                         "rel..other_religion"              
+[13] "rel..no_religion"                  "rel..religion_not_stated"         
+
+
+
+$Wales
+$Wales$com
+$Wales$com$ethn
+ [1] "com"                                                        
+ [2] "diocese"                                                    
+ [3] "nation"                                                     
+ [4] "ethn..oa_id"                                                
+ [5] "ethn..proportion_of_oa_within_co_m_boundary"                
+ [6] "ethn..total_persons"                                        
+ [7] "ethn..white_english_welsh_scottish_northern_irish_british"  
+ [8] "ethn..white_irish"                                          
+ [9] "ethn..white_gypsy_or_irish_traveller"                       
+[10] "ethn..white_other_white"                                    
+[11] "ethn..mixed_multiple_ethnic_group_white_and_black_caribbean"
+[12] "ethn..mixed_multiple_ethnic_group_white_and_black_african"  
+[13] "ethn..mixed_multiple_ethnic_group_white_and_asian"          
+[14] "ethn..mixed_multiple_ethnic_group_other_mixed"              
+[15] "ethn..asian_asian_british_indian"                           
+[16] "ethn..asian_asian_british_pakistani"                        
+[17] "ethn..asian_asian_british_bangladeshi"                      
+[18] "ethn..asian_asian_british_chinese"                          
+[19] "ethn..asian_asian_british_other_asian"                      
+[20] "ethn..black_african_caribbean_black_british_african"        
+[21] "ethn..black_african_caribbean_black_british_caribbean"      
+[22] "ethn..black_african_caribbean_black_british_other_black"    
+[23] "ethn..other_ethnic_group_arab"                              
+[24] "ethn..other_ethnic_group_any_other_ethnic_group"            
+[25] "ethn..white_or_white_british"                               
+[26] "ethn..black_or_black_british"                               
+[27] "ethn..asian_or_asian_british"                               
+[28] "ethn..mixed_multiple_ethnicity"                             
+[29] "ethn..other_ethnicity"                                      
+
+$Wales$com$health
+ [1] "com"                                          
+ [2] "diocese"                                      
+ [3] "nation"                                       
+ [4] "health..oa_id"                                
+ [5] "health..proportion_of_oa_within_co_m_boundary"
+ [6] "health..total_persons"                        
+ [7] "health..very_good_health"                     
+ [8] "health..good_health"                          
+ [9] "health..fair_health"                          
+[10] "health..bad_health"                           
+[11] "health..very_bad_health"                      
+
+$Wales$com$house
+ [1] "com"                                         
+ [2] "diocese"                                     
+ [3] "nation"                                      
+ [4] "house..oa_id"                                
+ [5] "house..proportion_of_oa_within_co_m_boundary"
+ [6] "house..total_households"                     
+ [7] "house..one_person_household_65"              
+ [8] "house..one_person_household_64"              
+ [9] "house..couple_no_dependent_children"         
+[10] "house..couple_dependent_children"            
+[11] "house..lone_parent_dependent_children"       
+[12] "house..other_household_no_dependent_children"
+[13] "house..other_household_dependent_children"   
+
+$Wales$com$pop
+ [1] "com"                                         
+ [2] "diocese"                                     
+ [3] "nation"                                      
+ [4] "pop..lsoa_id"                                
+ [5] "pop..proportion_of_lsoa_within_co_m_boundary"
+ [6] "pop..total_persons"                          
+ [7] "pop..male_persons"                           
+ [8] "pop..female_persons"                         
+ [9] "pop..x0_4_years"                             
+[10] "pop..x5_11_years"                            
+[11] "pop..x12_17_years"                           
+[12] "pop..x18_29_years"                           
+[13] "pop..x30_39_years"                           
+[14] "pop..x40_59_years"                           
+[15] "pop..x60_74_years"                           
+[16] "pop..x75_years"                              
+
+$Wales$com$rel
+ [1] "com"                                       
+ [2] "diocese"                                   
+ [3] "nation"                                    
+ [4] "rel..oa_id"                                
+ [5] "rel..proportion_of_oa_within_co_m_boundary"
+ [6] "rel..total_persons"                        
+ [7] "rel..christian"                            
+ [8] "rel..buddhist"                             
+ [9] "rel..hindu"                                
+[10] "rel..jewish"                               
+[11] "rel..muslim"                               
+[12] "rel..sikh"                                 
+[13] "rel..other_religion"                       
+[14] "rel..no_religion"                          
+[15] "rel..religion_not_stated"                  
+
+
+$Wales$dioceses
+$Wales$dioceses$ethn
+ [1] "diocese"                                                                                    
+ [2] "nation"                                                                                     
+ [3] "ethn..geo_code"                                                                             
+ [4] "ethn..proportion_of_oa_within_co_m_boundary"                                                
+ [5] "ethn..total_persons"                                                                        
+ [6] "ethn..ethnic_group_e_s_w_white_english_welsh_scottish_northern_irish_british_unit_persons"  
+ [7] "ethn..ethnic_group_e_s_w_white_irish_unit_persons"                                          
+ [8] "ethn..ethnic_group_e_s_w_white_gypsy_or_irish_traveller_unit_persons"                       
+ [9] "ethn..ethnic_group_e_s_w_white_other_white_unit_persons"                                    
+[10] "ethn..ethnic_group_e_s_w_mixed_multiple_ethnic_group_white_and_black_caribbean_unit_persons"
+[11] "ethn..ethnic_group_e_s_w_mixed_multiple_ethnic_group_white_and_black_african_unit_persons"  
+[12] "ethn..ethnic_group_e_s_w_mixed_multiple_ethnic_group_white_and_asian_unit_persons"          
+[13] "ethn..ethnic_group_e_s_w_mixed_multiple_ethnic_group_other_mixed_unit_persons"              
+[14] "ethn..ethnic_group_e_s_w_asian_asian_british_indian_unit_persons"                           
+[15] "ethn..ethnic_group_e_s_w_asian_asian_british_pakistani_unit_persons"                        
+[16] "ethn..ethnic_group_e_s_w_asian_asian_british_bangladeshi_unit_persons"                      
+[17] "ethn..ethnic_group_e_s_w_asian_asian_british_chinese_unit_persons"                          
+[18] "ethn..ethnic_group_e_s_w_asian_asian_british_other_asian_unit_persons"                      
+[19] "ethn..ethnic_group_e_s_w_black_african_caribbean_black_british_african_unit_persons"        
+[20] "ethn..ethnic_group_e_s_w_black_african_caribbean_black_british_caribbean_unit_persons"      
+[21] "ethn..ethnic_group_e_s_w_black_african_caribbean_black_british_other_black_unit_persons"    
+[22] "ethn..ethnic_group_e_s_w_other_ethnic_group_arab_unit_persons"                              
+[23] "ethn..ethnic_group_e_s_w_other_ethnic_group_any_other_ethnic_group_unit_persons"            
+[24] "ethn..white_or_white_british"                                                               
+[25] "ethn..black_or_black_british"                                                               
+[26] "ethn..asian_or_asian_british"                                                               
+[27] "ethn..mixed_multiple_ethnicity"                                                             
+[28] "ethn..other_ethnicity"                                                                      
+
+$Wales$dioceses$health
+ [1] "diocese"                                      
+ [2] "nation"                                       
+ [3] "health..oa_id"                                
+ [4] "health..proportion_of_oa_within_co_m_boundary"
+ [5] "health..total_persons"                        
+ [6] "health..very_good_health"                     
+ [7] "health..good_health"                          
+ [8] "health..fair_health"                          
+ [9] "health..bad_health"                           
+[10] "health..very_bad_health"                      
+
+$Wales$dioceses$house
+ [1] "diocese"                                     
+ [2] "nation"                                      
+ [3] "house..oa_id"                                
+ [4] "house..proportion_of_oa_within_co_m_boundary"
+ [5] "house..total_households"                     
+ [6] "house..one_person_household_65"              
+ [7] "house..one_person_household_64"              
+ [8] "house..couple_no_dependent_children"         
+ [9] "house..couple_dependent_children"            
+[10] "house..lone_parent_dependent_children"       
+[11] "house..other_household_no_dependent_children"
+[12] "house..other_household_dependent_children"   
+
+$Wales$dioceses$pop
+ [1] "diocese"                                     
+ [2] "nation"                                      
+ [3] "pop..lsoa_code"                              
+ [4] "pop..proportion_of_lsoa_within_co_m_boundary"
+ [5] "pop..total_persons"                          
+ [6] "pop..males"                                  
+ [7] "pop..females"                                
+ [8] "pop..x0_4_years"                             
+ [9] "pop..x5_11_years"                            
+[10] "pop..x12_17_years"                           
+[11] "pop..x18_29_years"                           
+[12] "pop..x30_39_years"                           
+[13] "pop..x40_59_years"                           
+[14] "pop..x60_74_years"                           
+[15] "pop..x75_years"                              
+
+$Wales$dioceses$rel
+ [1] "diocese"                                   
+ [2] "nation"                                    
+ [3] "rel..oa_id"                                
+ [4] "rel..proportion_of_oa_within_co_m_boundary"
+ [5] "rel..total_persons"                        
+ [6] "rel..christian"                            
+ [7] "rel..buddhist"                             
+ [8] "rel..hindu"                                
+ [9] "rel..jewish"                               
+[10] "rel..muslim"                               
+[11] "rel..sikh"                                 
+[12] "rel..other_religion"                       
+[13] "rel..no_religion"                          
+[14] "rel..religion_not_stated"                  
+
+
+$Wales$nations
+$Wales$nations$ethn
+ [1] "nation"                                                                                     
+ [2] "ethn..geo_code"                                                                             
+ [3] "ethn..total_persons"                                                                        
+ [4] "ethn..ethnic_group_e_s_w_white_english_welsh_scottish_northern_irish_british_unit_persons"  
+ [5] "ethn..ethnic_group_e_s_w_white_irish_unit_persons"                                          
+ [6] "ethn..ethnic_group_e_s_w_white_gypsy_or_irish_traveller_unit_persons"                       
+ [7] "ethn..ethnic_group_e_s_w_white_other_white_unit_persons"                                    
+ [8] "ethn..ethnic_group_e_s_w_mixed_multiple_ethnic_group_white_and_black_caribbean_unit_persons"
+ [9] "ethn..ethnic_group_e_s_w_mixed_multiple_ethnic_group_white_and_black_african_unit_persons"  
+[10] "ethn..ethnic_group_e_s_w_mixed_multiple_ethnic_group_white_and_asian_unit_persons"          
+[11] "ethn..ethnic_group_e_s_w_mixed_multiple_ethnic_group_other_mixed_unit_persons"              
+[12] "ethn..ethnic_group_e_s_w_asian_asian_british_indian_unit_persons"                           
+[13] "ethn..ethnic_group_e_s_w_asian_asian_british_pakistani_unit_persons"                        
+[14] "ethn..ethnic_group_e_s_w_asian_asian_british_bangladeshi_unit_persons"                      
+[15] "ethn..ethnic_group_e_s_w_asian_asian_british_chinese_unit_persons"                          
+[16] "ethn..ethnic_group_e_s_w_asian_asian_british_other_asian_unit_persons"                      
+[17] "ethn..ethnic_group_e_s_w_black_african_caribbean_black_british_african_unit_persons"        
+[18] "ethn..ethnic_group_e_s_w_black_african_caribbean_black_british_caribbean_unit_persons"      
+[19] "ethn..ethnic_group_e_s_w_black_african_caribbean_black_british_other_black_unit_persons"    
+[20] "ethn..ethnic_group_e_s_w_other_ethnic_group_arab_unit_persons"                              
+[21] "ethn..ethnic_group_e_s_w_other_ethnic_group_any_other_ethnic_group_unit_persons"            
+[22] "ethn..white_or_white_british"                                                               
+[23] "ethn..black_or_black_british"                                                               
+[24] "ethn..asian_or_asian_british"                                                               
+[25] "ethn..mixed_multiple_ethnicity"                                                             
+[26] "ethn..other_ethnicity"                                                                      
+
+$Wales$nations$health
+[1] "nation"                   "health..oa_id"           
+[3] "health..total_persons"    "health..very_good_health"
+[5] "health..good_health"      "health..fair_health"     
+[7] "health..bad_health"       "health..very_bad_health" 
+
+$Wales$nations$house
+ [1] "nation"                                      
+ [2] "house..oa_id"                                
+ [3] "house..total_households"                     
+ [4] "house..one_person_household_65"              
+ [5] "house..one_person_household_64"              
+ [6] "house..couple_no_dependent_children"         
+ [7] "house..couple_dependent_children"            
+ [8] "house..lone_parent_dependent_children"       
+ [9] "house..other_household_no_dependent_children"
+[10] "house..other_household_dependent_children"   
+
+$Wales$nations$pop
+ [1] "nation"             "pop..lsoa_code"     "pop..total_persons"
+ [4] "pop..males"         "pop..females"       "pop..x0_4_years"   
+ [7] "pop..x5_11_years"   "pop..x12_17_years"  "pop..x18_29_years" 
+[10] "pop..x30_39_years"  "pop..x40_59_years"  "pop..x60_74_years" 
+[13] "pop..x75_years"    
+
+$Wales$nations$rel
+ [1] "nation"                   "rel..oa_id"              
+ [3] "rel..total_persons"       "rel..christian"          
+ [5] "rel..buddhist"            "rel..hindu"              
+ [7] "rel..jewish"              "rel..muslim"             
+ [9] "rel..sikh"                "rel..other_religion"     
+[11] "rel..no_religion"         "rel..religion_not_stated"</code></pre>
+</div>
+</div>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    setTimeout(function() {
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      let href = ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
+    tippyHover(ref, function() {
+      var popup = window.document.createElement('div');
+      cites.forEach(function(cite) {
+        var citeDiv = window.document.createElement('div');
+        citeDiv.classList.add('hanging-indent');
+        citeDiv.classList.add('csl-entry');
+        var biblioDiv = window.document.getElementById('ref-' + cite);
+        if (biblioDiv) {
+          citeDiv.innerHTML = biblioDiv.innerHTML;
+        }
+        popup.appendChild(citeDiv);
+      });
+      return popup.innerHTML;
+    });
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>
