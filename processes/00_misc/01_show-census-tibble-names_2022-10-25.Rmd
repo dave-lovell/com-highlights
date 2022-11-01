@@ -1,0 +1,22 @@
+---
+title: "Census Tibble Names"
+author: "Dave"
+format: html
+editor: visual
+---
+
+There are lots of different column names for the various tibbles we have. Each nation has a different naming convention, and there is some variation between the levels of the names. This document shows all the names
+
+```{r showNames}
+library(purrr)
+library(here)
+
+census_tibbles <- readRDS(
+  here("data", "intermediate", "census", "merged-data",
+       "02_grouped-by-level-and-nation_2022-10-25.RDS")
+)
+
+census_names <- map(census_tibbles, map, map, names)
+
+census_names
+```
