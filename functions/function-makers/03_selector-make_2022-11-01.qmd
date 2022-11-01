@@ -1,0 +1,53 @@
+---
+title: "make-selector"
+author: "Dave"
+format: html
+editor: visual
+---
+
+## Make a function factory for select functions
+
+To help us run flexible selecting on a variety of tibbles, for `processes/05*`
+
+```{r makeSelector}
+library(rlang)
+library(dplyr)
+library(here)
+
+selector <- function(...){
+  
+  args <- rlang::enexprs(...)
+  
+  function(x, ...){
+    
+    dplyr::select(x, !!!args, ...)
+    
+    }
+}
+
+```
+
+### Show how works
+
+```{r showHowWorks}
+x <- tibble(this = 1, that = 2, those = 3)
+
+always_select_this <-
+  selector(this)
+
+always_select_this(x)
+
+always_select_this(x, those)
+
+select_starts_with_th <- selector(starts_with("th"))
+
+select_starts_with_th(x)
+
+select_starts_with_th(x, -those)
+```
+
+## Save
+
+```{r saveIt}
+saveRDS(selector, here("functions", "selector.RDS"))
+```
