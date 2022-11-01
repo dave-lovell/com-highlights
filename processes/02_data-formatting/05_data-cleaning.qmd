@@ -16,18 +16,27 @@ library(lobstr)
 ```
 
 ```{r read In Census Table }
-census_table <- saveRDS(coms_by_nation, here("data", "intermediate", "census", "merged-data", "02_grouped-by-level-and-nation_2022-10-25.RDS"))
+census_table <- readRDS(here("data", "intermediate", "census", "merged-data", "02_grouped-by-level-and-nation_2022-10-25.RDS"))
+
+tree(census_table, max_depth = 5)
+```
+
+```{r data cleaning}
+
+
+modify_census_tibbles <- readRDS(here("functions", "modify-census.RDS"))
+
 ```
 
 ```{r renamingColoumns}
 
 remove_prefix <- function(x, sep, regex = FALSE){
   
-    if(!regex){ sep <- stringr::fixed(sep) }
+  if(!regex){ sep <- stringr::fixed(sep) }
+  
   sep_end <- stringr::str_locate(x, sep)[, "end"] 
   
   if(any(is.na(sep_end))){
-    
     na_seps <- which(is.na(sep_end))
     sep_end[na_seps] <- 0
     
@@ -40,54 +49,25 @@ remove_prefix <- function(x, sep, regex = FALSE){
                  
 }
 
-coms_by_nation <-
-coms_by_nation |>
-  map(
-    map,
-    map,
-    rename_with,
-    .fn = remove_prefix, 
+census_table <-
+  modify_census_tibbles(
+    census_table,
+    modify_func = rename_with,
+    .fn = remove_prefix,
     .cols = everything(),
-    sep = ".."
-  )
-
-#   rename_with(overall_table, .fn = remove_prefix, .cols = everything(), "...")
-# 
-# rename_with(x, str_replace, everything(), "..", "_")
-# 
-# 
-# }
-# 
-# colnames(com_tables$Ethnicity$England$Wales) <- c("total", "welshirish", "whiteirish", "gypsy", "whiteother", "mmcarribean", 
-#                                                 "mmafrica", "mmwhiteasia","mmothers", "abindian", "abpakistian", "abbangladesh", 
-#                                                 "abchinese", "abothers", "bbafrican", "bbcaribian", "otherblack", "grouparab", 
-#                                                 "otherethnic", "white", "black", "asian", "mixedmultiple", "other")
-# colnames(com_tables$Ethnicity$Scotland) <- c("total", "white", "gypsy", "mixedmultiple", "asbindian", "asbpakistian", 
-#                                              "asbbangladesh", "asbchinese", "asbothers","afbcarribaens", "othergroups", 
-#                                              "white", "black", "asian", "mixedmultiple", "othergroups")
-# colnames(com_tables$Ethinicity$NorthernIreland) <- c("total", "white", "chinese", "irish", "indian", "pakistiani", "bangladesh", 
-#                                                      "otherasian", "carribean", "african", "blackothers", "mixedgroups", "groupothers", 
-#                                                      "white", "black", "asian", "mixedmultiple", "others")
-# colnames(com_table$RepublicofIreland) <- c("total", "white", "black", "asian", "mixedothers", "notstated")
-# 
-# 
-# colnames(com_tables$Health$Wales$Scotland$NorthernIreland$England) <- c("total", "verygood", "good", "fair", "bad", "verybad")
-# colnames(com_tables$Health$RepulblicofIreland) <- c("total", "verygood", "good", "fair", "bad", "verybad", "notstated")
-# 
-# colnames(com_tables$House$Wales$Scotland$NorthernIreland$England) <- c("total", "65", "64", "couple", "coupleDependant", 
-#                                                                        "loneparent", "othernodependant", "otherdependant")
-# colnames(com_tables$House$RepulblicofIreland) <- c("couple", "coupleDependant","loneparent", "othernodependant", "otherdependant")
-# 
-# colnames(com_tables$Population$Wales$Scotland$NorthernIreland$England) <- c("0-4", "5-11", "12-17", "18-29", "30-39", 
-#                                                                        "40-59", "60-74", "over75")
-# colnames(com_tables$Population$RepulblicofIreland) <- c("0-15", "16-39","40-64", "65&above", "otherdependant")
-
-## dplyr::rename
-## dplyr::rename_with
-## stringr (str_remove, str_replace, str_remove_all, str_replace_all)
-## regex
+    sep = "..")
 
 ```
+
+## dplyr::rename
+
+## dplyr::rename_with
+
+## stringr (str_remove, str_replace, str_remove_all, str_replace_all)
+
+## regex
+
+    ```{}
 
 ```{r multiply the proportion across all columns}
 

@@ -11,11 +11,9 @@ For testing
 
 ```{r libraries}
 library(here)
-library(purrr)
 library(lobstr)
 library(dplyr)
 library(stringr)
-library(rlang)
 ```
 
 ```{r}
@@ -60,6 +58,7 @@ modify_census_tibbles(census_tibbles,
                       ) |> 
   tree(max_depth = 5)
 ```
+
 Nice! Took me so long to realise that a for-loop was appropriate here, and much simper than trying to `walk` along indeces, `pluck`-assigning variables into x and trying to pull make it all happen in the right enviroment.
 
 ## Save
@@ -67,5 +66,3 @@ Nice! Took me so long to realise that a for-loop was appropriate here, and much 
 ```{r saveIt}
 saveRDS(modify_census_tibbles, here("functions", "modify-census.RDS"))
 ```
-
-
