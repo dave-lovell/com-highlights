@@ -213,46 +213,26 @@ stats = "pop"
 
 ```
 
-```{r multiply the proportion across all columns}
+```{r round up the coms prop columns}
 
-multiplier <- function(x){
-  
-  prop_column = df[ , 5]
-  
-  round(prop_column) <- function(prop_column)
-    round((prop_column), digits = 0)
-          if prop_column > 1
-          else round((prop_column), 1)}
-  
-  
-  df(prop_column) %>% mutate_at(vars(starts_with("[ , 6]")), ~.*deflator)
-  ## instead of mutate_at, use mutate(across())
-  ## starts_with wants a character string
-  
-  x <- some_table_nice
-  
-  x <- mutate(x, prop_column = min(prop_column, 1))
-  
-  require(magritrr)
-  
-  x <- mutate(x, 
-              across(
-                where(is.numeric),
-                multiply_by, 
-                prop_column))
-  
-  
-  round(df[ , 5], digits = 1) -> exceed 1
+coms_prop_roundings <- function(coms_prop) {
+  coms_prop = df[ , 5]
+  if (coms_prop > 1) {
+  round(coms_prop, digits = 0)
+  } else {
+   round((coms_prop), 1)}
+
 }
-  
-map(coms_by_nation, 
-    
-    ## not sure what goes here...
-    
-    mutate,
-    across(where(is.numeric)),
+#multiply across other columns
+  census_table <-
+   modify_census_tibbles(
+     census_table,
+     modify_func = mutate,
+     across(where(is.numeric)),
     multiply_by,
-    proportion_of_oa_within_co_m_boundary
-    )
-
+    coms_prop
+   )
+     
+  
+ 
 ```
