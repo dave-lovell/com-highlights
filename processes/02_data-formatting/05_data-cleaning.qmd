@@ -4,8 +4,10 @@ format: html
 editor: visual
 ---
 
-```{r libs}
+### Libraries
 
+```{r libs}
+#| messages: false
 library(here)
 library(dplyr)
 library(vroom)
@@ -15,17 +17,33 @@ library(rlang) # for nice error handling
 library(lobstr)
 ```
 
-```{r read In Census Table }
+## Setup
+
+### Read in Census Table
+
+```{r readInCensusTable}
 census_table <- readRDS(here("data", "intermediate", "census", "merged-data", "02_grouped-by-level-and-nation_2022-10-25.RDS"))
 
 tree(census_table, max_depth = 5)
 ```
 
-```{r data cleaning}
+## Read in Helpers
 
+```{r readHelpers}
+
+## modify_census_tibbles -----------------------------------------------------
+## Wrapper around a for loop. Modifies `census_table` at specified 'addresses'
+## modify_census_tibbles(x, modify_func, ..., nations, levels, stats)
 
 modify_census_tibbles <- readRDS(here("functions", "modify-census.RDS"))
 
+## selector -------------------------------------------------------------------
+## Function factory: makes select functions with specified args.
+## Helpful for selecting flexibly amidst slightly inconsistent tables
+## selector(...)
+## eg. select_geo_codes <- selector(matches("oa_id"), matches("sa_id"))
+## select_geo_codes(x, starts_with("something_"))
+selector <- readRDS(here("functions", "selector.RDS"))
 ```
 
 ```{r renamingColoumns}
@@ -144,16 +162,6 @@ census_table <-
   )
 #string to lower
 ```
-
-## dplyr::rename
-
-## dplyr::rename_with
-
-## stringr (str_remove, str_replace, str_remove_all, str_replace_all)
-
-## regex
-
-    ```{}
 
 ```{r multiply the proportion across all columns}
 
