@@ -57,6 +57,92 @@ census_table <-
     .cols = everything(),
     sep = "..")
 
+#RENAMING ETHNICITY TABLES for England, Wales & Scotland 
+
+census_select_ews <- function(x, ...){
+  select(x,
+         ## com/dioceses/nation
+         matches("com"), matches("diocese"), matches("nation"),
+         ## Diocese-level fields
+         matches("parish_code"), matches("oa_id"),
+         ## Nation-level fields
+         matches("geo_code"), matches("sa_id"),
+         ...)
+}
+
+census_select_ews <- function(x){
+  
+  args <- rlang::enexprs(...)
+  
+  function(x, ...){
+    
+    dplyr::select(x, 
+          matches("com"), matches("diocese"), matches("nation"),
+         matches("parish_code"), matches("oa_id"),
+         matches("geo_code"), matches("sa_id"),
+         ...)
+    
+    }
+}
+
+# # census_select_ews <- selector(
+#          ## com/dioceses/nation
+#          matches("com"), matches("diocese"), matches("nation"),
+#          ## Diocese-level fields
+#          matches("parish_code"), matches("oa_id"),
+#          ## Nation-level fields
+#          matches("geo_code"), matches("sa_id")
+#          )
+
+  
+
+tmp <-
+  modify_census_tibbles(
+    census_table,
+    modify_func = census_select_ews,
+    white_or_white_british,
+    black_or_black_british,
+    asian_or_asian_british,
+    mixed_multiple_ethnicity,
+    other_ethnicity,
+    stats = "ethn",
+    nations = c("England", "Wales", "Scotland")
+    )
+
+#Renaming age ok
+census_table <-
+  modify_census_tibbles(
+    census_table,
+    modify_func = rename_with,
+    .fn = str_replace,
+    .cols = starts_with("x"),
+       "x", "age_",
+stats = "pop"
+)
+
+
+
+#Renaming health
+census_table <-
+  modify_census_tibbles(
+    census_table,
+    modify_func = rename_with,
+    .fn = remove_prefix,
+    .cols = everything(),
+    sep = "x",
+    stats = "pop",
+    nations = c("Wales", "Scotland", "Republic-of-Ireland", "England")
+    )
+
+#drop total person ok
+census_table <-
+  modify_census_tibbles(
+    census_table,
+    modify_func = select,
+    .cols = -starts_with("total"),
+    stats = c("ethn", "health", "house", "rel")
+  )
+#string to lower
 ```
 
 ## dplyr::rename
