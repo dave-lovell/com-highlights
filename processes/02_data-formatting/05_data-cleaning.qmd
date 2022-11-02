@@ -88,21 +88,22 @@ census_select_ews <- function(x, ...){
          ...)
 }
 
-census_select_ews <- function(x){
-  
-  args <- rlang::enexprs(...)
-  
-  function(x, ...){
-    
-    dplyr::select(x, 
-          matches("com"), matches("diocese"), matches("nation"),
-         matches("parish_code"), matches("oa_id"),
-         matches("geo_code"), matches("sa_id"),
-         ...)
-    
-    }
-}
+# census_select_ews <- function(x){
+  census_select_ews <- selector(
+    matches("com"), matches("diocese"), matches("nation"),
+    matches("parish_code"), matches("oa_id"),
+    matches("geo_code"), matches("sa_id")
+         )
 
+## Not quite: `selector` is a function-factory that we read in from elsewhere.
+## A function-factory is a funciton that returns a function. It works like this:
+  ### custom_select <- selector(mpg, cyl)
+  ### ^ custom_select is a function that always selects `mpg` and `cyl`, 
+  ### plus anything else that's passed to it
+  ### custom_select(mtcars, drat) # select `drat`, `mpg` and `cyl` from mtcars 
+
+
+  ## So we can make 'census_select_ews()` like so:
 # # census_select_ews <- selector(
 #          ## com/dioceses/nation
 #          matches("com"), matches("diocese"), matches("nation"),
@@ -111,7 +112,6 @@ census_select_ews <- function(x){
 #          ## Nation-level fields
 #          matches("geo_code"), matches("sa_id")
 #          )
-
   
 
 tmp <-
@@ -132,81 +132,70 @@ census_table <-
   modify_census_tibbles(
     census_table,
     modify_func = rename_with,
+    
     .fn = str_replace,
     .cols = starts_with("x"),
-       "x", "age_",
-stats = "pop"
+    
+    "x", "age_",
+    
+    stats = "pop"
 )
 
-#drop all suffix _health in health analysis ok
+# drop all suffix _health in health analysis ok
  census_table <-
    modify_census_tibbles(
      census_table,
      modify_func = rename_with,
+     
      .fn = str_replace,
      .cols = ends_with("_health"),
-        "_health", "",
+     "_health", "",
+     
   stats = "health",
   nations = c("Wales", "Scotland", "Northern-Ireland", "England")
  )
- #drop total person ok
+ 
+ # drop total person ok
  census_table <-
    modify_census_tibbles(
      census_table,
      modify_func = select,
+     
      .cols = -starts_with("total"),
+     
      stats = c("ethn", "health", "house", "rel")
    )
- census_table <-
-   modify_census_tibbles(
-     census_table,
-     modify_func = rename_with,
-     .fn = str_replace,
-     .cols = starts_with("proportion"),
-     "proportion_of_oa_within_co_m_boundary", "coms_prop"
  
- )
+ 
  #rename of column proportion of oa - Ireland & Northern Ireland ok
+ ## Make a silly function that will work with 'rename_with()'
+ ## Might crash if it tries to rename multiple columns - good!
+ make_name_com_prop <- function(x){
+   "com_prop"
+ }
+ 
  census_table <-
    modify_census_tibbles(
      census_table,
-     modify_func = rename_with,
-     .fn = str_replace,
-     .cols = starts_with("proportion"),
-     "proportion_of_sa_within_co_m_boundary", "coms_prop"
- 
+     rename_with,
+     
+     cols = matches("proportion_of_._within_co_m_boundary"),
+     .fn  = make_name_com_prop
  )
- #rename of column proportion of oa - England pop ok
- census_table <-
-   modify_census_tibbles(
-     census_table,
-     modify_func = rename_with,
-     .fn = str_replace,
-     .cols = starts_with("proportion"),
-     "proportion_of_lsoa_within_co_m_boundary", "coms_prop"
+
  
- )
- #rename of column proportion of oa - Northern Ireland pop ok
- census_table <-
-   modify_census_tibbles(
-     census_table,
-     modify_func = rename_with,
-     .fn = str_replace,
-     .cols = starts_with("proportion"),
-     "proportion_of_soa_within_co_m_boundary", "coms_prop"
- 
- )
  #Add _persons to pop tables of Northern Ireland& Repulblic of Ireland
  census_table <-
    modify_census_tibbles(
      census_table,
-     modify_func = rename_with,
-     .fn = str_replace_all,
-     .cols = everything(),
-      male_persons = "male",
-       female_persons = "female",
-       stats = "pop",
-    nations = c("Repulblic-of Ireland", "Northern-Ireland")
+     modify_func = rename,
+     
+     male   = "male_persons",
+     female = "female_persons",
+     
+     stats = "pop",
+     nations = c("Repulblic-of Ireland", "Northern-Ireland")
+   )
 
 
 
