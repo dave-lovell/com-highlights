@@ -1,0 +1,47 @@
+---
+title: "Check Census Table Names"
+author: "Dave"
+format: html
+editor: visual
+---
+
+### Libraries
+
+```{r libs}
+library(here)
+library(purrr)
+library(lobstr)
+```
+
+## Read in Data
+
+```{r readInCensusTable}
+census_table <- readRDS(here("data", "intermediate", "census", "merged-data", "02_grouped-by-level-and-nation_2022-10-25.RDS"))
+
+```
+
+## Make Names
+
+```{r censusNames}
+census_names <- map(census_table, map, map, names)
+
+census_names <-
+  map(census_names, map, list) |>
+  map(pmap, ~pmap(list(...), list)) |>
+  map(pluck, 1)
+
+
+get_not_shared_names <- function(some_list){
+
+  uniques <- reduce(some_list, unique)
+  
+  not_shared <- map(some_list, function(x){
+    uniques[!uniques %in% x]
+  })
+  
+  not_shared
+}
+
+map(census_names, map, get_not_shared_names)
+  
+```

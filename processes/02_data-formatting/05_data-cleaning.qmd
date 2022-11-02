@@ -43,7 +43,6 @@ modify_census_tibbles <- readRDS(here("functions", "modify-census.RDS"))
 ## selector(...)
 ## eg. select_geo_codes <- selector(matches("oa_id"), matches("sa_id"))
 ## select_geo_codes(x, starts_with("something_"))
-
 selector <- readRDS(here("functions", "selector.RDS"))
 ```
 

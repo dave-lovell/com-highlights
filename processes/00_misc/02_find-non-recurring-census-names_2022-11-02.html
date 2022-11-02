@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.0.36">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Dave">
+
+<title>Check Census Table Names</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="02_find-non-recurring-census-names_2022-11-02_files/libs/clipboard/clipboard.min.js"></script>
+<script src="02_find-non-recurring-census-names_2022-11-02_files/libs/quarto-html/quarto.js"></script>
+<script src="02_find-non-recurring-census-names_2022-11-02_files/libs/quarto-html/popper.min.js"></script>
+<script src="02_find-non-recurring-census-names_2022-11-02_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="02_find-non-recurring-census-names_2022-11-02_files/libs/quarto-html/anchor.min.js"></script>
+<link href="02_find-non-recurring-census-names_2022-11-02_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="02_find-non-recurring-census-names_2022-11-02_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="02_find-non-recurring-census-names_2022-11-02_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="02_find-non-recurring-census-names_2022-11-02_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="02_find-non-recurring-census-names_2022-11-02_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+
+
+</head>
+
+<body class="fullcontent">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Check Census Table Names</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Dave </p>
+          </div>
+  </div>
+    
+    
+  </div>
+  
+
+</header>
+
+<section id="libraries" class="level3">
+<h3 class="anchored" data-anchor-id="libraries">Libraries</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(here)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>here() starts at C:/Users/david.lovell/OneDrive - Church Army/Documents/repos/com-highlights</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(purrr)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lobstr)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="read-in-data" class="level2">
+<h2 class="anchored" data-anchor-id="read-in-data">Read in Data</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>census_table <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="fu">here</span>(<span class="st">"data"</span>, <span class="st">"intermediate"</span>, <span class="st">"census"</span>, <span class="st">"merged-data"</span>, <span class="st">"02_grouped-by-level-and-nation_2022-10-25.RDS"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="make-names" class="level2">
+<h2 class="anchored" data-anchor-id="make-names">Make Names</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>census_names <span class="ot">&lt;-</span> <span class="fu">map</span>(census_table, map, map, names)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>census_names <span class="ot">&lt;-</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">map</span>(census_names, map, list) <span class="sc">|&gt;</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">map</span>(pmap, <span class="sc">~</span><span class="fu">pmap</span>(<span class="fu">list</span>(...), list)) <span class="sc">|&gt;</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">map</span>(pluck, <span class="dv">1</span>)</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>get_not_shared_names <span class="ot">&lt;-</span> <span class="cf">function</span>(some_list){</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>  uniques <span class="ot">&lt;-</span> <span class="fu">reduce</span>(some_list, unique)</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>  not_shared <span class="ot">&lt;-</span> <span class="fu">map</span>(some_list, <span class="cf">function</span>(x){</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>    uniques[<span class="sc">!</span>uniques <span class="sc">%in%</span> x]</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>  })</span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>  not_shared</span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a><span class="fu">map</span>(census_names, map, get_not_shared_names)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>$England
+$England$ethn
+$England$ethn$com
+character(0)
+
+$England$ethn$dioceses
+ [1] "com"                                                        
+ [2] "ethn..oa_id"                                                
+ [3] "ethn..proportion_of_oa_within_co_m_boundary"                
+ [4] "ethn..total_persons"                                        
+ [5] "ethn..white_english_welsh_scottish_northern_irish_british"  
+ [6] "ethn..white_irish"                                          
+ [7] "ethn..white_gypsy_or_irish_traveller"                       
+ [8] "ethn..white_other_white"                                    
+ [9] "ethn..mixed_multiple_ethnic_group_white_and_black_caribbean"
+[10] "ethn..mixed_multiple_ethnic_group_white_and_black_african"  
+[11] "ethn..mixed_multiple_ethnic_group_white_and_asian"          
+[12] "ethn..mixed_multiple_ethnic_group_other_mixed"              
+[13] "ethn..asian_asian_british_indian"                           
+[14] "ethn..asian_asian_british_pakistani"                        
+[15] "ethn..asian_asian_british_bangladeshi"                      
+[16] "ethn..asian_asian_british_chinese"                          
+[17] "ethn..asian_asian_british_other_asian"                      
+[18] "ethn..black_african_caribbean_black_british_african"        
+[19] "ethn..black_african_caribbean_black_british_caribbean"      
+[20] "ethn..black_african_caribbean_black_british_other_black"    
+[21] "ethn..other_ethnic_group_arab"                              
+[22] "ethn..other_ethnic_group_any_other_ethnic_group"            
+
+$England$ethn$nations
+ [1] "com"                                                        
+ [2] "diocese"                                                    
+ [3] "ethn..oa_id"                                                
+ [4] "ethn..proportion_of_oa_within_co_m_boundary"                
+ [5] "ethn..white_english_welsh_scottish_northern_irish_british"  
+ [6] "ethn..white_irish"                                          
+ [7] "ethn..white_gypsy_or_irish_traveller"                       
+ [8] "ethn..white_other_white"                                    
+ [9] "ethn..mixed_multiple_ethnic_group_white_and_black_caribbean"
+[10] "ethn..mixed_multiple_ethnic_group_white_and_black_african"  
+[11] "ethn..mixed_multiple_ethnic_group_white_and_asian"          
+[12] "ethn..mixed_multiple_ethnic_group_other_mixed"              
+[13] "ethn..asian_asian_british_indian"                           
+[14] "ethn..asian_asian_british_pakistani"                        
+[15] "ethn..asian_asian_british_bangladeshi"                      
+[16] "ethn..asian_asian_british_chinese"                          
+[17] "ethn..asian_asian_british_other_asian"                      
+[18] "ethn..black_african_caribbean_black_british_african"        
+[19] "ethn..black_african_caribbean_black_british_caribbean"      
+[20] "ethn..black_african_caribbean_black_british_other_black"    
+[21] "ethn..other_ethnic_group_arab"                              
+[22] "ethn..other_ethnic_group_any_other_ethnic_group"            
+
+
+$England$health
+$England$health$com
+character(0)
+
+$England$health$dioceses
+[1] "com"                                          
+[2] "health..proportion_of_oa_within_co_m_boundary"
+
+$England$health$nations
+[1] "com"                                          
+[2] "diocese"                                      
+[3] "health..proportion_of_oa_within_co_m_boundary"
+
+
+$England$house
+$England$house$com
+character(0)
+
+$England$house$dioceses
+[1] "com"                                         
+[2] "house..proportion_of_oa_within_co_m_boundary"
+
+$England$house$nations
+[1] "com"                                         
+[2] "diocese"                                     
+[3] "house..proportion_of_oa_within_co_m_boundary"
+
+
+$England$pop
+$England$pop$com
+character(0)
+
+$England$pop$dioceses
+[1] "com"                                         
+[2] "pop..lsoa_id"                                
+[3] "pop..proportion_of_lsoa_within_co_m_boundary"
+[4] "pop..male_persons"                           
+[5] "pop..female_persons"                         
+
+$England$pop$nations
+[1] "com"                                         
+[2] "diocese"                                     
+[3] "pop..lsoa_id"                                
+[4] "pop..proportion_of_lsoa_within_co_m_boundary"
+[5] "pop..male_persons"                           
+[6] "pop..female_persons"                         
+
+
+$England$rel
+$England$rel$com
+character(0)
+
+$England$rel$dioceses
+[1] "com"                                       
+[2] "rel..oa_id"                                
+[3] "rel..proportion_of_oa_within_co_m_boundary"
+[4] "rel..total_persons"                        
+
+$England$rel$nations
+[1] "com"                                       
+[2] "diocese"                                   
+[3] "rel..proportion_of_oa_within_co_m_boundary"
+
+
+
+$`Northern-Ireland`
+$`Northern-Ireland`$ethn
+$`Northern-Ireland`$ethn$com
+character(0)
+
+$`Northern-Ireland`$ethn$dioceses
+[1] "com"                                        
+[2] "ethn..sa_id"                                
+[3] "ethn..proportion_of_sa_within_co_m_boundary"
+
+$`Northern-Ireland`$ethn$nations
+[1] "com"                                        
+[2] "diocese"                                    
+[3] "ethn..sa_id"                                
+[4] "ethn..proportion_of_sa_within_co_m_boundary"
+
+
+$`Northern-Ireland`$health
+$`Northern-Ireland`$health$com
+character(0)
+
+$`Northern-Ireland`$health$dioceses
+[1] "com"                                          
+[2] "health..proportion_of_sa_within_co_m_boundary"
+
+$`Northern-Ireland`$health$nations
+[1] "com"                                          
+[2] "diocese"                                      
+[3] "health..proportion_of_sa_within_co_m_boundary"
+
+
+$`Northern-Ireland`$house
+$`Northern-Ireland`$house$com
+character(0)
+
+$`Northern-Ireland`$house$dioceses
+[1] "com"                                         
+[2] "house..proportion_of_sa_within_co_m_boundary"
+
+$`Northern-Ireland`$house$nations
+[1] "com"                                         
+[2] "diocese"                                     
+[3] "house..proportion_of_sa_within_co_m_boundary"
+
+
+$`Northern-Ireland`$pop
+$`Northern-Ireland`$pop$com
+character(0)
+
+$`Northern-Ireland`$pop$dioceses
+[1] "com"                                        
+[2] "pop..proportion_of_soa_within_co_m_boundary"
+
+$`Northern-Ireland`$pop$nations
+[1] "com"                                        
+[2] "diocese"                                    
+[3] "pop..proportion_of_soa_within_co_m_boundary"
+
+
+$`Northern-Ireland`$rel
+$`Northern-Ireland`$rel$com
+character(0)
+
+$`Northern-Ireland`$rel$dioceses
+[1] "com"                                       
+[2] "rel..proportion_of_sa_within_co_m_boundary"
+
+$`Northern-Ireland`$rel$nations
+[1] "com"                                       
+[2] "diocese"                                   
+[3] "rel..proportion_of_sa_within_co_m_boundary"
+
+
+
+$`Republic-of-Ireland`
+$`Republic-of-Ireland`$ethn
+$`Republic-of-Ireland`$ethn$com
+character(0)
+
+$`Republic-of-Ireland`$ethn$dioceses
+[1] "com"                                        
+[2] "ethn..geo_code"                             
+[3] "ethn..proportion_of_sa_within_co_m_boundary"
+
+$`Republic-of-Ireland`$ethn$nations
+[1] "com"                                        
+[2] "diocese"                                    
+[3] "ethn..geo_code"                             
+[4] "ethn..proportion_of_sa_within_co_m_boundary"
+
+
+$`Republic-of-Ireland`$health
+$`Republic-of-Ireland`$health$com
+character(0)
+
+$`Republic-of-Ireland`$health$dioceses
+[1] "com"                                          
+[2] "health..proportion_of_sa_within_co_m_boundary"
+
+$`Republic-of-Ireland`$health$nations
+[1] "com"                                          
+[2] "diocese"                                      
+[3] "health..proportion_of_sa_within_co_m_boundary"
+
+
+$`Republic-of-Ireland`$house
+$`Republic-of-Ireland`$house$com
+character(0)
+
+$`Republic-of-Ireland`$house$dioceses
+[1] "com"                                         
+[2] "house..proportion_of_sa_within_co_m_boundary"
+
+$`Republic-of-Ireland`$house$nations
+[1] "com"                                         
+[2] "diocese"                                     
+[3] "house..proportion_of_sa_within_co_m_boundary"
+
+
+$`Republic-of-Ireland`$pop
+$`Republic-of-Ireland`$pop$com
+character(0)
+
+$`Republic-of-Ireland`$pop$dioceses
+[1] "com"                                       
+[2] "pop..proportion_of_sa_within_co_m_boundary"
+
+$`Republic-of-Ireland`$pop$nations
+[1] "com"                                       
+[2] "diocese"                                   
+[3] "pop..proportion_of_sa_within_co_m_boundary"
+
+
+$`Republic-of-Ireland`$rel
+$`Republic-of-Ireland`$rel$com
+character(0)
+
+$`Republic-of-Ireland`$rel$dioceses
+[1] "com"                                       
+[2] "rel..proportion_of_sa_within_co_m_boundary"
+
+$`Republic-of-Ireland`$rel$nations
+[1] "com"                                       
+[2] "diocese"                                   
+[3] "rel..proportion_of_sa_within_co_m_boundary"
+
+
+
+$Scotland
+$Scotland$ethn
+$Scotland$ethn$com
+character(0)
+
+$Scotland$ethn$dioceses
+ [1] "com"                                            
+ [2] "ethn..oa_id"                                    
+ [3] "ethn..proportion_of_oa_within_co_m_boundary"    
+ [4] "ethn..white"                                    
+ [5] "ethn..white_gypsy_or_irish_traveller"           
+ [6] "ethn..mixed_multiple_ethnic_group"              
+ [7] "ethn..asian_asian_british_indian"               
+ [8] "ethn..asian_asian_british_pakistani"            
+ [9] "ethn..asian_asian_british_bangladeshi"          
+[10] "ethn..asian_asian_british_chinese"              
+[11] "ethn..asian_asian_british_other_asian"          
+[12] "ethn..black_african_caribbean_black_british"    
+[13] "ethn..other_ethnic_group_any_other_ethnic_group"
+
+$Scotland$ethn$nations
+ [1] "com"                                            
+ [2] "diocese"                                        
+ [3] "ethn..oa_id"                                    
+ [4] "ethn..proportion_of_oa_within_co_m_boundary"    
+ [5] "ethn..white"                                    
+ [6] "ethn..white_gypsy_or_irish_traveller"           
+ [7] "ethn..mixed_multiple_ethnic_group"              
+ [8] "ethn..asian_asian_british_indian"               
+ [9] "ethn..asian_asian_british_pakistani"            
+[10] "ethn..asian_asian_british_bangladeshi"          
+[11] "ethn..asian_asian_british_chinese"              
+[12] "ethn..asian_asian_british_other_asian"          
+[13] "ethn..black_african_caribbean_black_british"    
+[14] "ethn..other_ethnic_group_any_other_ethnic_group"
+
+
+$Scotland$health
+$Scotland$health$com
+character(0)
+
+$Scotland$health$dioceses
+[1] "com"                                          
+[2] "health..oa_id"                                
+[3] "health..proportion_of_oa_within_co_m_boundary"
+
+$Scotland$health$nations
+[1] "com"                                          
+[2] "diocese"                                      
+[3] "health..oa_id"                                
+[4] "health..proportion_of_oa_within_co_m_boundary"
+
+
+$Scotland$house
+$Scotland$house$com
+character(0)
+
+$Scotland$house$dioceses
+[1] "com"                                         
+[2] "house..oa_id"                                
+[3] "house..proportion_of_oa_within_co_m_boundary"
+
+$Scotland$house$nations
+[1] "com"                                         
+[2] "diocese"                                     
+[3] "house..oa_id"                                
+[4] "house..proportion_of_oa_within_co_m_boundary"
+
+
+$Scotland$pop
+$Scotland$pop$com
+character(0)
+
+$Scotland$pop$dioceses
+[1] "com"                                       
+[2] "pop..dz_id"                                
+[3] "pop..proportion_of_dz_within_co_m_boundary"
+[4] "pop..male_persons"                         
+[5] "pop..female_persons"                       
+
+$Scotland$pop$nations
+[1] "com"                                       
+[2] "diocese"                                   
+[3] "pop..dz_id"                                
+[4] "pop..proportion_of_dz_within_co_m_boundary"
+[5] "pop..male_persons"                         
+[6] "pop..female_persons"                       
+
+
+$Scotland$rel
+$Scotland$rel$com
+character(0)
+
+$Scotland$rel$dioceses
+[1] "com"                                       
+[2] "rel..oa_id"                                
+[3] "rel..proportion_of_oa_within_co_m_boundary"
+
+$Scotland$rel$nations
+[1] "com"                                       
+[2] "diocese"                                   
+[3] "rel..oa_id"                                
+[4] "rel..proportion_of_oa_within_co_m_boundary"
+
+
+
+$Wales
+$Wales$ethn
+$Wales$ethn$com
+character(0)
+
+$Wales$ethn$dioceses
+ [1] "com"                                                        
+ [2] "ethn..oa_id"                                                
+ [3] "ethn..white_english_welsh_scottish_northern_irish_british"  
+ [4] "ethn..white_irish"                                          
+ [5] "ethn..white_gypsy_or_irish_traveller"                       
+ [6] "ethn..white_other_white"                                    
+ [7] "ethn..mixed_multiple_ethnic_group_white_and_black_caribbean"
+ [8] "ethn..mixed_multiple_ethnic_group_white_and_black_african"  
+ [9] "ethn..mixed_multiple_ethnic_group_white_and_asian"          
+[10] "ethn..mixed_multiple_ethnic_group_other_mixed"              
+[11] "ethn..asian_asian_british_indian"                           
+[12] "ethn..asian_asian_british_pakistani"                        
+[13] "ethn..asian_asian_british_bangladeshi"                      
+[14] "ethn..asian_asian_british_chinese"                          
+[15] "ethn..asian_asian_british_other_asian"                      
+[16] "ethn..black_african_caribbean_black_british_african"        
+[17] "ethn..black_african_caribbean_black_british_caribbean"      
+[18] "ethn..black_african_caribbean_black_british_other_black"    
+[19] "ethn..other_ethnic_group_arab"                              
+[20] "ethn..other_ethnic_group_any_other_ethnic_group"            
+
+$Wales$ethn$nations
+ [1] "com"                                                        
+ [2] "diocese"                                                    
+ [3] "ethn..oa_id"                                                
+ [4] "ethn..proportion_of_oa_within_co_m_boundary"                
+ [5] "ethn..white_english_welsh_scottish_northern_irish_british"  
+ [6] "ethn..white_irish"                                          
+ [7] "ethn..white_gypsy_or_irish_traveller"                       
+ [8] "ethn..white_other_white"                                    
+ [9] "ethn..mixed_multiple_ethnic_group_white_and_black_caribbean"
+[10] "ethn..mixed_multiple_ethnic_group_white_and_black_african"  
+[11] "ethn..mixed_multiple_ethnic_group_white_and_asian"          
+[12] "ethn..mixed_multiple_ethnic_group_other_mixed"              
+[13] "ethn..asian_asian_british_indian"                           
+[14] "ethn..asian_asian_british_pakistani"                        
+[15] "ethn..asian_asian_british_bangladeshi"                      
+[16] "ethn..asian_asian_british_chinese"                          
+[17] "ethn..asian_asian_british_other_asian"                      
+[18] "ethn..black_african_caribbean_black_british_african"        
+[19] "ethn..black_african_caribbean_black_british_caribbean"      
+[20] "ethn..black_african_caribbean_black_british_other_black"    
+[21] "ethn..other_ethnic_group_arab"                              
+[22] "ethn..other_ethnic_group_any_other_ethnic_group"            
+
+
+$Wales$health
+$Wales$health$com
+character(0)
+
+$Wales$health$dioceses
+[1] "com"
+
+$Wales$health$nations
+[1] "com"                                          
+[2] "diocese"                                      
+[3] "health..proportion_of_oa_within_co_m_boundary"
+
+
+$Wales$house
+$Wales$house$com
+character(0)
+
+$Wales$house$dioceses
+[1] "com"
+
+$Wales$house$nations
+[1] "com"                                         
+[2] "diocese"                                     
+[3] "house..proportion_of_oa_within_co_m_boundary"
+
+
+$Wales$pop
+$Wales$pop$com
+character(0)
+
+$Wales$pop$dioceses
+[1] "com"                 "pop..lsoa_id"        "pop..male_persons"  
+[4] "pop..female_persons"
+
+$Wales$pop$nations
+[1] "com"                                         
+[2] "diocese"                                     
+[3] "pop..lsoa_id"                                
+[4] "pop..proportion_of_lsoa_within_co_m_boundary"
+[5] "pop..male_persons"                           
+[6] "pop..female_persons"                         
+
+
+$Wales$rel
+$Wales$rel$com
+character(0)
+
+$Wales$rel$dioceses
+[1] "com"
+
+$Wales$rel$nations
+[1] "com"                                       
+[2] "diocese"                                   
+[3] "rel..proportion_of_oa_within_co_m_boundary"</code></pre>
+</div>
+</div>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    setTimeout(function() {
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      let href = ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
+    tippyHover(ref, function() {
+      var popup = window.document.createElement('div');
+      cites.forEach(function(cite) {
+        var citeDiv = window.document.createElement('div');
+        citeDiv.classList.add('hanging-indent');
+        citeDiv.classList.add('csl-entry');
+        var biblioDiv = window.document.getElementById('ref-' + cite);
+        if (biblioDiv) {
+          citeDiv.innerHTML = biblioDiv.innerHTML;
+        }
+        popup.appendChild(citeDiv);
+      });
+      return popup.innerHTML;
+    });
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>
