@@ -138,29 +138,79 @@ census_table <-
 stats = "pop"
 )
 
+#drop all suffix _health in health analysis ok
+ census_table <-
+   modify_census_tibbles(
+     census_table,
+     modify_func = rename_with,
+     .fn = str_replace,
+     .cols = ends_with("_health"),
+        "_health", "",
+  stats = "health",
+  nations = c("Wales", "Scotland", "Northern-Ireland", "England")
+ )
+ #drop total person ok
+ census_table <-
+   modify_census_tibbles(
+     census_table,
+     modify_func = select,
+     .cols = -starts_with("total"),
+     stats = c("ethn", "health", "house", "rel")
+   )
+ census_table <-
+   modify_census_tibbles(
+     census_table,
+     modify_func = rename_with,
+     .fn = str_replace,
+     .cols = starts_with("proportion"),
+     "proportion_of_oa_within_co_m_boundary", "coms_prop"
+ 
+ )
+ #rename of column proportion of oa - Ireland & Northern Ireland ok
+ census_table <-
+   modify_census_tibbles(
+     census_table,
+     modify_func = rename_with,
+     .fn = str_replace,
+     .cols = starts_with("proportion"),
+     "proportion_of_sa_within_co_m_boundary", "coms_prop"
+ 
+ )
+ #rename of column proportion of oa - England pop ok
+ census_table <-
+   modify_census_tibbles(
+     census_table,
+     modify_func = rename_with,
+     .fn = str_replace,
+     .cols = starts_with("proportion"),
+     "proportion_of_lsoa_within_co_m_boundary", "coms_prop"
+ 
+ )
+ #rename of column proportion of oa - Northern Ireland pop ok
+ census_table <-
+   modify_census_tibbles(
+     census_table,
+     modify_func = rename_with,
+     .fn = str_replace,
+     .cols = starts_with("proportion"),
+     "proportion_of_soa_within_co_m_boundary", "coms_prop"
+ 
+ )
+ #Add _persons to pop tables of Northern Ireland& Repulblic of Ireland
+ census_table <-
+   modify_census_tibbles(
+     census_table,
+     modify_func = rename_with,
+     .fn = str_replace_all,
+     .cols = everything(),
+      male_persons = "male",
+       female_persons = "female",
+       stats = "pop",
+    nations = c("Repulblic-of Ireland", "Northern-Ireland")
 
 
-#Renaming health
-census_table <-
-  modify_census_tibbles(
-    census_table,
-    modify_func = rename_with,
-    .fn = remove_prefix,
-    .cols = everything(),
-    sep = "x",
-    stats = "pop",
-    nations = c("Wales", "Scotland", "Republic-of-Ireland", "England")
-    )
 
-#drop total person ok
-census_table <-
-  modify_census_tibbles(
-    census_table,
-    modify_func = select,
-    .cols = -starts_with("total"),
-    stats = c("ethn", "health", "house", "rel")
-  )
-#string to lower
+
 ```
 
 ```{r multiply the proportion across all columns}
