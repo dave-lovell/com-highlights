@@ -167,6 +167,7 @@ That is, remove them from all tibbles except population statistics tibbles. We m
 ### Popultion tibbles: Make gender fields consistent
 
 ```{r makeGenderFieldsConsistent}
+#| eval: false
  #Add _persons to pop tables of Northern Ireland& Repulblic of Ireland
  census_table <-
    modify_census_tibbles(
@@ -177,7 +178,7 @@ That is, remove them from all tibbles except population statistics tibbles. We m
      female = "female_persons",
      
      stats = "pop",
-     nations = c("Republic-of Ireland", "Northern-Ireland")
+     nations = c("Republic-of-Ireland", "Northern-Ireland")
    )
 ```
 
@@ -200,14 +201,14 @@ For the CoM tibbles, there's a column that tells us the extent to which every OA
      census_table,
      rename_with,
      
-     cols = matches("proportion_of_._within_co_m_boundary"),
+     .cols = matches("proportion_of_._within_co_m_boundary"),
      .fn  = make_name_com_prop
  )
 
 ```
 
 ```{r round up the coms prop columns}
-#| include: false
+#| eval: false
 coms_prop_roundings <- function(coms_prop) {
   coms_prop = df[ , 5]
   if (coms_prop > 1) {
