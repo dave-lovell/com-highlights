@@ -207,7 +207,7 @@ For the CoM tibbles, there's a column that tells us the extent to which every OA
 ```
 
 ```{r round up the coms prop columns}
-
+#| include: false
 coms_prop_roundings <- function(coms_prop) {
   coms_prop = df[ , 5]
   if (coms_prop > 1) {
@@ -215,7 +215,8 @@ coms_prop_roundings <- function(coms_prop) {
   } else {
    round((coms_prop), 1)}
 
-}
+# 
+
 #multiply across other columns
   census_table <-
    modify_census_tibbles(
