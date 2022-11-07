@@ -7,7 +7,7 @@ editor: visual
 ### Libraries
 
 ```{r libs}
-#| messages: false
+#| message: false
 library(here)
 library(dplyr)
 library(vroom)
@@ -34,20 +34,17 @@ tree(census_table, max_depth = 5)
 ## modify_census_tibbles -----------------------------------------------------
 ## Wrapper around a for loop. Modifies `census_table` at specified 'addresses'
 ## modify_census_tibbles(x, modify_func, ..., nations, levels, stats)
-
 modify_census_tibbles <- readRDS(here("functions", "modify-census.RDS"))
 
 ## selector -------------------------------------------------------------------
 ## Function factory: makes select functions with specified args.
 ## Helpful for selecting flexibly amidst slightly inconsistent tables
 ## selector(...)
-## eg. select_geo_codes <- selector(matches("oa_id"), matches("sa_id"))
-## select_geo_codes(x, starts_with("something_"))
 selector <- readRDS(here("functions", "selector.RDS"))
-```
 
-```{r renamingColoumns}
-
+## remove-prefix -------------------------------------------------------------
+## Chops off a prefix when given a string and a separator. Will take regex if
+## asked nicely.
 remove_prefix <- function(x, sep, regex = FALSE){
   
   if(!regex){ sep <- stringr::fixed(sep) }
@@ -65,7 +62,14 @@ remove_prefix <- function(x, sep, regex = FALSE){
   return(string_out)
                  
 }
+```
 
+## Renaming
+
+### Remove all prefixes
+
+```{r removePrefixes}
+## Remove prefixes from all tibbles -------------------------------------------
 census_table <-
   modify_census_tibbles(
     census_table,
@@ -73,17 +77,23 @@ census_table <-
     .fn = remove_prefix,
     .cols = everything(),
     sep = "..")
+```
 
-#RENAMING ETHNICITY TABLES for England, Wales & Scotland 
+### Rename ethnicity tibbles
 
-# census_select_ews <- function(x){
-  census_select_ews <- selector(
-    matches("com"), matches("diocese"), matches("nation"),
-    matches("parish_code"), matches("oa_id"),
-    matches("geo_code"), matches("sa_id")
-         )
+```{r ethnicityRename}
+## census-select-ews() -------------------------------------------------------
+## Using selector() to retain certain columns across English, Welsh and 
+## Scottish tibbles. 
 
-tmp <-
+census_select_ews <- selector(
+  matches("com"), matches("diocese"), matches("nation"),
+  matches("parish_code"), matches("oa_id"),
+  matches("geo_code"), matches("sa_id")
+  )
+
+## select only relevant fields for ethnicity across England, Scotland, Wales -
+census_table <-
   modify_census_tibbles(
     census_table,
     modify_func = census_select_ews,
@@ -93,11 +103,16 @@ tmp <-
     asian_or_asian_british,
     mixed_multiple_ethnicity,
     other_ethnicity,
+    
     stats = "ethn",
     nations = c("England", "Wales", "Scotland")
     )
+```
 
-#Renaming age ok
+### Rename age tibbles
+
+```{r renameAge}
+## across all population tibbles, replace "xsomething" w/ "age_something"
 census_table <-
   modify_census_tibbles(
     census_table,
@@ -110,8 +125,13 @@ census_table <-
     
     stats = "pop"
 )
+```
 
-# drop all suffix _health in health analysis ok
+### Rename health tibbles
+
+```{r renameHealth}
+
+# drop all suffix _health in health analysis
  census_table <-
    modify_census_tibbles(
      census_table,
@@ -125,6 +145,13 @@ census_table <-
   nations = c("Wales", "Scotland", "Northern-Ireland", "England")
  )
  
+```
+
+### Remove total_persons columns
+
+That is, remove them from all tibbles except population statistics tibbles. We may review this in future.
+
+```{r removeTotalPerson}
  # drop total person ok
  census_table <-
    modify_census_tibbles(
@@ -135,9 +162,33 @@ census_table <-
      
      stats = c("ethn", "health", "house", "rel")
    )
+```
+
+### Popultion tibbles: Make gender fields consistent
+
+```{r makeGenderFieldsConsistent}
+ #Add _persons to pop tables of Northern Ireland& Repulblic of Ireland
+ census_table <-
+   modify_census_tibbles(
+     census_table,
+     modify_func = rename,
+     
+     male   = "male_persons",
+     female = "female_persons",
+     
+     stats = "pop",
+     nations = c("Repulblic-of Ireland", "Northern-Ireland")
+   )
+```
+
+### Rename 'overlap proportion' column
+
+For the CoM tibbles, there's a column that tells us the extent to which every OA (or similar) overlaps with the custom CoM area. Currently it's called `proportion_of_[thing]_within_co_m_boundary`, which isn't ideal.
+
+
+```{r renameComProportion}
  
- 
- #rename of column proportion of oa - Ireland & Northern Ireland ok
+ # rename of column proportion of oa - Ireland & Northern Ireland ok
  ## Make a silly function that will work with 'rename_with()'
  ## Might crash if it tries to rename multiple columns - good!
  make_name_com_prop <- function(x){
@@ -152,23 +203,6 @@ census_table <-
      cols = matches("proportion_of_._within_co_m_boundary"),
      .fn  = make_name_com_prop
  )
-
- 
- #Add _persons to pop tables of Northern Ireland& Repulblic of Ireland
- census_table <-
-   modify_census_tibbles(
-     census_table,
-     modify_func = rename,
-     
-     male   = "male_persons",
-     female = "female_persons",
-     
-     stats = "pop",
-     nations = c("Repulblic-of Ireland", "Northern-Ireland")
-   )
-
-
-
 
 ```
 
