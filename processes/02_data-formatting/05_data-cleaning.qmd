@@ -57,8 +57,7 @@ remove_prefix <- function(x, sep, regex = FALSE){
   if(any(is.na(sep_end))){
     na_seps <- which(is.na(sep_end))
     sep_end[na_seps] <- 0
-    
-    # for(i in na_seps) warning("Separator '", sep, "' not found in colunm name '", x[[i]] , "'")
+
     }
   
   string_out <- str_sub(x, sep_end + 1)
@@ -76,17 +75,6 @@ census_table <-
     sep = "..")
 
 #RENAMING ETHNICITY TABLES for England, Wales & Scotland 
-
-census_select_ews <- function(x, ...){
-  select(x,
-         ## com/dioceses/nation
-         matches("com"), matches("diocese"), matches("nation"),
-         ## Diocese-level fields
-         matches("parish_code"), matches("oa_id"),
-         ## Nation-level fields
-         matches("geo_code"), matches("sa_id"),
-         ...)
-}
 
 # census_select_ews <- function(x){
   census_select_ews <- selector(
@@ -118,6 +106,7 @@ tmp <-
   modify_census_tibbles(
     census_table,
     modify_func = census_select_ews,
+    
     white_or_white_british,
     black_or_black_british,
     asian_or_asian_british,
