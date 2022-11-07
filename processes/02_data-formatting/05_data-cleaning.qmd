@@ -83,25 +83,6 @@ census_table <-
     matches("geo_code"), matches("sa_id")
          )
 
-## Not quite: `selector` is a function-factory that we read in from elsewhere.
-## A function-factory is a funciton that returns a function. It works like this:
-  ### custom_select <- selector(mpg, cyl)
-  ### ^ custom_select is a function that always selects `mpg` and `cyl`, 
-  ### plus anything else that's passed to it
-  ### custom_select(mtcars, drat) # select `drat`, `mpg` and `cyl` from mtcars 
-
-
-  ## So we can make 'census_select_ews()` like so:
-# # census_select_ews <- selector(
-#          ## com/dioceses/nation
-#          matches("com"), matches("diocese"), matches("nation"),
-#          ## Diocese-level fields
-#          matches("parish_code"), matches("oa_id"),
-#          ## Nation-level fields
-#          matches("geo_code"), matches("sa_id")
-#          )
-  
-
 tmp <-
   modify_census_tibbles(
     census_table,
