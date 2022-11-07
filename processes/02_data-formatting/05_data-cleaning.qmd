@@ -86,17 +86,18 @@ census_table <-
 ## Using selector() to retain certain columns across English, Welsh and 
 ## Scottish tibbles. 
 
-census_select_ews <- selector(
+census_select_ethn <- selector(
   matches("com"), matches("diocese"), matches("nation"),
   matches("parish_code"), matches("oa_id"),
-  matches("geo_code"), matches("sa_id")
+  matches("geo_code"), matches("sa_id"),
+  matches("proportion_of_.+_within_co_m_boundary")
   )
 
 ## select only relevant fields for ethnicity across England, Scotland, Wales -
 census_table <-
   modify_census_tibbles(
     census_table,
-    modify_func = census_select_ews,
+    modify_func = census_select_ethn,
     
     white_or_white_british,
     black_or_black_british,
@@ -107,6 +108,10 @@ census_table <-
     stats = "ethn",
     nations = c("England", "Wales", "Scotland")
     )
+
+## TODO: remove surplus columns for Northern-Ireland ethnicity tibbles
+##       can still use census_select_ethn
+
 ```
 
 ### Rename age tibbles
@@ -125,6 +130,8 @@ census_table <-
     
     stats = "pop"
 )
+
+## TODO: Drop '_years_old' from all age columns
 ```
 
 ### Rename health tibbles
@@ -137,12 +144,12 @@ census_table <-
      census_table,
      modify_func = rename_with,
      
-     .fn = str_replace,
+     .fn = str_remove,
      .cols = ends_with("_health"),
-     "_health", "",
+     "_health",
      
   stats = "health",
-  nations = c("Wales", "Scotland", "Northern-Ireland", "England")
+  # nations = c("Wales", "Scotland", "Northern-Ireland", "England")
  )
  
 ```
@@ -201,33 +208,36 @@ For the CoM tibbles, there's a column that tells us the extent to which every OA
      census_table,
      rename_with,
      
-     .cols = matches("proportion_of_._within_co_m_boundary"),
+     .cols = matches("proportion_of_.+_within_co_m_boundary"),
      .fn  = make_name_com_prop
  )
 
 ```
 
-```{r round up the coms prop columns}
+## CoM Overlap Proportions
+
+### Ensure overlap is never > 1
+
+```{r roundUpComsProp}
 #| eval: false
-coms_prop_roundings <- function(coms_prop) {
-  coms_prop = df[ , 5]
-  if (coms_prop > 1) {
-  round(coms_prop, digits = 0)
-  } else {
-   round((coms_prop), 1)}
 
-# 
-
-#multiply across other columns
-  census_table <-
-   modify_census_tibbles(
-     census_table,
-     modify_func = mutate,
-     across(where(is.numeric)),
-    multiply_by,
-    coms_prop
-   )
-     
-  
+census_table <- 
+  modify_census_tibbles(
+    census_table,
+    mutate,
+    
+    com_prop = min(com_prop, 1),
+    
+    levels = "com"
+  )
  
+```
+
+
+### Multiply census stats by com_prop
+
+```{r multiplyByComProp}
+
+## TODO: This
+
 ```
