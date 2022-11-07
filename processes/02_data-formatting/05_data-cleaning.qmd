@@ -24,7 +24,7 @@ library(lobstr)
 ```{r readInCensusTable}
 census_table <- readRDS(here("data", "intermediate", "census", "merged-data", "02_grouped-by-level-and-nation_2022-10-25.RDS"))
 
-tree(census_table, max_depth = 5)
+# tree(census_table, max_depth = 3)
 ```
 
 ## Read in Helpers
@@ -177,7 +177,7 @@ That is, remove them from all tibbles except population statistics tibbles. We m
      female = "female_persons",
      
      stats = "pop",
-     nations = c("Repulblic-of Ireland", "Northern-Ireland")
+     nations = c("Republic-of Ireland", "Northern-Ireland")
    )
 ```
 
