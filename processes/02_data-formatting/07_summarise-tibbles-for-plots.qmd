@@ -1,0 +1,122 @@
+---
+title: "07_summarise tibbles for ggplot"
+format: html
+editor: visual
+---
+
+```{r libraries}
+library(dplyr)
+library(purrr)
+library(here)
+# library(vroom)
+library(stringr)
+```
+
+```{r ReadInData}
+scaffold <- 
+  readRDS(
+    here("data", "intermediate", "census", "merged-data",
+         "04_census-mega-table_2022-11-07.RDS"))
+```
+
+```{r summariseTibbles}
+
+do_to_tibbles <- function(tibbles, new_function, ...){
+out_list <- list( map(tibbles, new_function, ...) )
+return(out_list)
+
+}
+
+scaffold <- rowwise(scaffold)
+
+unwanted_numerics <- c("parish_code", "com_prop")
+
+scaffold <- mutate(
+  scaffold,
+  across(
+    starts_with("tibble_"),
+    do_to_tibbles,
+    summarise,
+    across(where(is.numeric) & !any_of(unwanted_numerics),
+           sum,
+           #NB curently parish_code and com_prop are sumamrised
+           na.rm = TRUE)
+  ))
+
+## cur_column example
+
+new_scaffold <- mutate(
+  scaffold, 
+  across(
+    starts_with("tibble_"),
+    do_to_tibbles,
+    mutate,
+    level = cur_column() |> str_remove("tibble_")
+))
+
+# |> 
+# rbind(scaffold, level = com, diocese, nation)
+# )
+
+safe_rbind <- function(x, y, ...){
+  tryCatch(
+    expr = {
+      rbind(x,y)
+    },
+    error = function(cnd){
+      
+      x_names <- names(x)
+      y_names <- names(y)
+      bad_names <- paste(
+        x_names[!x_names %in% y_names],
+        y_names[!y_names %in% x_names], "\n"
+      )
+      warning("Bad names!\n", bad_names)
+      return(x)
+    }
+  )
+}
+
+bind_tibbles <- function(...){
+  
+  dots <- list(...)
+  nice_list <- pmap(.l = dots, list)
+  
+  map(nice_list, reduce, safe_rbind, deparse.level)
+  
+}
+
+## Problem with religion names in English dioceses
+test <- 
+  mutate(new_scaffold, 
+         rbound_tibbles =
+           list(
+             bind_tibbles(tibble_nation, tibble_diocese, tibble_com)
+           )
+  )
+
+
+# new_scaffold <- mutate(
+#   scaffold, 
+#   across(
+#     starts_with("tibble_"),
+#          function(x) cur_column() |> str_remove("tibble_"),
+# ) |> 
+#   select(starts_with("tibble_")),
+# rbind(com, diocese, nation)
+# )
+
+
+
+
+
+
+# new_com <- mutate(com, level = "com")
+# > new_diocese <- mutate(diocese, level = "diocese")
+# > new_nation <- mutate(nation, level = "nation")
+# > rbind(new_com, new_diocese, new_nation) -> stats
+# > stats
+# stats <- relocate(stats, level)
+#  require(tidyr)
+# stats <- pivot_longer(stats, -level)
+```

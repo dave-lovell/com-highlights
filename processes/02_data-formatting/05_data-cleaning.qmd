@@ -148,7 +148,7 @@ census_table <-
      .cols = ends_with("_health"),
      "_health",
      
-  stats = "health",
+  stats = "health"
   # nations = c("Wales", "Scotland", "Northern-Ireland", "England")
  )
  
@@ -193,7 +193,6 @@ That is, remove them from all tibbles except population statistics tibbles. We m
 
 For the CoM tibbles, there's a column that tells us the extent to which every OA (or similar) overlaps with the custom CoM area. Currently it's called `proportion_of_[thing]_within_co_m_boundary`, which isn't ideal.
 
-
 ```{r renameComProportion}
  
  # rename of column proportion of oa - Ireland & Northern Ireland ok
@@ -216,7 +215,7 @@ For the CoM tibbles, there's a column that tells us the extent to which every OA
 
 ## CoM Overlap Proportions
 
-### Ensure overlap is never > 1
+### Ensure overlap is never \> 1
 
 ```{r roundUpComsProp}
 #| eval: false
@@ -233,11 +232,23 @@ census_table <-
  
 ```
 
-
 ### Multiply census stats by com_prop
 
 ```{r multiplyByComProp}
 
 ## TODO: This
+census_table <- 
+  modify_census_tibbles(
+    census_table,
+    mutate,
+    across(where(is.numeric) & !com_prop, 
+           function(x)(x * com_prop)),
+    levels = "com"
+  )
+```
 
+Save Data
+
+```{r SaveData}
+saveRDS(census_table, here("data", "intermediate", "census", "merged-data", "03_cleaned-data-ready-for-exploratory-analysis_2022-11-07.RDS"))
 ```
