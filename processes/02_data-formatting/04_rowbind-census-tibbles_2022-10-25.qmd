@@ -178,10 +178,7 @@ rbind_warn <- function(x, y){
     expr = {rbind(x,y)},
     error = function(cnd){
       bad.names <- names(y)[!names(y) %in% names(x)]
-      warning("Rbind unsucessful in ",
-              str_c(unique(y[["nation"]]), unique(y[["diocese"]]), unique(y[["com"]]),
-                    sep = ":"),
-              "\nThe following names were not r-bindable:",
+      warning("\nThe following names were not r-bindable:",
               "\n* ", 
               str_c(bad.names, collapse = "\n* "),
               "\n------------------------------------------------------\n\n")
