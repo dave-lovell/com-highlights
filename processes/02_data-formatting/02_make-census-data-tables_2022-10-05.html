@@ -215,7 +215,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <section id="read-excel-files" class="level3">
 <h3 class="anchored" data-anchor-id="read-excel-files">Read excel files</h3>
 <p>It’s <em>probably</em> best to do this one directory at at a time, since there are only 3 directories and each one might want slightly different arguments. NB this code block takes maybe like 15/20 minutes to run.</p>
-<div class="cell" data-hash="02_make-census-data-tables_2022-10-05_cache/html/readExcels_9a1d93f98f590e21ad8bf23b1393d2cf">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>census_tables <span class="ot">&lt;-</span> <span class="fu">lapply</span>(excels, lapply, excel_extract,</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>                        <span class="at">tabs =</span> <span class="fu">c</span>(</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>                          <span class="dv">1</span>, <span class="st">"Ethnicity"</span>, <span class="st">"Religion"</span>, <span class="st">"Health"</span>, <span class="st">"Household type"</span></span>

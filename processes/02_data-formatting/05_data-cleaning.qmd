@@ -137,7 +137,7 @@ census_table <-
    modify_census_tibbles(
      census_table,
      modify_func = select,
-     .cols = -(starts_with("religion_") & !matches("religion_not_stated")),
+     .cols = -(starts_with("religion_") & !matches("^religion_not_stated$")),
      stats = "rel",
      nations = "England"
      
@@ -222,9 +222,8 @@ That is, remove them from all tibbles except population statistics tibbles. We m
      census_table,
      modify_func = select,
      
-     .cols = -starts_with("total"),
-     
-     stats = c("ethn", "health", "house", "rel")
+     .cols = -any_of(c("population", "total_population",
+                       "totals", "total", "total_persons"))
    )
 ```
 
