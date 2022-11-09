@@ -167,23 +167,89 @@ coms_by_nation <-
 
 This process revealed a data quality issue: inconsistent names for Llandaff CoM's source data. Right now we're ignoring Llandaff, but we'll fix the data in due course.
 
+## Sort out Llandaff Diocese
+
+Because Llandaff's CoM area is also just the whole diocese of Llandaff (I think), the Diocese files have a 'proportion_of_lsoa...' field. We need to remove this from `coms_by_nation`.
+
+```{r fixLlandaffDiocese}
+coms_by_nation[["Wales"]][["dioceses_tables"]][
+  coms_by_nation[["Wales"]][["diocese"]] == "Llandaff"
+] <- 
+  coms_by_nation[["Wales"]][["dioceses_tables"]][
+    coms_by_nation[["Wales"]][["diocese"]] == "Llandaff"
+  ] |>
+  map(map, select, -matches(".*proportion_of_.+_within_.+"))
+```
+
+### Helper: pre_bind_name
+
+A function that renames tibbles ready for binding. Unmatching names will be flagged by another helper, `rbind_warn()`
+
+```{r pre_bind_rename}
+pre_bind_rename <- function(x){
+  
+  ## male_persons --> males ect.
+  x <- 
+  rename_with(
+    x,
+    str_replace,
+    .cols = matches("pop\\.\\..+_persons"),
+    "_persons",
+    "s"
+    ) |> 
+    rename_with(
+      str_replace,
+      .cols = matches(".+proportion_of_.+_within_co_m_boundary"),
+      "_of_.+_within_",
+      "_of_area_within_"
+    ) |> 
+      rename_with(
+        str_remove,
+        .cols = contains("ethnic_group_e_s_w_"),
+        "ethnic_group_e_s_w_"
+    ) |> 
+    rename_with(
+      str_remove,
+      .cols = ends_with("_unit_persons"),
+      "_unit_persons(?=$)"
+    )
+  
+  return(x)
+}
+```
+
 #### Helper: Rbind warner
 
 A little wrapper around `rbind()` that we can use to ignore bad calls and passes a warning (or, optionally, an error)
 
 ```{r rbindWarner}
+
+
+
 rbind_warn <- function(x, y){
   
+  x <- pre_bind_rename(x)
+  y <- pre_bind_rename(y)
+  
   tryCatch(
-    expr = {rbind(x,y)},
+    expr = {
+      
+      
+      
+      rbind(x,y)
+      
+      },
     error = function(cnd){
-      bad.names <- names(y)[!names(y) %in% names(x)]
+      bad.names.y <- names(y)[!names(y) %in% names(x)]
+      bad.names.x <- names(x)[!names(x) %in% names(y)]
+      bad.names <- c(bad.names.x, bad.names.y)
       warning("\nThe following names were not r-bindable:",
               "\n* ", 
               str_c(bad.names, collapse = "\n* "),
               "\n------------------------------------------------------\n\n")
-      return(x)
-      
+      # return(x)
+      bad_out <- tibble(oops = NA)
+      return(bad_out)
     }
   )
 }
@@ -214,12 +280,12 @@ make_long_tables <- function(x){
   )
 }
 
-coms_by_nation <- map(coms_by_nation, make_long_tables)
-lobstr::tree(coms_by_nation, max_depth = 3)
+out <- map(coms_by_nation, make_long_tables)
+lobstr::tree(out, max_depth = 3)
 ```
 
 ## Save data
 
 ```{r saveData}
-saveRDS(coms_by_nation, here("data", "intermediate", "census", "merged-data", "02_grouped-by-level-and-nation_2022-10-25.RDS"))
+saveRDS(out, here("data", "intermediate", "census", "merged-data", "02_grouped-by-level-and-nation_2022-10-25.RDS"))
 ```
