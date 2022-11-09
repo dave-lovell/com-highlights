@@ -8,8 +8,8 @@ editor: visual
 library(dplyr)
 library(purrr)
 library(here)
-# library(vroom)
 library(stringr)
+library(tidyr)
 ```
 
 ```{r ReadInData}
@@ -96,27 +96,54 @@ test <-
   )
 
 
-# new_scaffold <- mutate(
-#   scaffold, 
-#   across(
-#     starts_with("tibble_"),
-#          function(x) cur_column() |> str_remove("tibble_"),
-# ) |> 
-#   select(starts_with("tibble_")),
-# rbind(com, diocese, nation)
-# )
+## mutate
+## do_to_tibbles
+## pivot_longer
+## ... (?pivot_longer)
+
+longer_test <- function(x){
+  longer_tibble <- 
+    pivot_longer(x,
+                 cols = starts_with(rbound_),
+                 names_to = "levels",
+                 values_to = "value")
+  return(longer_tibble)
+}
 
 
+new_test <- mutate(
+  test, 
+  across(
+    starts_with("rbound_"),
+    do_to_tibbles,
+    .fn =longer_test
+    
+))
 
 
+lil_test <- select(penguins, species, island, sex, year, ends_with("_mm"))
+head(lil_penguins)
 
+long_penguins <-
+  pivot_longer(
+  lil_penguins,
+  cols = ends_with("_mm"),
+  names_to = "measurement",
+  values_to = "value"
+)
+## muck around w/ penguins
+require(palmerpenguins)
 
-# new_com <- mutate(com, level = "com")
-# > new_diocese <- mutate(diocese, level = "diocese")
-# > new_nation <- mutate(nation, level = "nation")
-# > rbind(new_com, new_diocese, new_nation) -> stats
-# > stats
-# stats <- relocate(stats, level)
-#  require(tidyr)
-# stats <- pivot_longer(stats, -level)
+head(penguins)
+
+lil_penguins <- select(penguins, species, island, sex, year, ends_with("_mm"))
+head(lil_penguins)
+
+long_penguins <-
+  pivot_longer(
+  lil_penguins,
+  cols = ends_with("_mm"),
+  names_to = "measurement",
+  values_to = "value"
+)
 ```
