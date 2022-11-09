@@ -112,6 +112,63 @@ census_table <-
 ## TODO: remove surplus columns for Northern-Ireland ethnicity tibbles
 ##       can still use census_select_ethn
 
+ # drop surplus columns in Norther-Ireland Ethnicity tibbles-ladun
+ census_table <-
+   modify_census_tibbles(
+     census_table,
+     modify_func = select,
+     
+     .cols = -starts_with("ethnic_"),
+     
+     stats = c("ethn"),
+     nations = c("Northern-Ireland")
+   )
+
+```
+
+Rename religion tibbles
+
+```{r Rename Religion Tibbles}
+
+
+
+# drop all duplicate columns in religion analysis 
+census_table <-
+   modify_census_tibbles(
+     census_table,
+     modify_func = select,
+     .cols = -(starts_with("religion_") & !matches("religion_not_stated")),
+     stats = "rel",
+     nations = "England"
+     
+  # nations = c("Wales", "Scotland", "Northern-Ireland", "England")
+)
+  
+
+
+# drop all prefic religion_ in religion analysis - check
+ # census_table <-
+ #   modify_census_tibbles(
+ #     census_table,
+ #     modify_func = rename_with,
+ #     .fn = remove_prefix,
+ #     .cols = starts_with("religion_"),
+ #     "religion_",
+ #     stats = "rel"
+ #  # nations = c("Wales", "Scotland", "Northern-Ireland", "England")
+ # )
+
+
+
+census_select_rel <- selector(
+  matches("com"), matches("diocese"), matches("nation"),
+   matches("oa_id"), matches("sa_id"),
+  matches("proportion_of_.+_within_co_m_boundary"), matches("christian"),
+  matches("buddhist"), matches("hindu"), matches("jewish"),matches("muslim"),
+  matches("sikh"), matches("other_religion"), matches("no_religion"), 
+  matches("religion_not_stated")
+  )
+
 ```
 
 ### Rename age tibbles
@@ -175,17 +232,32 @@ That is, remove them from all tibbles except population statistics tibbles. We m
 
 ```{r makeGenderFieldsConsistent}
 #| eval: false
- #Add _persons to pop tables of Northern Ireland& Repulblic of Ireland
- census_table <-
+ #Add _persons to pop tables of Northern Ireland& Repulblic of Ireland ladun
+ 
+rename_males_females <- function(x){
+  out <- 
+    str_replace_all(x, "males", "male_persons") |>    
+    str_replace_all("females", "female_persons")
+  
+  return(out)
+    
+}
+
+census_table <-
    modify_census_tibbles(
      census_table,
-     modify_func = rename,
-     
-     male   = "male_persons",
-     female = "female_persons",
-     
-     stats = "pop",
-     nations = c("Republic-of-Ireland", "Northern-Ireland")
+     modify_func = rename_with,
+     .fn = rename_males_females,
+     .cols = any_of(c("males", "females")),
+     #...
+     # .cols = any_of(c("males", "females")),
+     # 
+     #  male_persons <- "males",
+     # female_persons <- "females",
+    
+     stats = "pop"
+     #nations = c("Republic-of-Ireland")
+     #nations = c("Republic-of-Ireland", "Northern-Ireland", "Scotland")
    )
 ```
 
