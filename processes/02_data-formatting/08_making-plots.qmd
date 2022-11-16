@@ -1,0 +1,64 @@
+---
+title: "08_making-plots"
+format: html
+editor: visual
+---
+
+```{r libraries}
+library(ggplot2)
+library(here)
+library(stringr)
+library(tidyr)
+```
+
+```{r readInData}
+censustable_plot <- readRDS(here("data", "intermediate", "census", "merged-data", "05_census-data-pivot-longer_2022-11-16.RDS"))
+```
+
+### Helpers
+
+#### Do_to_tibbles
+
+```{r makeDoToTibbles}
+do_to_tibbles <- function(tibbles, new_function, ...){
+  
+out_list <- list( map(tibbles, new_function, ...) )
+
+return(out_list)
+}
+```
+
+Come up with ggplot table
+
+```{r ggplotTable}
+plot_bar <- function(tibble){
+  ggplot(tibble, 
+         aes(x = levels, 
+             y = value)) +
+  geom_point(aes(fill = level)) + 
+    geom_bar(stat = "identity")
+}
+
+censustable_plot <- 
+  mutate(censustable_plot, 
+         plots = do_to_tibbles(rbound_tibbles, rowwise),
+         plots = do_to_tibbles(plots, plot_bar)
+  )
+
+censustable_plot$plots
+
+> plotpeek <- censustable_plot$plots[[1]][[1]]
+> plotpeek <- function() censustable_plot$plots[[1]][[1]]
+> plotpeek()
+> plot_bar(censustable_plot)
+```
+
+Plots
+
+```{r CensusDataPlots}
+censustable_plot$rbound_tibbles |> 
+  ggplot() +
+  geom_histogram(mapping = aes(x = levels),
+                 fill = "blue")
+  
+```

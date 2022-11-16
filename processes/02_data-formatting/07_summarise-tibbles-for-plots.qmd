@@ -109,10 +109,17 @@ longer_test <- function(x){
 }
 
 
-new_test <- mutate(
+censustable_plot <- mutate(
   test,
   rbound_tibbles = 
     do_to_tibbles(rbound_tibbles, longer_test)
 )
 
+
+```
+
+Save Data
+
+```{r saveData}
+saveRDS(censustable_plot, here("data", "intermediate", "census", "merged-data", "05_census-data-pivot-longer_2022-11-16.RDS"))
 ```
