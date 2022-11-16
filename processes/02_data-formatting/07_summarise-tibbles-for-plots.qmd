@@ -24,7 +24,6 @@ scaffold <-
 do_to_tibbles <- function(tibbles, new_function, ...){
 out_list <- list( map(tibbles, new_function, ...) )
 return(out_list)
-
 }
 
 scaffold <- rowwise(scaffold)
