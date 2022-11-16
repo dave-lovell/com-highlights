@@ -96,54 +96,23 @@ test <-
   )
 
 
-## mutate
-## do_to_tibbles
-## pivot_longer
-## ... (?pivot_longer)
 
 longer_test <- function(x){
   longer_tibble <- 
     pivot_longer(x,
-                 cols = starts_with(rbound_),
+                 # cols = starts_with(rbound_),
+                 cols = -level,
                  names_to = "levels",
                  values_to = "value")
+  
   return(longer_tibble)
 }
 
 
 new_test <- mutate(
-  test, 
-  across(
-    starts_with("rbound_"),
-    do_to_tibbles,
-    .fn =longer_test
-    
-))
-
-
-lil_test <- select(penguins, species, island, sex, year, ends_with("_mm"))
-head(lil_penguins)
-
-long_penguins <-
-  pivot_longer(
-  lil_penguins,
-  cols = ends_with("_mm"),
-  names_to = "measurement",
-  values_to = "value"
+  test,
+  rbound_tibbles = 
+    do_to_tibbles(rbound_tibbles, longer_test)
 )
-## muck around w/ penguins
-require(palmerpenguins)
 
-head(penguins)
-
-lil_penguins <- select(penguins, species, island, sex, year, ends_with("_mm"))
-head(lil_penguins)
-
-long_penguins <-
-  pivot_longer(
-  lil_penguins,
-  cols = ends_with("_mm"),
-  names_to = "measurement",
-  values_to = "value"
-)
 ```
