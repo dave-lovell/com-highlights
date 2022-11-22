@@ -5,10 +5,9 @@ editor: visual
 ---
 
 ```{r libraries}
-library(ggplot2)
+library(tidyverse)
 library(here)
-library(stringr)
-library(tidyr)
+library(scales)
 ```
 
 ```{r readInData}
@@ -31,34 +30,85 @@ return(out_list)
 Come up with ggplot table
 
 ```{r ggplotTable}
-plot_bar <- function(tibble){
+plot_bar <- function(tibble, plot_title = NULL){
   ggplot(tibble, 
          aes(x = levels, 
-             y = value)) +
-  geom_point(aes(fill = level)) + 
-    geom_bar(stat = "identity")
+             y = ratio, fill = level)) + 
+    geom_bar(stat = "identity", position = "dodge") +
+    scale_y_continuous(labels = percent) +
+    ggtitle(plot_title)
 }
 
 censustable_plot <- 
-  mutate(censustable_plot, 
+  mutate(censustable_plot,
+         rbound_tibbles =
+           do_to_tibbles(rbound_tibbles,
+                         \(x){
+                           out <- group_by(x, level) |> 
+                             mutate(ratio = value / sum(value),
+                                    com_name = .env[["com"]],
+                                    diocese_name = .env[["diocese"]],
+                                    nation_name  = .env[["nation"]]) |>
+                             ungroup()
+                           return(out)
+                         }),
          plots = do_to_tibbles(rbound_tibbles, rowwise),
-         plots = do_to_tibbles(plots, plot_bar)
+         plots = do_to_tibbles(plots, plot_bar, plot_title = com)
   )
 
-censustable_plot$plots
+# censustable_plot$plots
+###############################################################################
 
-> plotpeek <- censustable_plot$plots[[1]][[1]]
-> plotpeek <- function() censustable_plot$plots[[1]][[1]]
-> plotpeek()
-> plot_bar(censustable_plot)
+plotpeek <- function() censustable_plot$plots[[1]][[1]]
+plotpeek()
+
+
 ```
 
 Plots
 
 ```{r CensusDataPlots}
-censustable_plot$rbound_tibbles |> 
-  ggplot() +
-  geom_histogram(mapping = aes(x = levels),
-                 fill = "blue")
+# censustable_plot$rbound_tibbles |> 
+#   ggplot() +
+#   geom_histogram(mapping = aes(x = levels),
+#                  fill = "blue")
+
+modify_plot_tibbles <- 
+  function(
+    x,
+    nation = 
+      c("England", "Northern-Ireland", "Republic-of-Ireland", "Scotland", "Wales"),
+    stat = 
+      c("ethn", "health", "house", "pop", "rel"),
+    modify_func,
+    ...,
+    
+    col_to_modify = "rbound_tibbles",
+    new_col = "rbound_tibbles"){
+    
+    for(this_nation in nation){
+      for(this_stat in stat){
+        
+        x[[new_col]][x[["nation"]] == this_nation] <- 
+          map(x[[col_to_modify]][x[["nation"]] == this_nation],
+              
+              function(y){
+                y[[this_stat]] <- modify_func(y[[this_stat]], ...)
+                return(y)
+              })
+      }
+    }
+    return(x)
+  }
+
+censustable_plot <- 
+  modify_plot_tibbles(
+    censustable_plot,
+    stat   = "health",
+    modify_func = mutate,
+    levels = str_replace(levels, "_", " "),
+    levels = 
+      ordered(levels, levels = c("very bad", "bad", "fair", "good", "very good"))
+  )
   
 ```
