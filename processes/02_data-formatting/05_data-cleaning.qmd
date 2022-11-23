@@ -230,39 +230,14 @@ That is, remove them from all tibbles except population statistics tibbles. We m
 ### Popultion tibbles: Remove gender fields
 
 ```{r makeGenderFieldsConsistent}
-#| eval: false
- #Add _persons to pop tables of Northern Ireland& Repulblic of Ireland ladun
- 
-rename_males_females <- function(x){
-  out <- 
-    str_replace_all(x, "males", "male_persons") |>    
-    str_replace_all("females", "female_persons")
-  
-  return(out)
-    
-}
 
-census_table <-
-   modify_census_tibbles(
-     census_table,
-     modify_func = rename_with,
-     .fn = rename_males_females,
-     .cols = any_of(c("males", "females")),
-     #...
-     # .cols = any_of(c("males", "females")),
-     # 
-     #  male_persons <- "males",
-     # female_persons <- "females",
-    
-     stats = "pop"
-     #nations = c("Republic-of-Ireland")
-     #nations = c("Republic-of-Ireland", "Northern-Ireland", "Scotland")
-   )
+drop_gender <- function(x){
+  select(x, -any_of(c("males", "females", "male_persons", "female_persons")))
+}
 
 census_table <- modify_census_tibbles(
   census_table,
-  modify_func = select,
-  -any_of(c("male_persons", "female_persons", "males", "females")),
+  modify_func = drop_gender,
   stats = "pop"
 )
 ```
