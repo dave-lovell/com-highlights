@@ -227,7 +227,7 @@ That is, remove them from all tibbles except population statistics tibbles. We m
    )
 ```
 
-### Popultion tibbles: Make gender fields consistent
+### Popultion tibbles: Remove gender fields
 
 ```{r makeGenderFieldsConsistent}
 #| eval: false
@@ -258,6 +258,13 @@ census_table <-
      #nations = c("Republic-of-Ireland")
      #nations = c("Republic-of-Ireland", "Northern-Ireland", "Scotland")
    )
+
+census_table <- modify_census_tibbles(
+  census_table,
+  modify_func = select,
+  -c(females, males),
+  stats = "pop"
+)
 ```
 
 ### Rename 'overlap proportion' column
