@@ -262,7 +262,7 @@ census_table <-
 census_table <- modify_census_tibbles(
   census_table,
   modify_func = select,
-  -c(male_persons, female_persons),
+  -any_of(c("male_persons", "female_persons", "males", "females")),
   stats = "pop"
 )
 ```
