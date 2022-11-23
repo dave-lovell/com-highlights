@@ -175,1229 +175,165 @@ The following object is masked from 'package:readr':
 <span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="fu">return</span>(out_list)</span>
 <span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Come up with ggplot table</p>
+</section>
+</section>
+<section id="modify-plot-tibbles-before-plotting" class="level3">
+<h3 class="anchored" data-anchor-id="modify-plot-tibbles-before-plotting">Modify plot tibbles (before plotting)</h3>
+<section id="add-ratio-col-to-plot-tibbles" class="level4">
+<h4 class="anchored" data-anchor-id="add-ratio-col-to-plot-tibbles">Add ratio col to plot tibbles</h4>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>plot_bar <span class="ot">&lt;-</span> <span class="cf">function</span>(tibble, <span class="at">plot_title =</span> <span class="cn">NULL</span>){</span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(tibble, </span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>         <span class="fu">aes</span>(<span class="at">x =</span> levels, </span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>             <span class="at">y =</span> ratio, <span class="at">fill =</span> level)) <span class="sc">+</span> </span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">"identity"</span>, <span class="at">position =</span> <span class="st">"dodge"</span>) <span class="sc">+</span></span>
-<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_y_continuous</span>(<span class="at">labels =</span> percent) <span class="sc">+</span></span>
-<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ggtitle</span>(plot_title)</span>
-<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>censustable_plot <span class="ot">&lt;-</span> </span>
-<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(censustable_plot,</span>
-<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>         <span class="at">rbound_tibbles =</span></span>
-<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>           <span class="fu">do_to_tibbles</span>(rbound_tibbles,</span>
-<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>                         \(x){</span>
-<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>                           out <span class="ot">&lt;-</span> <span class="fu">group_by</span>(x, level) <span class="sc">|&gt;</span> </span>
-<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>                             <span class="fu">mutate</span>(<span class="at">ratio =</span> value <span class="sc">/</span> <span class="fu">sum</span>(value)) <span class="sc">|&gt;</span></span>
-<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a>                             <span class="fu">ungroup</span>()</span>
-<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a>                           <span class="fu">return</span>(out)</span>
-<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a>                         }),</span>
-<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a>         <span class="at">plots =</span> <span class="fu">do_to_tibbles</span>(rbound_tibbles, rowwise),</span>
-<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a>         <span class="at">plots =</span> <span class="fu">do_to_tibbles</span>(plots, plot_bar, <span class="at">plot_title =</span> com)</span>
-<span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb12-23"><a href="#cb12-23" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-24"><a href="#cb12-24" aria-hidden="true" tabindex="-1"></a><span class="co"># censustable_plot$plots</span></span>
-<span id="cb12-25"><a href="#cb12-25" aria-hidden="true" tabindex="-1"></a><span class="do">###############################################################################</span></span>
-<span id="cb12-26"><a href="#cb12-26" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-27"><a href="#cb12-27" aria-hidden="true" tabindex="-1"></a>plotpeek <span class="ot">&lt;-</span> <span class="cf">function</span>() censustable_plot<span class="sc">$</span>plots[[<span class="dv">1</span>]][[<span class="dv">1</span>]]</span>
-<span id="cb12-28"><a href="#cb12-28" aria-hidden="true" tabindex="-1"></a><span class="fu">plotpeek</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<p><img src="08_making-plots_files/figure-html/ggplotTable-1.png" class="img-fluid" width="672"></p>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>censustable_plot <span class="ot">&lt;-</span> </span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(censustable_plot,</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>         <span class="at">rbound_tibbles =</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>           <span class="fu">do_to_tibbles</span>(rbound_tibbles,</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>                         \(x){</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>                           out <span class="ot">&lt;-</span> <span class="fu">group_by</span>(x, level) <span class="sc">|&gt;</span> </span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>                             <span class="fu">mutate</span>(<span class="at">ratio =</span> value <span class="sc">/</span> <span class="fu">sum</span>(value),</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>                                    <span class="at">com_name =</span> .env[[<span class="st">"com"</span>]],</span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>                                    <span class="at">diocese_name =</span> .env[[<span class="st">"diocese"</span>]],</span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>                                    <span class="at">nation_name  =</span> .env[[<span class="st">"nation"</span>]]) <span class="sc">|&gt;</span></span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>                             <span class="fu">ungroup</span>()</span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>                           <span class="fu">return</span>(out)</span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>                         })</span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-</div>
-<p>Plots</p>
+</section>
+<section id="construct-modification-helper" class="level4">
+<h4 class="anchored" data-anchor-id="construct-modification-helper">Construct modification-helper</h4>
+<p>Using for-loops to index and modify the mega-tibble</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># censustable_plot$rbound_tibbles |&gt; </span></span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="co">#   ggplot() +</span></span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="co">#   geom_histogram(mapping = aes(x = levels),</span></span>
 <span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="co">#                  fill = "blue")</span></span>
 <span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>censustable_plot<span class="sc">$</span>plots</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[[1]]
-[[1]]$ethn</code></pre>
-</div>
-<div class="cell-output-display">
-<p><img src="08_making-plots_files/figure-html/CensusDataPlots-1.png" class="img-fluid" width="672"></p>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-[[1]]$health</code></pre>
-</div>
-<div class="cell-output-display">
-<p><img src="08_making-plots_files/figure-html/CensusDataPlots-2.png" class="img-fluid" width="672"></p>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-[[1]]$house</code></pre>
-</div>
-<div class="cell-output-display">
-<p><img src="08_making-plots_files/figure-html/CensusDataPlots-3.png" class="img-fluid" width="672"></p>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-[[1]]$pop</code></pre>
-</div>
-<div class="cell-output-display">
-<p><img src="08_making-plots_files/figure-html/CensusDataPlots-4.png" class="img-fluid" width="672"></p>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-[[1]]$rel</code></pre>
-</div>
-<div class="cell-output-display">
-<p><img src="08_making-plots_files/figure-html/CensusDataPlots-5.png" class="img-fluid" width="672"></p>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-
-[[2]]
-[[2]]$ethn</code></pre>
-</div>
-<div class="cell-output-display">
-<p><img src="08_making-plots_files/figure-html/CensusDataPlots-6.png" class="img-fluid" width="672"></p>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-[[2]]$health</code></pre>
-</div>
-<div class="cell-output-display">
-<p><img src="08_making-plots_files/figure-html/CensusDataPlots-7.png" class="img-fluid" width="672"></p>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-[[2]]$house</code></pre>
-</div>
-<div class="cell-output-display">
-<p><img src="08_making-plots_files/figure-html/CensusDataPlots-8.png" class="img-fluid" width="672"></p>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-[[2]]$pop</code></pre>
-</div>
-<div class="cell-output-display">
-<p><img src="08_making-plots_files/figure-html/CensusDataPlots-9.png" class="img-fluid" width="672"></p>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-[[2]]$rel</code></pre>
-</div>
-<div class="cell-output-display">
-<p><img src="08_making-plots_files/figure-html/CensusDataPlots-10.png" class="img-fluid" width="672"></p>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-
-[[3]]
-[[3]]$ethn</code></pre>
-</div>
-<div class="cell-output-display">
-<p><img src="08_making-plots_files/figure-html/CensusDataPlots-11.png" class="img-fluid" width="672"></p>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-[[3]]$health</code></pre>
-</div>
-<div class="cell-output-display">
-<p><img src="08_making-plots_files/figure-html/CensusDataPlots-12.png" class="img-fluid" width="672"></p>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-[[3]]$house</code></pre>
-</div>
-<div class="cell-output-display">
-<p><img src="08_making-plots_files/figure-html/CensusDataPlots-13.png" class="img-fluid" width="672"></p>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-[[3]]$pop</code></pre>
-</div>
-<div class="cell-output-display">
-<p><img src="08_making-plots_files/figure-html/CensusDataPlots-14.png" class="img-fluid" width="672"></p>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-[[3]]$rel</code></pre>
-</div>
-<div class="cell-output-display">
-<p><img src="08_making-plots_files/figure-html/CensusDataPlots-15.png" class="img-fluid" width="672"></p>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-
-[[4]]
-[[4]]$ethn</code></pre>
-</div>
-<div class="cell-output-display">
-<p><img src="08_making-plots_files/figure-html/CensusDataPlots-16.png" class="img-fluid" width="672"></p>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-[[4]]$health</code></pre>
-</div>
-<div class="cell-output-display">
-<p><img src="08_making-plots_files/figure-html/CensusDataPlots-17.png" class="img-fluid" width="672"></p>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-[[4]]$house</code></pre>
-</div>
-<div class="cell-output-display">
-<p><img src="08_making-plots_files/figure-html/CensusDataPlots-18.png" class="img-fluid" width="672"></p>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-[[4]]$pop</code></pre>
-</div>
-<div class="cell-output-display">
-<p><img src="08_making-plots_files/figure-html/CensusDataPlots-19.png" class="img-fluid" width="672"></p>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-[[4]]$rel</code></pre>
-</div>
-<div class="cell-output-display">
-<p><img src="08_making-plots_files/figure-html/CensusDataPlots-20.png" class="img-fluid" width="672"></p>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-
-[[5]]
-[[5]]$ethn</code></pre>
-</div>
-<div class="cell-output-display">
-<p><img src="08_making-plots_files/figure-html/CensusDataPlots-21.png" class="img-fluid" width="672"></p>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-[[5]]$health</code></pre>
-</div>
-<div class="cell-output-display">
-<p><img src="08_making-plots_files/figure-html/CensusDataPlots-22.png" class="img-fluid" width="672"></p>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-[[5]]$house</code></pre>
-</div>
-<div class="cell-output-display">
-<p><img src="08_making-plots_files/figure-html/CensusDataPlots-23.png" class="img-fluid" width="672"></p>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-[[5]]$pop</code></pre>
-</div>
-<div class="cell-output-display">
-<p><img src="08_making-plots_files/figure-html/CensusDataPlots-24.png" class="img-fluid" width="672"></p>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-[[5]]$rel</code></pre>
-</div>
-<div class="cell-output-display">
-<p><img src="08_making-plots_files/figure-html/CensusDataPlots-25.png" class="img-fluid" width="672"></p>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-
-[[6]]
-[[6]]$ethn</code></pre>
-</div>
-<div class="cell-output-display">
-<p><img src="08_making-plots_files/figure-html/CensusDataPlots-26.png" class="img-fluid" width="672"></p>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-[[6]]$health</code></pre>
-</div>
-<div class="cell-output-display">
-<p><img src="08_making-plots_files/figure-html/CensusDataPlots-27.png" class="img-fluid" width="672"></p>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-[[6]]$house</code></pre>
-</div>
-<div class="cell-output-display">
-<p><img src="08_making-plots_files/figure-html/CensusDataPlots-28.png" class="img-fluid" width="672"></p>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-[[6]]$pop</code></pre>
-</div>
-<div class="cell-output-display">
-<p><img src="08_making-plots_files/figure-html/CensusDataPlots-29.png" class="img-fluid" width="672"></p>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-[[6]]$rel</code></pre>
-</div>
-<div class="cell-output-display">
-<p><img src="08_making-plots_files/figure-html/CensusDataPlots-30.png" class="img-fluid" width="672"></p>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-
-[[7]]
-[[7]]$ethn</code></pre>
-</div>
-<div class="cell-output-display">
-<p><img src="08_making-plots_files/figure-html/CensusDataPlots-31.png" class="img-fluid" width="672"></p>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-[[7]]$health</code></pre>
-</div>
-<div class="cell-output-display">
-<p><img src="08_making-plots_files/figure-html/CensusDataPlots-32.png" class="img-fluid" width="672"></p>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-[[7]]$house</code></pre>
-</div>
-<div class="cell-output-display">
-<p><img src="08_making-plots_files/figure-html/CensusDataPlots-33.png" class="img-fluid" width="672"></p>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-[[7]]$pop</code></pre>
-</div>
-<div class="cell-output-display">
-<p><img src="08_making-plots_files/figure-html/CensusDataPlots-34.png" class="img-fluid" width="672"></p>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-[[7]]$rel</code></pre>
-</div>
-<div class="cell-output-display">
-<p><img src="08_making-plots_files/figure-html/CensusDataPlots-35.png" class="img-fluid" width="672"></p>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-
-[[8]]
-[[8]]$ethn</code></pre>
-</div>
-<div class="cell-output-display">
-<p><img src="08_making-plots_files/figure-html/CensusDataPlots-36.png" class="img-fluid" width="672"></p>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-[[8]]$health</code></pre>
-</div>
-<div class="cell-output-display">
-<p><img src="08_making-plots_files/figure-html/CensusDataPlots-37.png" class="img-fluid" width="672"></p>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-[[8]]$house</code></pre>
-</div>
-<div class="cell-output-display">
-<p><img src="08_making-plots_files/figure-html/CensusDataPlots-38.png" class="img-fluid" width="672"></p>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-[[8]]$pop</code></pre>
-</div>
-<div class="cell-output-display">
-<p><img src="08_making-plots_files/figure-html/CensusDataPlots-39.png" class="img-fluid" width="672"></p>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-[[8]]$rel</code></pre>
-</div>
-<div class="cell-output-display">
-<p><img src="08_making-plots_files/figure-html/CensusDataPlots-40.png" class="img-fluid" width="672"></p>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-
-[[9]]
-[[9]]$ethn</code></pre>
-</div>
-<div class="cell-output-display">
-<p><img src="08_making-plots_files/figure-html/CensusDataPlots-41.png" class="img-fluid" width="672"></p>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-[[9]]$health</code></pre>
-</div>
-<div class="cell-output-display">
-<p><img src="08_making-plots_files/figure-html/CensusDataPlots-42.png" class="img-fluid" width="672"></p>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-[[9]]$house</code></pre>
-</div>
-<div class="cell-output-display">
-<p><img src="08_making-plots_files/figure-html/CensusDataPlots-43.png" class="img-fluid" width="672"></p>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-[[9]]$pop</code></pre>
-</div>
-<div class="cell-output-display">
-<p><img src="08_making-plots_files/figure-html/CensusDataPlots-44.png" class="img-fluid" width="672"></p>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-[[9]]$rel</code></pre>
-</div>
-<div class="cell-output-display">
-<p><img src="08_making-plots_files/figure-html/CensusDataPlots-45.png" class="img-fluid" width="672"></p>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-
-[[10]]
-[[10]]$ethn</code></pre>
-</div>
-<div class="cell-output-display">
-<p><img src="08_making-plots_files/figure-html/CensusDataPlots-46.png" class="img-fluid" width="672"></p>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-[[10]]$health</code></pre>
-</div>
-<div class="cell-output-display">
-<p><img src="08_making-plots_files/figure-html/CensusDataPlots-47.png" class="img-fluid" width="672"></p>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-[[10]]$house</code></pre>
-</div>
-<div class="cell-output-display">
-<p><img src="08_making-plots_files/figure-html/CensusDataPlots-48.png" class="img-fluid" width="672"></p>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-[[10]]$pop</code></pre>
-</div>
-<div class="cell-output-display">
-<p><img src="08_making-plots_files/figure-html/CensusDataPlots-49.png" class="img-fluid" width="672"></p>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-[[10]]$rel</code></pre>
-</div>
-<div class="cell-output-display">
-<p><img src="08_making-plots_files/figure-html/CensusDataPlots-50.png" class="img-fluid" width="672"></p>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-
-[[11]]
-[[11]]$ethn</code></pre>
-</div>
-<div class="cell-output-display">
-<p><img src="08_making-plots_files/figure-html/CensusDataPlots-51.png" class="img-fluid" width="672"></p>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-[[11]]$health</code></pre>
-</div>
-<div class="cell-output-display">
-<p><img src="08_making-plots_files/figure-html/CensusDataPlots-52.png" class="img-fluid" width="672"></p>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-[[11]]$house</code></pre>
-</div>
-<div class="cell-output-display">
-<p><img src="08_making-plots_files/figure-html/CensusDataPlots-53.png" class="img-fluid" width="672"></p>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-[[11]]$pop</code></pre>
-</div>
-<div class="cell-output-display">
-<p><img src="08_making-plots_files/figure-html/CensusDataPlots-54.png" class="img-fluid" width="672"></p>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-[[11]]$rel</code></pre>
-</div>
-<div class="cell-output-display">
-<p><img src="08_making-plots_files/figure-html/CensusDataPlots-55.png" class="img-fluid" width="672"></p>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-
-[[12]]
-[[12]]$ethn</code></pre>
-</div>
-<div class="cell-output-display">
-<p><img src="08_making-plots_files/figure-html/CensusDataPlots-56.png" class="img-fluid" width="672"></p>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-[[12]]$health</code></pre>
-</div>
-<div class="cell-output-display">
-<p><img src="08_making-plots_files/figure-html/CensusDataPlots-57.png" class="img-fluid" width="672"></p>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-[[12]]$house</code></pre>
-</div>
-<div class="cell-output-display">
-<p><img src="08_making-plots_files/figure-html/CensusDataPlots-58.png" class="img-fluid" width="672"></p>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-[[12]]$pop</code></pre>
-</div>
-<div class="cell-output-display">
-<p><img src="08_making-plots_files/figure-html/CensusDataPlots-59.png" class="img-fluid" width="672"></p>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-[[12]]$rel</code></pre>
-</div>
-<div class="cell-output-display">
-<p><img src="08_making-plots_files/figure-html/CensusDataPlots-60.png" class="img-fluid" width="672"></p>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-
-[[13]]
-[[13]]$ethn</code></pre>
-</div>
-<div class="cell-output-display">
-<p><img src="08_making-plots_files/figure-html/CensusDataPlots-61.png" class="img-fluid" width="672"></p>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-[[13]]$health</code></pre>
-</div>
-<div class="cell-output-display">
-<p><img src="08_making-plots_files/figure-html/CensusDataPlots-62.png" class="img-fluid" width="672"></p>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-[[13]]$house</code></pre>
-</div>
-<div class="cell-output-display">
-<p><img src="08_making-plots_files/figure-html/CensusDataPlots-63.png" class="img-fluid" width="672"></p>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-[[13]]$pop</code></pre>
-</div>
-<div class="cell-output-display">
-<p><img src="08_making-plots_files/figure-html/CensusDataPlots-64.png" class="img-fluid" width="672"></p>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-[[13]]$rel</code></pre>
-</div>
-<div class="cell-output-display">
-<p><img src="08_making-plots_files/figure-html/CensusDataPlots-65.png" class="img-fluid" width="672"></p>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-
-[[14]]
-[[14]]$ethn</code></pre>
-</div>
-<div class="cell-output-display">
-<p><img src="08_making-plots_files/figure-html/CensusDataPlots-66.png" class="img-fluid" width="672"></p>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-[[14]]$health</code></pre>
-</div>
-<div class="cell-output-display">
-<p><img src="08_making-plots_files/figure-html/CensusDataPlots-67.png" class="img-fluid" width="672"></p>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-[[14]]$house</code></pre>
-</div>
-<div class="cell-output-display">
-<p><img src="08_making-plots_files/figure-html/CensusDataPlots-68.png" class="img-fluid" width="672"></p>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-[[14]]$pop</code></pre>
-</div>
-<div class="cell-output-display">
-<p><img src="08_making-plots_files/figure-html/CensusDataPlots-69.png" class="img-fluid" width="672"></p>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-[[14]]$rel</code></pre>
-</div>
-<div class="cell-output-display">
-<p><img src="08_making-plots_files/figure-html/CensusDataPlots-70.png" class="img-fluid" width="672"></p>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-
-[[15]]
-[[15]]$ethn</code></pre>
-</div>
-<div class="cell-output-display">
-<p><img src="08_making-plots_files/figure-html/CensusDataPlots-71.png" class="img-fluid" width="672"></p>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-[[15]]$health</code></pre>
-</div>
-<div class="cell-output-display">
-<p><img src="08_making-plots_files/figure-html/CensusDataPlots-72.png" class="img-fluid" width="672"></p>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-[[15]]$house</code></pre>
-</div>
-<div class="cell-output-display">
-<p><img src="08_making-plots_files/figure-html/CensusDataPlots-73.png" class="img-fluid" width="672"></p>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-[[15]]$pop</code></pre>
-</div>
-<div class="cell-output-display">
-<p><img src="08_making-plots_files/figure-html/CensusDataPlots-74.png" class="img-fluid" width="672"></p>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-[[15]]$rel</code></pre>
-</div>
-<div class="cell-output-display">
-<p><img src="08_making-plots_files/figure-html/CensusDataPlots-75.png" class="img-fluid" width="672"></p>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-
-[[16]]
-[[16]]$ethn</code></pre>
-</div>
-<div class="cell-output-display">
-<p><img src="08_making-plots_files/figure-html/CensusDataPlots-76.png" class="img-fluid" width="672"></p>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-[[16]]$health</code></pre>
-</div>
-<div class="cell-output-display">
-<p><img src="08_making-plots_files/figure-html/CensusDataPlots-77.png" class="img-fluid" width="672"></p>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-[[16]]$house</code></pre>
-</div>
-<div class="cell-output-display">
-<p><img src="08_making-plots_files/figure-html/CensusDataPlots-78.png" class="img-fluid" width="672"></p>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-[[16]]$pop</code></pre>
-</div>
-<div class="cell-output-display">
-<p><img src="08_making-plots_files/figure-html/CensusDataPlots-79.png" class="img-fluid" width="672"></p>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-[[16]]$rel</code></pre>
-</div>
-<div class="cell-output-display">
-<p><img src="08_making-plots_files/figure-html/CensusDataPlots-80.png" class="img-fluid" width="672"></p>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-
-[[17]]
-[[17]]$ethn</code></pre>
-</div>
-<div class="cell-output-display">
-<p><img src="08_making-plots_files/figure-html/CensusDataPlots-81.png" class="img-fluid" width="672"></p>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-[[17]]$health</code></pre>
-</div>
-<div class="cell-output-display">
-<p><img src="08_making-plots_files/figure-html/CensusDataPlots-82.png" class="img-fluid" width="672"></p>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-[[17]]$house</code></pre>
-</div>
-<div class="cell-output-display">
-<p><img src="08_making-plots_files/figure-html/CensusDataPlots-83.png" class="img-fluid" width="672"></p>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-[[17]]$pop</code></pre>
-</div>
-<div class="cell-output-display">
-<p><img src="08_making-plots_files/figure-html/CensusDataPlots-84.png" class="img-fluid" width="672"></p>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-[[17]]$rel</code></pre>
-</div>
-<div class="cell-output-display">
-<p><img src="08_making-plots_files/figure-html/CensusDataPlots-85.png" class="img-fluid" width="672"></p>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-
-[[18]]
-[[18]]$ethn</code></pre>
-</div>
-<div class="cell-output-display">
-<p><img src="08_making-plots_files/figure-html/CensusDataPlots-86.png" class="img-fluid" width="672"></p>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-[[18]]$health</code></pre>
-</div>
-<div class="cell-output-display">
-<p><img src="08_making-plots_files/figure-html/CensusDataPlots-87.png" class="img-fluid" width="672"></p>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-[[18]]$house</code></pre>
-</div>
-<div class="cell-output-display">
-<p><img src="08_making-plots_files/figure-html/CensusDataPlots-88.png" class="img-fluid" width="672"></p>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-[[18]]$pop</code></pre>
-</div>
-<div class="cell-output-display">
-<p><img src="08_making-plots_files/figure-html/CensusDataPlots-89.png" class="img-fluid" width="672"></p>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-[[18]]$rel</code></pre>
-</div>
-<div class="cell-output-display">
-<p><img src="08_making-plots_files/figure-html/CensusDataPlots-90.png" class="img-fluid" width="672"></p>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-
-[[19]]
-[[19]]$ethn</code></pre>
-</div>
-<div class="cell-output-display">
-<p><img src="08_making-plots_files/figure-html/CensusDataPlots-91.png" class="img-fluid" width="672"></p>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-[[19]]$health</code></pre>
-</div>
-<div class="cell-output-display">
-<p><img src="08_making-plots_files/figure-html/CensusDataPlots-92.png" class="img-fluid" width="672"></p>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-[[19]]$house</code></pre>
-</div>
-<div class="cell-output-display">
-<p><img src="08_making-plots_files/figure-html/CensusDataPlots-93.png" class="img-fluid" width="672"></p>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-[[19]]$pop</code></pre>
-</div>
-<div class="cell-output-display">
-<p><img src="08_making-plots_files/figure-html/CensusDataPlots-94.png" class="img-fluid" width="672"></p>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-[[19]]$rel</code></pre>
-</div>
-<div class="cell-output-display">
-<p><img src="08_making-plots_files/figure-html/CensusDataPlots-95.png" class="img-fluid" width="672"></p>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-
-[[20]]
-[[20]]$ethn</code></pre>
-</div>
-<div class="cell-output-display">
-<p><img src="08_making-plots_files/figure-html/CensusDataPlots-96.png" class="img-fluid" width="672"></p>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-[[20]]$health</code></pre>
-</div>
-<div class="cell-output-display">
-<p><img src="08_making-plots_files/figure-html/CensusDataPlots-97.png" class="img-fluid" width="672"></p>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-[[20]]$house</code></pre>
-</div>
-<div class="cell-output-display">
-<p><img src="08_making-plots_files/figure-html/CensusDataPlots-98.png" class="img-fluid" width="672"></p>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-[[20]]$pop</code></pre>
-</div>
-<div class="cell-output-display">
-<p><img src="08_making-plots_files/figure-html/CensusDataPlots-99.png" class="img-fluid" width="672"></p>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-[[20]]$rel</code></pre>
-</div>
-<div class="cell-output-display">
-<p><img src="08_making-plots_files/figure-html/CensusDataPlots-100.png" class="img-fluid" width="672"></p>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-
-[[21]]
-[[21]]$ethn</code></pre>
-</div>
-<div class="cell-output-display">
-<p><img src="08_making-plots_files/figure-html/CensusDataPlots-101.png" class="img-fluid" width="672"></p>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-[[21]]$health</code></pre>
-</div>
-<div class="cell-output-display">
-<p><img src="08_making-plots_files/figure-html/CensusDataPlots-102.png" class="img-fluid" width="672"></p>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-[[21]]$house</code></pre>
-</div>
-<div class="cell-output-display">
-<p><img src="08_making-plots_files/figure-html/CensusDataPlots-103.png" class="img-fluid" width="672"></p>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-[[21]]$pop</code></pre>
-</div>
-<div class="cell-output-display">
-<p><img src="08_making-plots_files/figure-html/CensusDataPlots-104.png" class="img-fluid" width="672"></p>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-[[21]]$rel</code></pre>
-</div>
-<div class="cell-output-display">
-<p><img src="08_making-plots_files/figure-html/CensusDataPlots-105.png" class="img-fluid" width="672"></p>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-
-[[22]]
-[[22]]$ethn</code></pre>
-</div>
-<div class="cell-output-display">
-<p><img src="08_making-plots_files/figure-html/CensusDataPlots-106.png" class="img-fluid" width="672"></p>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-[[22]]$health</code></pre>
-</div>
-<div class="cell-output-display">
-<p><img src="08_making-plots_files/figure-html/CensusDataPlots-107.png" class="img-fluid" width="672"></p>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-[[22]]$house</code></pre>
-</div>
-<div class="cell-output-display">
-<p><img src="08_making-plots_files/figure-html/CensusDataPlots-108.png" class="img-fluid" width="672"></p>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-[[22]]$pop</code></pre>
-</div>
-<div class="cell-output-display">
-<p><img src="08_making-plots_files/figure-html/CensusDataPlots-109.png" class="img-fluid" width="672"></p>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-[[22]]$rel</code></pre>
-</div>
-<div class="cell-output-display">
-<p><img src="08_making-plots_files/figure-html/CensusDataPlots-110.png" class="img-fluid" width="672"></p>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-
-[[23]]
-[[23]]$ethn</code></pre>
-</div>
-<div class="cell-output-display">
-<p><img src="08_making-plots_files/figure-html/CensusDataPlots-111.png" class="img-fluid" width="672"></p>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-[[23]]$health</code></pre>
-</div>
-<div class="cell-output-display">
-<p><img src="08_making-plots_files/figure-html/CensusDataPlots-112.png" class="img-fluid" width="672"></p>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-[[23]]$house</code></pre>
-</div>
-<div class="cell-output-display">
-<p><img src="08_making-plots_files/figure-html/CensusDataPlots-113.png" class="img-fluid" width="672"></p>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-[[23]]$pop</code></pre>
-</div>
-<div class="cell-output-display">
-<p><img src="08_making-plots_files/figure-html/CensusDataPlots-114.png" class="img-fluid" width="672"></p>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-[[23]]$rel</code></pre>
-</div>
-<div class="cell-output-display">
-<p><img src="08_making-plots_files/figure-html/CensusDataPlots-115.png" class="img-fluid" width="672"></p>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-
-[[24]]
-[[24]]$ethn</code></pre>
-</div>
-<div class="cell-output-display">
-<p><img src="08_making-plots_files/figure-html/CensusDataPlots-116.png" class="img-fluid" width="672"></p>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-[[24]]$health</code></pre>
-</div>
-<div class="cell-output-display">
-<p><img src="08_making-plots_files/figure-html/CensusDataPlots-117.png" class="img-fluid" width="672"></p>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-[[24]]$house</code></pre>
-</div>
-<div class="cell-output-display">
-<p><img src="08_making-plots_files/figure-html/CensusDataPlots-118.png" class="img-fluid" width="672"></p>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-[[24]]$pop</code></pre>
-</div>
-<div class="cell-output-display">
-<p><img src="08_making-plots_files/figure-html/CensusDataPlots-119.png" class="img-fluid" width="672"></p>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-[[24]]$rel</code></pre>
-</div>
-<div class="cell-output-display">
-<p><img src="08_making-plots_files/figure-html/CensusDataPlots-120.png" class="img-fluid" width="672"></p>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-
-[[25]]
-[[25]]$ethn</code></pre>
-</div>
-<div class="cell-output-display">
-<p><img src="08_making-plots_files/figure-html/CensusDataPlots-121.png" class="img-fluid" width="672"></p>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-[[25]]$health</code></pre>
-</div>
-<div class="cell-output-display">
-<p><img src="08_making-plots_files/figure-html/CensusDataPlots-122.png" class="img-fluid" width="672"></p>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-[[25]]$house</code></pre>
-</div>
-<div class="cell-output-display">
-<p><img src="08_making-plots_files/figure-html/CensusDataPlots-123.png" class="img-fluid" width="672"></p>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-[[25]]$pop</code></pre>
-</div>
-<div class="cell-output-display">
-<p><img src="08_making-plots_files/figure-html/CensusDataPlots-124.png" class="img-fluid" width="672"></p>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-[[25]]$rel</code></pre>
-</div>
-<div class="cell-output-display">
-<p><img src="08_making-plots_files/figure-html/CensusDataPlots-125.png" class="img-fluid" width="672"></p>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-
-[[26]]
-[[26]]$ethn</code></pre>
-</div>
-<div class="cell-output-display">
-<p><img src="08_making-plots_files/figure-html/CensusDataPlots-126.png" class="img-fluid" width="672"></p>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-[[26]]$health</code></pre>
-</div>
-<div class="cell-output-display">
-<p><img src="08_making-plots_files/figure-html/CensusDataPlots-127.png" class="img-fluid" width="672"></p>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-[[26]]$house</code></pre>
-</div>
-<div class="cell-output-display">
-<p><img src="08_making-plots_files/figure-html/CensusDataPlots-128.png" class="img-fluid" width="672"></p>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-[[26]]$pop</code></pre>
-</div>
-<div class="cell-output-display">
-<p><img src="08_making-plots_files/figure-html/CensusDataPlots-129.png" class="img-fluid" width="672"></p>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-[[26]]$rel</code></pre>
-</div>
-<div class="cell-output-display">
-<p><img src="08_making-plots_files/figure-html/CensusDataPlots-130.png" class="img-fluid" width="672"></p>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-
-[[27]]
-[[27]]$ethn</code></pre>
-</div>
-<div class="cell-output-display">
-<p><img src="08_making-plots_files/figure-html/CensusDataPlots-131.png" class="img-fluid" width="672"></p>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-[[27]]$health</code></pre>
-</div>
-<div class="cell-output-display">
-<p><img src="08_making-plots_files/figure-html/CensusDataPlots-132.png" class="img-fluid" width="672"></p>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-[[27]]$house</code></pre>
-</div>
-<div class="cell-output-display">
-<p><img src="08_making-plots_files/figure-html/CensusDataPlots-133.png" class="img-fluid" width="672"></p>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-[[27]]$pop</code></pre>
-</div>
-<div class="cell-output-display">
-<p><img src="08_making-plots_files/figure-html/CensusDataPlots-134.png" class="img-fluid" width="672"></p>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-[[27]]$rel</code></pre>
-</div>
-<div class="cell-output-display">
-<p><img src="08_making-plots_files/figure-html/CensusDataPlots-135.png" class="img-fluid" width="672"></p>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-
-[[28]]
-[[28]]$ethn</code></pre>
-</div>
-<div class="cell-output-display">
-<p><img src="08_making-plots_files/figure-html/CensusDataPlots-136.png" class="img-fluid" width="672"></p>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-[[28]]$health</code></pre>
-</div>
-<div class="cell-output-display">
-<p><img src="08_making-plots_files/figure-html/CensusDataPlots-137.png" class="img-fluid" width="672"></p>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-[[28]]$house</code></pre>
-</div>
-<div class="cell-output-display">
-<p><img src="08_making-plots_files/figure-html/CensusDataPlots-138.png" class="img-fluid" width="672"></p>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-[[28]]$pop</code></pre>
-</div>
-<div class="cell-output-display">
-<p><img src="08_making-plots_files/figure-html/CensusDataPlots-139.png" class="img-fluid" width="672"></p>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-[[28]]$rel</code></pre>
-</div>
-<div class="cell-output-display">
-<p><img src="08_making-plots_files/figure-html/CensusDataPlots-140.png" class="img-fluid" width="672"></p>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-
-[[29]]
-[[29]]$ethn</code></pre>
-</div>
-<div class="cell-output-display">
-<p><img src="08_making-plots_files/figure-html/CensusDataPlots-141.png" class="img-fluid" width="672"></p>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-[[29]]$health</code></pre>
-</div>
-<div class="cell-output-display">
-<p><img src="08_making-plots_files/figure-html/CensusDataPlots-142.png" class="img-fluid" width="672"></p>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-[[29]]$house</code></pre>
-</div>
-<div class="cell-output-display">
-<p><img src="08_making-plots_files/figure-html/CensusDataPlots-143.png" class="img-fluid" width="672"></p>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-[[29]]$pop</code></pre>
-</div>
-<div class="cell-output-display">
-<p><img src="08_making-plots_files/figure-html/CensusDataPlots-144.png" class="img-fluid" width="672"></p>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-[[29]]$rel</code></pre>
-</div>
-<div class="cell-output-display">
-<p><img src="08_making-plots_files/figure-html/CensusDataPlots-145.png" class="img-fluid" width="672"></p>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-
-[[30]]
-[[30]]$ethn</code></pre>
-</div>
-<div class="cell-output-display">
-<p><img src="08_making-plots_files/figure-html/CensusDataPlots-146.png" class="img-fluid" width="672"></p>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-[[30]]$health</code></pre>
-</div>
-<div class="cell-output-display">
-<p><img src="08_making-plots_files/figure-html/CensusDataPlots-147.png" class="img-fluid" width="672"></p>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-[[30]]$house</code></pre>
-</div>
-<div class="cell-output-display">
-<p><img src="08_making-plots_files/figure-html/CensusDataPlots-148.png" class="img-fluid" width="672"></p>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-[[30]]$pop</code></pre>
-</div>
-<div class="cell-output-display">
-<p><img src="08_making-plots_files/figure-html/CensusDataPlots-149.png" class="img-fluid" width="672"></p>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-[[30]]$rel</code></pre>
-</div>
-<div class="cell-output-display">
-<p><img src="08_making-plots_files/figure-html/CensusDataPlots-150.png" class="img-fluid" width="672"></p>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-
-[[31]]
-[[31]]$ethn</code></pre>
-</div>
-<div class="cell-output-display">
-<p><img src="08_making-plots_files/figure-html/CensusDataPlots-151.png" class="img-fluid" width="672"></p>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-[[31]]$health</code></pre>
-</div>
-<div class="cell-output-display">
-<p><img src="08_making-plots_files/figure-html/CensusDataPlots-152.png" class="img-fluid" width="672"></p>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-[[31]]$house</code></pre>
-</div>
-<div class="cell-output-display">
-<p><img src="08_making-plots_files/figure-html/CensusDataPlots-153.png" class="img-fluid" width="672"></p>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-[[31]]$pop</code></pre>
-</div>
-<div class="cell-output-display">
-<p><img src="08_making-plots_files/figure-html/CensusDataPlots-154.png" class="img-fluid" width="672"></p>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-[[31]]$rel</code></pre>
-</div>
-<div class="cell-output-display">
-<p><img src="08_making-plots_files/figure-html/CensusDataPlots-155.png" class="img-fluid" width="672"></p>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-
-[[32]]
-[[32]]$ethn</code></pre>
-</div>
-<div class="cell-output-display">
-<p><img src="08_making-plots_files/figure-html/CensusDataPlots-156.png" class="img-fluid" width="672"></p>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-[[32]]$health</code></pre>
-</div>
-<div class="cell-output-display">
-<p><img src="08_making-plots_files/figure-html/CensusDataPlots-157.png" class="img-fluid" width="672"></p>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-[[32]]$house</code></pre>
-</div>
-<div class="cell-output-display">
-<p><img src="08_making-plots_files/figure-html/CensusDataPlots-158.png" class="img-fluid" width="672"></p>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-[[32]]$pop</code></pre>
-</div>
-<div class="cell-output-display">
-<p><img src="08_making-plots_files/figure-html/CensusDataPlots-159.png" class="img-fluid" width="672"></p>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-[[32]]$rel</code></pre>
-</div>
-<div class="cell-output-display">
-<p><img src="08_making-plots_files/figure-html/CensusDataPlots-160.png" class="img-fluid" width="672"></p>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>modify_plot_tibbles <span class="ot">&lt;-</span> </span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>  <span class="cf">function</span>(</span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>    x,</span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">nation =</span> </span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>      <span class="fu">c</span>(<span class="st">"England"</span>, <span class="st">"Northern-Ireland"</span>, <span class="st">"Republic-of-Ireland"</span>, <span class="st">"Scotland"</span>, <span class="st">"Wales"</span>),</span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">stat =</span> </span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>      <span class="fu">c</span>(<span class="st">"ethn"</span>, <span class="st">"health"</span>, <span class="st">"house"</span>, <span class="st">"pop"</span>, <span class="st">"rel"</span>),</span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>    modify_func, <span class="co"># e.g. mutate()/ group_by() etc. (or funtion(x){ggplot(x) + geom_bar()})</span></span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a>    ...,</span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">col_to_modify =</span> <span class="st">"rbound_tibbles"</span>,</span>
+<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">new_col =</span> <span class="st">"rbound_tibbles"</span>){</span>
+<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span>(this_nation <span class="cf">in</span> nation){</span>
+<span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a>      <span class="cf">for</span>(this_stat <span class="cf">in</span> stat){</span>
+<span id="cb13-21"><a href="#cb13-21" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb13-22"><a href="#cb13-22" aria-hidden="true" tabindex="-1"></a>        x[[new_col]][x[[<span class="st">"nation"</span>]] <span class="sc">==</span> this_nation] <span class="ot">&lt;-</span> </span>
+<span id="cb13-23"><a href="#cb13-23" aria-hidden="true" tabindex="-1"></a>          <span class="fu">map</span>(x[[col_to_modify]][x[[<span class="st">"nation"</span>]] <span class="sc">==</span> this_nation],</span>
+<span id="cb13-24"><a href="#cb13-24" aria-hidden="true" tabindex="-1"></a>              </span>
+<span id="cb13-25"><a href="#cb13-25" aria-hidden="true" tabindex="-1"></a>              <span class="cf">function</span>(y){</span>
+<span id="cb13-26"><a href="#cb13-26" aria-hidden="true" tabindex="-1"></a>                y[[this_stat]] <span class="ot">&lt;-</span> <span class="fu">modify_func</span>(y[[this_stat]], ...)</span>
+<span id="cb13-27"><a href="#cb13-27" aria-hidden="true" tabindex="-1"></a>                <span class="fu">return</span>(y)</span>
+<span id="cb13-28"><a href="#cb13-28" aria-hidden="true" tabindex="-1"></a>              })</span>
+<span id="cb13-29"><a href="#cb13-29" aria-hidden="true" tabindex="-1"></a>      }</span>
+<span id="cb13-30"><a href="#cb13-30" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb13-31"><a href="#cb13-31" aria-hidden="true" tabindex="-1"></a>    <span class="fu">return</span>(x)</span>
+<span id="cb13-32"><a href="#cb13-32" aria-hidden="true" tabindex="-1"></a>  }</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="make-modifications" class="level4">
+<h4 class="anchored" data-anchor-id="make-modifications">Make modifications</h4>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>censustable_plot <span class="ot">&lt;-</span> </span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">modify_plot_tibbles</span>(</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>    censustable_plot,</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">stat   =</span> <span class="st">"health"</span>,</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">modify_func =</span> mutate,</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">levels =</span> <span class="fu">str_replace</span>(levels, <span class="st">"_"</span>, <span class="st">" "</span>),</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">levels =</span> </span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>      <span class="fu">ordered</span>(levels, <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"very bad"</span>, <span class="st">"bad"</span>, <span class="st">"fair"</span>, <span class="st">"good"</span>, <span class="st">"very good"</span>))</span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>censustable_plot <span class="ot">&lt;-</span> </span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">modify_plot_tibbles</span>(</span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>    censustable_plot,</span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">stat   =</span> <span class="st">"ethn"</span>,</span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">modify_func =</span> mutate,</span>
+<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">levels =</span> <span class="fu">ordered</span>(levels) <span class="sc">|&gt;</span> </span>
+<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a>      <span class="fu">fct_relabel</span>(str_replace, <span class="st">"_"</span>, <span class="st">" "</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a>      <span class="fu">fct_relabel</span>(str_replace, <span class="st">"or"</span>, <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb14-19"><a href="#cb14-19" aria-hidden="true" tabindex="-1"></a>      <span class="fu">fct_relabel</span>(str_replace, <span class="st">" "</span>, <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb14-20"><a href="#cb14-20" aria-hidden="true" tabindex="-1"></a>      <span class="fu">fct_reorder</span>(ratio, <span class="at">.fun =</span> max, <span class="at">.desc =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb14-21"><a href="#cb14-21" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb14-22"><a href="#cb14-22" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb14-23"><a href="#cb14-23" aria-hidden="true" tabindex="-1"></a>censustable_plot <span class="ot">&lt;-</span> </span>
+<span id="cb14-24"><a href="#cb14-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">modify_plot_tibbles</span>(</span>
+<span id="cb14-25"><a href="#cb14-25" aria-hidden="true" tabindex="-1"></a>    censustable_plot,</span>
+<span id="cb14-26"><a href="#cb14-26" aria-hidden="true" tabindex="-1"></a>    <span class="at">stat   =</span> <span class="st">"rel"</span>,</span>
+<span id="cb14-27"><a href="#cb14-27" aria-hidden="true" tabindex="-1"></a>    <span class="at">modify_func =</span> mutate,</span>
+<span id="cb14-28"><a href="#cb14-28" aria-hidden="true" tabindex="-1"></a>    <span class="at">levels =</span> <span class="fu">ordered</span>(levels) <span class="sc">|&gt;</span> </span>
+<span id="cb14-29"><a href="#cb14-29" aria-hidden="true" tabindex="-1"></a>      <span class="fu">fct_relabel</span>(str_replace, <span class="st">"_"</span>, <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb14-30"><a href="#cb14-30" aria-hidden="true" tabindex="-1"></a>      <span class="fu">fct_reorder</span>(ratio, <span class="at">.fun =</span> max, <span class="at">.desc =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb14-31"><a href="#cb14-31" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb14-32"><a href="#cb14-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-33"><a href="#cb14-33" aria-hidden="true" tabindex="-1"></a>censustable_plot <span class="ot">&lt;-</span> </span>
+<span id="cb14-34"><a href="#cb14-34" aria-hidden="true" tabindex="-1"></a>  <span class="fu">modify_plot_tibbles</span>(</span>
+<span id="cb14-35"><a href="#cb14-35" aria-hidden="true" tabindex="-1"></a>    censustable_plot,</span>
+<span id="cb14-36"><a href="#cb14-36" aria-hidden="true" tabindex="-1"></a>    <span class="at">stat   =</span> <span class="st">"house"</span>,</span>
+<span id="cb14-37"><a href="#cb14-37" aria-hidden="true" tabindex="-1"></a>    <span class="at">modify_func =</span> mutate,</span>
+<span id="cb14-38"><a href="#cb14-38" aria-hidden="true" tabindex="-1"></a>    <span class="at">levels =</span> <span class="fu">ordered</span>(levels) <span class="sc">|&gt;</span> </span>
+<span id="cb14-39"><a href="#cb14-39" aria-hidden="true" tabindex="-1"></a>      <span class="fu">fct_relabel</span>(str_replace_all, <span class="st">"_"</span>, <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb14-40"><a href="#cb14-40" aria-hidden="true" tabindex="-1"></a>      <span class="fu">fct_reorder</span>(ratio, <span class="at">.fun =</span> max, <span class="at">.desc =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb14-41"><a href="#cb14-41" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb14-42"><a href="#cb14-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-43"><a href="#cb14-43" aria-hidden="true" tabindex="-1"></a>censustable_plot <span class="ot">&lt;-</span> </span>
+<span id="cb14-44"><a href="#cb14-44" aria-hidden="true" tabindex="-1"></a>  <span class="fu">modify_plot_tibbles</span>(</span>
+<span id="cb14-45"><a href="#cb14-45" aria-hidden="true" tabindex="-1"></a>    censustable_plot,</span>
+<span id="cb14-46"><a href="#cb14-46" aria-hidden="true" tabindex="-1"></a>    <span class="at">stat =</span> <span class="st">"pop"</span>, </span>
+<span id="cb14-47"><a href="#cb14-47" aria-hidden="true" tabindex="-1"></a>    <span class="at">modify_func =</span> mutate,</span>
+<span id="cb14-48"><a href="#cb14-48" aria-hidden="true" tabindex="-1"></a>    <span class="at">levels =</span> <span class="fu">ordered</span>(levels) <span class="sc">|&gt;</span> </span>
+<span id="cb14-49"><a href="#cb14-49" aria-hidden="true" tabindex="-1"></a>      <span class="fu">fct_relabel</span>(str_replace_all, <span class="st">"age_"</span>, <span class="st">""</span>)</span>
+<span id="cb14-50"><a href="#cb14-50" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb14-51"><a href="#cb14-51" aria-hidden="true" tabindex="-1"></a>      </span>
+<span id="cb14-52"><a href="#cb14-52" aria-hidden="true" tabindex="-1"></a>      </span>
+<span id="cb14-53"><a href="#cb14-53" aria-hidden="true" tabindex="-1"></a>      </span>
+<span id="cb14-54"><a href="#cb14-54" aria-hidden="true" tabindex="-1"></a>     <span class="co"># filter,</span></span>
+<span id="cb14-55"><a href="#cb14-55" aria-hidden="true" tabindex="-1"></a>    <span class="co">#!levels%in% c("male_persons", "female_persons"),</span></span>
+<span id="cb14-56"><a href="#cb14-56" aria-hidden="true" tabindex="-1"></a>    <span class="co">#fct_relabel(str_replace_all, "age_", "") </span></span>
+<span id="cb14-57"><a href="#cb14-57" aria-hidden="true" tabindex="-1"></a>  <span class="co">#)</span></span>
+<span id="cb14-58"><a href="#cb14-58" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-59"><a href="#cb14-59" aria-hidden="true" tabindex="-1"></a><span class="co">#censustable_plot &lt;- </span></span>
+<span id="cb14-60"><a href="#cb14-60" aria-hidden="true" tabindex="-1"></a>  <span class="co">#modify_plot_tibbles(</span></span>
+<span id="cb14-61"><a href="#cb14-61" aria-hidden="true" tabindex="-1"></a>    <span class="co">#censustable_plot,</span></span>
+<span id="cb14-62"><a href="#cb14-62" aria-hidden="true" tabindex="-1"></a>    <span class="co">#stat   = "pop",</span></span>
+<span id="cb14-63"><a href="#cb14-63" aria-hidden="true" tabindex="-1"></a>    <span class="co">#modify_func = mutate,</span></span>
+<span id="cb14-64"><a href="#cb14-64" aria-hidden="true" tabindex="-1"></a>    <span class="co">#levels = ordered(levels) |&gt; </span></span>
+<span id="cb14-65"><a href="#cb14-65" aria-hidden="true" tabindex="-1"></a>     <span class="co"># fct_relabel(str_replace_all, "age_", "") |&gt; </span></span>
+<span id="cb14-66"><a href="#cb14-66" aria-hidden="true" tabindex="-1"></a>      <span class="co">#fct_drop(only = "male_persons", "female_persons")</span></span>
+<span id="cb14-67"><a href="#cb14-67" aria-hidden="true" tabindex="-1"></a>    <span class="co">#)</span></span>
+<span id="cb14-68"><a href="#cb14-68" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-69"><a href="#cb14-69" aria-hidden="true" tabindex="-1"></a> <span class="co">#levels = c-("male_persons" &amp; "female_persons"),</span></span>
+<span id="cb14-70"><a href="#cb14-70" aria-hidden="true" tabindex="-1"></a>    <span class="co">#levels = levels(as.numeric(levels(ordered)))),</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Come up with ggplot table</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>plot_bar <span class="ot">&lt;-</span> <span class="cf">function</span>(tibble, <span class="at">plot_title =</span> <span class="cn">NULL</span>){</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(tibble, </span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>         <span class="fu">aes</span>(<span class="at">x =</span> levels, </span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>             <span class="at">y =</span> ratio, <span class="at">fill =</span> level)) <span class="sc">+</span> </span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">"identity"</span>, <span class="at">position =</span> <span class="st">"dodge"</span>) <span class="sc">+</span></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_y_continuous</span>(<span class="at">labels =</span> percent) <span class="sc">+</span></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ggtitle</span>(plot_title)</span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>censustable_plot <span class="ot">&lt;-</span> </span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(censustable_plot,</span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a>         <span class="at">plots =</span> <span class="fu">do_to_tibbles</span>(rbound_tibbles, rowwise),</span>
+<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a>         <span class="at">plots =</span> <span class="fu">do_to_tibbles</span>(plots, plot_bar, <span class="at">plot_title =</span> com)</span>
+<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a><span class="co"># censustable_plot$plots</span></span>
+<span id="cb15-17"><a href="#cb15-17" aria-hidden="true" tabindex="-1"></a><span class="do">###############################################################################</span></span>
+<span id="cb15-18"><a href="#cb15-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-19"><a href="#cb15-19" aria-hidden="true" tabindex="-1"></a>plotpeek <span class="ot">&lt;-</span> <span class="cf">function</span>(<span class="at">name =</span> <span class="dv">1</span>) censustable_plot<span class="sc">$</span>plots[[<span class="dv">1</span>]][[name]]</span>
+<span id="cb15-20"><a href="#cb15-20" aria-hidden="true" tabindex="-1"></a><span class="fu">plotpeek</span>(<span class="st">"pop"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="08_making-plots_files/figure-html/ggplotTable-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 </section>

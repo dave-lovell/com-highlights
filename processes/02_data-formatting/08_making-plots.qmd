@@ -27,18 +27,11 @@ return(out_list)
 }
 ```
 
-Come up with ggplot table
+### Modify plot tibbles (before plotting)
 
-```{r ggplotTable}
-plot_bar <- function(tibble, plot_title = NULL){
-  ggplot(tibble, 
-         aes(x = levels, 
-             y = ratio, fill = level)) + 
-    geom_bar(stat = "identity", position = "dodge") +
-    scale_y_continuous(labels = percent) +
-    ggtitle(plot_title)
-}
+#### Add ratio col to plot tibbles
 
+```{r addRatioCol}
 censustable_plot <- 
   mutate(censustable_plot,
          rbound_tibbles =
@@ -51,21 +44,13 @@ censustable_plot <-
                                     nation_name  = .env[["nation"]]) |>
                              ungroup()
                            return(out)
-                         }),
-         plots = do_to_tibbles(rbound_tibbles, rowwise),
-         plots = do_to_tibbles(plots, plot_bar, plot_title = com)
+                         })
   )
-
-# censustable_plot$plots
-###############################################################################
-
-plotpeek <- function() censustable_plot$plots[[1]][[1]]
-plotpeek()
-
-
 ```
 
-Plots
+#### Construct modification-helper
+
+Using for-loops to index and modify the mega-tibble
 
 ```{r CensusDataPlots}
 # censustable_plot$rbound_tibbles |> 
@@ -80,7 +65,7 @@ modify_plot_tibbles <-
       c("England", "Northern-Ireland", "Republic-of-Ireland", "Scotland", "Wales"),
     stat = 
       c("ethn", "health", "house", "pop", "rel"),
-    modify_func,
+    modify_func, # e.g. mutate()/ group_by() etc. (or funtion(x){ggplot(x) + geom_bar()})
     ...,
     
     col_to_modify = "rbound_tibbles",
@@ -100,7 +85,11 @@ modify_plot_tibbles <-
     }
     return(x)
   }
+```
 
+#### Make modifications
+
+```{r makeModifications}
 censustable_plot <- 
   modify_plot_tibbles(
     censustable_plot,
@@ -110,5 +99,92 @@ censustable_plot <-
     levels = 
       ordered(levels, levels = c("very bad", "bad", "fair", "good", "very good"))
   )
+
+censustable_plot <- 
+  modify_plot_tibbles(
+    censustable_plot,
+    stat   = "ethn",
+    modify_func = mutate,
+    levels = ordered(levels) |> 
+      fct_relabel(str_replace, "_", " ") |> 
+      fct_relabel(str_replace, "or", "\n") |> 
+      fct_relabel(str_replace, " ", "\n") |> 
+      fct_reorder(ratio, .fun = max, .desc = TRUE)
+    )
   
+censustable_plot <- 
+  modify_plot_tibbles(
+    censustable_plot,
+    stat   = "rel",
+    modify_func = mutate,
+    levels = ordered(levels) |> 
+      fct_relabel(str_replace, "_", "\n") |> 
+      fct_reorder(ratio, .fun = max, .desc = TRUE)
+    )
+
+censustable_plot <- 
+  modify_plot_tibbles(
+    censustable_plot,
+    stat   = "house",
+    modify_func = mutate,
+    levels = ordered(levels) |> 
+      fct_relabel(str_replace_all, "_", "\n") |> 
+      fct_reorder(ratio, .fun = max, .desc = TRUE)
+    )
+
+censustable_plot <- 
+  modify_plot_tibbles(
+    censustable_plot,
+    stat = "pop", 
+    modify_func = mutate,
+    levels = ordered(levels) |> 
+      fct_relabel(str_replace_all, "age_", "")
+  )
+      
+      
+      
+     # filter,
+    #!levels%in% c("male_persons", "female_persons"),
+    #fct_relabel(str_replace_all, "age_", "") 
+  #)
+
+#censustable_plot <- 
+  #modify_plot_tibbles(
+    #censustable_plot,
+    #stat   = "pop",
+    #modify_func = mutate,
+    #levels = ordered(levels) |> 
+     # fct_relabel(str_replace_all, "age_", "") |> 
+      #fct_drop(only = "male_persons", "female_persons")
+    #)
+
+ #levels = c-("male_persons" & "female_persons"),
+    #levels = levels(as.numeric(levels(ordered)))),
+```
+
+Come up with ggplot table
+
+```{r ggplotTable}
+plot_bar <- function(tibble, plot_title = NULL){
+  ggplot(tibble, 
+         aes(x = levels, 
+             y = ratio, fill = level)) + 
+    geom_bar(stat = "identity", position = "dodge") +
+    scale_y_continuous(labels = percent) +
+    ggtitle(plot_title)
+}
+
+censustable_plot <- 
+  mutate(censustable_plot,
+         plots = do_to_tibbles(rbound_tibbles, rowwise),
+         plots = do_to_tibbles(plots, plot_bar, plot_title = com)
+  )
+
+# censustable_plot$plots
+###############################################################################
+
+plotpeek <- function(name = 1) censustable_plot$plots[[1]][[name]]
+plotpeek("pop")
+
+
 ```
