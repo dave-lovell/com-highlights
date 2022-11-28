@@ -227,6 +227,12 @@ That is, remove them from all tibbles except population statistics tibbles. We m
    )
 ```
 
+### Remove total_households columns
+
+```{r removeTotalHouseholds}
+census_table <- modify_census_tibbles(census_table, modify_func = select, .cols = -any_of("total_households"))
+```
+
 ### Popultion tibbles: Remove gender fields
 
 ```{r makeGenderFieldsConsistent}
