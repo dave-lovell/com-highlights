@@ -97,8 +97,12 @@ censustable_plot <-
     modify_func = mutate,
     levels = str_replace(levels, "_", " "),
     levels = 
-      ordered(levels, levels = c("very bad", "bad", "fair", "good", "very good"))
-  )
+      ordered(
+        levels,
+        levels = c("very bad", "bad", "fair", "good", "very good", "not stated")) |>
+      # Not stated only exists for ROI - so drop if empty
+      fct_drop(only = "non stated")
+      )
 
 censustable_plot <- 
   modify_plot_tibbles(
@@ -184,7 +188,4 @@ censustable_plot <-
 ###############################################################################
 
 plotpeek <- function(name = 1) censustable_plot$plots[[1]][[name]]
-plotpeek("pop")
-
-
 ```
