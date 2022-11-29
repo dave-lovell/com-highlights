@@ -103,8 +103,12 @@ censustable_plot <-
     modify_func = mutate,
     levels = str_replace(levels, "_", " "),
     levels = 
-      ordered(levels, levels = c("very bad", "bad", "fair", "good", "very good"))
-  )
+      ordered(
+        levels,
+        levels = c("very bad", "bad", "fair", "good", "very good", "not stated")) |>
+      # Not stated only exists for ROI - so drop if empty
+      fct_drop(only = "non stated")
+      )
 
 censustable_plot <- 
   modify_plot_tibbles(
@@ -254,12 +258,11 @@ censustable_plot <-
 plotpeek <- function(name = 1) censustable_plot$plots[[1]][[name]]
 
 
+
 censustable_plot |>
   group_by(nation) |> 
   summarise(plots = first(plots)) |> 
   pull(plots)
 
-
 ```
 
-![![](http://127.0.0.1:62135/chunk_output/s/629F4734/cocq0fszblw7j/0000bc.png?fixed_size=1)![](http://127.0.0.1:62135/chunk_output/s/629F4734/cocq0fszblw7j/0000bc.png?fixed_size=1)](http://127.0.0.1:62135/chunk_output/s/629F4734/cocq0fszblw7j/0000c2.png?fixed_size=1)
