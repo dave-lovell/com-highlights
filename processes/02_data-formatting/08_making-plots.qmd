@@ -114,16 +114,30 @@ censustable_plot <-
   modify_plot_tibbles(
     censustable_plot,
     stat   = "ethn",
+    nation = c("Wales", "Scotland", "Republic-of-Ireland", "England"),
     modify_func = mutate,
     levels = ordered(levels) |> 
       fct_relabel(str_replace, "_", " ") |> 
       fct_relabel(str_replace, "or", "\n") |> 
       fct_relabel(str_replace, " ", "\n") |> 
-      fct_reorder(ratio, .fun = max, .desc = TRUE) 
-    
+      fct_relabel(str_replace, " ", "") |> 
+      fct_reorder(ratio, .fun = max, .desc = TRUE)
+  )
+
+censustable_plot <- 
+  modify_plot_tibbles(
+   censustable_plot,
+    stat   = "ethn",
+    nation = "Northern-Ireland",
+    modify_func = mutate,
+    levels = ordered(levels) |> 
+      fct_relabel(str_replace, "_or_", "\n") |> 
+      fct_relabel(str_replace, "_", "\n") |> 
+      fct_reorder(ratio, .fun = max, .desc = TRUE)
+ )
     ## do these seperately
     # scale_x_discrete(guide = guide_axis(n.dodge = 2))
-    )
+    
 
 # censustable_plot <- modify_plot_tibbles(censustable_plot, modify_fun = ungroup)
 censustable_plot <- 
@@ -217,8 +231,31 @@ censustable_plot <-
       fct_relabel(str_replace_all, "_years", "\nyears"),
       fct_relevel(levels)
     )
-     
+
+censustable_plot <- 
+  modify_plot_tibbles(
+    censustable_plot,
+    stat = "pop",
+    modify_func = mutate,
+    levels = ordered(levels) |>
+      fct_relabel(str_replace_all, "_", "-"),
+      fct_relevel(levels)
+    )   
       
+pop_levels <- function(rearrange){
+  str_extract(rearrange, "[[:alnum:]]+") |>
+   as.numeric(rearrange) -> rearrange
+    return (rearrange)
+    }
+
+censustable_plot <- 
+  modify_plot_tibbles(
+    censustable_plot,
+    stat = "pop",
+    modify_func = mutate,
+    levels = ordered(levels) |>
+      fct_reorder(pop_levels(levels), .desc = FALSE)
+    ) 
 
 ```
 
@@ -266,3 +303,4 @@ censustable_plot |>
 
 ```
 
+![![](http://127.0.0.1:62135/chunk_output/56D08BB8EEA7584A/629F4734/ceyoo8lo7cm2b/000097.png?fixed_size=1)](http://127.0.0.1:62135/chunk_output/56D08BB8EEA7584A/629F4734/ceyoo8lo7cm2b/000047.png?fixed_size=1)
