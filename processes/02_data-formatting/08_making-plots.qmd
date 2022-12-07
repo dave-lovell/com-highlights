@@ -2,6 +2,8 @@
 title: "08_making-plots"
 format: html
 editor: visual
+params: 
+  com: "attercliffe-darnall"
 ---
 
 ```{r libraries}
@@ -10,6 +12,7 @@ library(here)
 library(scales)
 library(rlang)
 library("carutools") #devtools::install_github("dave-lovell/carutools")
+print(params$com)
 ```
 
 ```{r readInData}
@@ -304,3 +307,81 @@ censustable_plot |>
 ```
 
 ![![](http://127.0.0.1:62135/chunk_output/56D08BB8EEA7584A/629F4734/ceyoo8lo7cm2b/000097.png?fixed_size=1)](http://127.0.0.1:62135/chunk_output/56D08BB8EEA7584A/629F4734/ceyoo8lo7cm2b/000047.png?fixed_size=1)
+
+```{r savingPlotsInIntermediateFolders}
+#single
+graph_path <- here("intermediate-com-outputs", "a7", "visualizations")
+#general
+graph_path_all <- function(x){
+  x = com_names_list |>
+  here("intermediate-com-outputs", x)
+}
+
+
+
+jpeg(filename =  here("intermediate-com-outputs", "a7", "visualizations",   "01_practice.jpeg"),
+                      width = 6,
+                      height = 4,
+     units = "in",
+     res = 300
+)
+
+print(censustable_plot$plots[[1]][[1]])
+
+dev.off()
+
+
+# save_all_plots <- function(graph_path_all, stat_name, outputLocation ){
+#   graph_files <- names(censustable_plot$plots),
+#   pluck(graph_files)|>
+#   stat_name <- as.list(names(censustable_plot)|>
+#                     )
+# }
+
+save_this_plot <- function(plot, plot_name, path){
+  ## Get path to save plot to
+  save_path <- str_c(path, "/", plot_name, ".jpg", sep = "")
+  
+  ## Print plot
+  jpeg(save_path,
+       width = 8,
+       height = 6, 
+       units = "in",
+       res = 200
+       )
+  print(plot)
+  dev.off()
+}
+
+
+# library(progress)
+
+# pbar <- progress_bar$new(total = nrow(censustable_plot))
+
+save_five_plots <- function(list_of_five_plots, com_name){
+    
+  # pbar$tick()
+  
+  com_name <-
+    str_to_lower(com_name) |> 
+    str_remove("and-")
+  
+  com_path <- str_c("intermediate-com-outputs", com_name, "visualizations", sep = "/")
+  com_path <- here(com_path)
+  
+  iwalk(list_of_five_plots, save_this_plot, path = com_path)
+
+  
+  return(NULL)
+}
+
+
+
+foo <- 
+  censustable_plot |>
+  rowwise() |> 
+         mutate(temp = list(save_five_plots(plots, com)))
+
+rm(foo)
+    
+```

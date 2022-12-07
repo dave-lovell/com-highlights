@@ -1,0 +1,122 @@
+---
+title: "Making census mega-table"
+author: "Dave"
+format: html
+editor: visual
+---
+
+```{r libraries}
+library(dplyr)
+library(purrr)
+library(here)
+library(vroom)
+library(stringr)
+```
+
+
+## Intro
+
+We need to rearrange our census data into a mega-table: each row is a CoM, each column is a reporting level (i.e. com, diocese, nation), and each element is a list of 5 tibbles. We're going to build it by indexing our existing data structure into the com/diocese/nations reference table.
+
+## Read in Data
+
+### Read in Census Data
+
+
+```{r readInCensusData}
+census_data <- readRDS(
+  here("data", "intermediate", "census", "merged-data",
+       "03_cleaned-data-ready-for-exploratory-analysis_2022-11-07.RDS")
+)
+```
+
+
+### Read in 'joining table'
+
+
+```{r readInScaffold}
+scaffold <- vroom(
+  here("data", "inputs", "census", "com-diocese-nation-table.csv"),
+  col_types = "cccc"
+) |> 
+  select(-Area) |> 
+  rename_with(str_to_lower)
+```
+
+
+## Tidy scaffold table
+
+
+```{r tidyScaffold}
+make_nice_names <- function(x){
+  str_replace_all(x, "&", "and") |>    # recode ampersands
+  str_remove_all("[:punct:]") |>    # strip punctuation
+  str_squish() |>                   # clean up whitespace
+  str_replace_all("[:space:]", "-")
+}
+
+scaffold <- mutate(scaffold, across(everything(), make_nice_names))
+
+scaffold <- rowwise(scaffold)
+```
+
+
+## Join tibbles
+
+### Join nation tibbles
+
+
+```{r joinNationTibbles}
+scaffold <-
+  mutate(
+    scaffold,
+    tibble_nation = 
+      list(
+        census_data[[nation]][["nations"]]
+        )
+  )
+```
+
+
+### Join Diocese tibbles
+
+
+```{r joinDioceseTibbles}
+scaffold <- 
+  mutate(
+    scaffold,
+    tibble_diocese = 
+      list(
+        census_data[[nation]][["dioceses"]] |>
+          map(~ filter(., diocese == .env[["diocese"]]))
+      )
+  )
+```
+
+
+### Join CoM tibbles
+
+
+```{r joinCoMTibbles}
+scaffold <- 
+  mutate(
+    scaffold,
+    tibble_com = 
+      list(
+        census_data[[nation]][["com"]] |> 
+          map(~ filter(., com == .env[["com"]]))
+      )
+  )
+```
+
+
+## Save
+
+
+```{r saveScaffold}
+saveRDS(
+  scaffold,
+  here("data", "intermediate", "census", "merged-data",
+             "04_census-mega-table_2022-11-07.RDS"))
+```
+
