@@ -230,7 +230,7 @@ That is, remove them from all tibbles except population statistics tibbles. We m
 ### Remove total_households columns
 
 ```{r removeTotalHouseholds}
-census_table <- modify_census_tibbles(census_table, modify_func = select, .cols = -any_of("total_households"))
+census_table <- modify_census_tibbles(census_table, modify_func = select, .cols = -any_of("total_households"), stats = "house")
 ```
 
 ### Popultion tibbles: Remove gender fields
@@ -277,7 +277,6 @@ For the CoM tibbles, there's a column that tells us the extent to which every OA
 ### Ensure overlap is never \> 1
 
 ```{r roundUpComsProp}
-#| eval: false
 
 census_table <- 
   modify_census_tibbles(
@@ -294,8 +293,6 @@ census_table <-
 ### Multiply census stats by com_prop
 
 ```{r multiplyByComProp}
-
-## TODO: This
 census_table <- 
   modify_census_tibbles(
     census_table,

@@ -1,0 +1,64 @@
+---
+title: "Making network diagram"
+author: "Dave"
+format: html
+editor: visual
+---
+
+```{r libs}
+library(here)
+library(dplyr)
+library(fs)
+library(stringr)
+
+## For constructing/plotting network
+# library(treemap)
+library(data.tree)
+library(DiagrammeR)
+library(igraph)
+```
+
+## Read table and nest into list
+
+```{r readDirList}
+dirs <- dir_tree(
+  here("data", "inputs", "census"),
+  recurse  = TRUE,
+  type = "directory"
+)
+
+join_table <- vroom::vroom(here("data", "inputs", "census", "com-diocese-nation-table.csv"))
+join_table <- select(join_table, nation = Nation, diocese = Diocese, com = CoM)
+
+```
+
+### Make igraph
+
+```{r makeIgraph}
+tree <- 
+  join_table |>
+  rowwise() |> 
+  mutate(
+    pathString = 
+      str_c(c("UK & RoI", c_across(everything())), collapse = "/") |> 
+      str_replace_all("&", "and") |> 
+      str_remove_all("\\\"|'|,|-")
+  )
+
+tree <- as.Node(tree)
+```
+
+## Node network
+
+What the heck am I even doing lol
+
+```{r node}
+
+network <- 
+  tree |>
+  ToDataFrameNetwork("name")  |> 
+  simpleNetwork(
+    fontSize = 12,
+    charge = -60
+  )
+```

@@ -265,4 +265,3 @@ censustable_plot |>
   pull(plots)
 
 ```
-
