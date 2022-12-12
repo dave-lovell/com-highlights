@@ -2,6 +2,8 @@
 title: "08_making-plots"
 format: html
 editor: visual
+params: 
+  com: "attercliffe-darnall"
 ---
 
 ```{r libraries}
@@ -10,6 +12,7 @@ library(here)
 library(scales)
 library(rlang)
 library("carutools") #devtools::install_github("dave-lovell/carutools")
+print(params$com)
 ```
 
 ```{r readInData}
@@ -114,16 +117,30 @@ censustable_plot <-
   modify_plot_tibbles(
     censustable_plot,
     stat   = "ethn",
+    nation = c("Wales", "Scotland", "Republic-of-Ireland", "England"),
     modify_func = mutate,
     levels = ordered(levels) |> 
       fct_relabel(str_replace, "_", " ") |> 
       fct_relabel(str_replace, "or", "\n") |> 
       fct_relabel(str_replace, " ", "\n") |> 
-      fct_reorder(ratio, .fun = max, .desc = TRUE) 
-    
+      fct_relabel(str_replace, " ", "") |> 
+      fct_reorder(ratio, .fun = max, .desc = TRUE)
+  )
+
+censustable_plot <- 
+  modify_plot_tibbles(
+   censustable_plot,
+    stat   = "ethn",
+    nation = "Northern-Ireland",
+    modify_func = mutate,
+    levels = ordered(levels) |> 
+      fct_relabel(str_replace, "_or_", "\n") |> 
+      fct_relabel(str_replace, "_", "\n") |> 
+      fct_reorder(ratio, .fun = max, .desc = TRUE)
+ )
     ## do these seperately
     # scale_x_discrete(guide = guide_axis(n.dodge = 2))
-    )
+    
 
 # censustable_plot <- modify_plot_tibbles(censustable_plot, modify_fun = ungroup)
 censustable_plot <- 
@@ -217,8 +234,31 @@ censustable_plot <-
       fct_relabel(str_replace_all, "_years", "\nyears"),
       fct_relevel(levels)
     )
-     
+
+censustable_plot <- 
+  modify_plot_tibbles(
+    censustable_plot,
+    stat = "pop",
+    modify_func = mutate,
+    levels = ordered(levels) |>
+      fct_relabel(str_replace_all, "_", "-"),
+      fct_relevel(levels)
+    )   
       
+pop_levels <- function(rearrange){
+  str_extract(rearrange, "[[:alnum:]]+") |>
+   as.numeric(rearrange) -> rearrange
+    return (rearrange)
+    }
+
+censustable_plot <- 
+  modify_plot_tibbles(
+    censustable_plot,
+    stat = "pop",
+    modify_func = mutate,
+    levels = ordered(levels) |>
+      fct_reorder(pop_levels(levels), .desc = FALSE)
+    ) 
 
 ```
 
@@ -265,3 +305,82 @@ censustable_plot |>
   pull(plots)
 
 ```
+
+```{r savingPlotsInIntermediateFolders}
+#single
+graph_path <- here("intermediate-com-outputs", "a7", "visualizations")
+#general
+graph_path_all <- function(x){
+  x = com_names_list |>
+  here("intermediate-com-outputs", x)
+}
+
+
+
+jpeg(filename =  here("intermediate-com-outputs", "a7", "visualizations",   "01_practice.jpeg"),
+                      width = 6,
+                      height = 4,
+     units = "in",
+     res = 300
+)
+
+print(censustable_plot$plots[[1]][[1]])
+
+dev.off()
+
+
+# save_all_plots <- function(graph_path_all, stat_name, outputLocation ){
+#   graph_files <- names(censustable_plot$plots),
+#   pluck(graph_files)|>
+#   stat_name <- as.list(names(censustable_plot)|>
+#                     )
+# }
+
+save_this_plot <- function(plot, plot_name, path){
+  ## Get path to save plot to
+  save_path <- str_c(path, "/", plot_name, ".jpg", sep = "")
+  
+  ## Print plot
+  jpeg(save_path,
+       width = 8,
+       height = 6, 
+       units = "in",
+       res = 200
+       )
+  print(plot)
+  dev.off()
+}
+
+
+# library(progress)
+
+# pbar <- progress_bar$new(total = nrow(censustable_plot))
+
+save_five_plots <- function(list_of_five_plots, com_name){
+    
+  # pbar$tick()
+  
+  com_name <-
+    str_to_lower(com_name) |> 
+    str_remove("and-")
+  
+  com_path <- str_c("intermediate-com-outputs", com_name, "visualizations", sep = "/")
+  com_path <- here(com_path)
+  
+  iwalk(list_of_five_plots, save_this_plot, path = com_path)
+
+  
+  return(NULL)
+}
+
+
+
+foo <- 
+  censustable_plot |>
+  rowwise() |> 
+         mutate(temp = list(save_five_plots(plots, com)))
+
+rm(foo)
+    
+```
+>>>>>>> f63aa36ae5e5a42c331ce2dfe1ab670ee1ab30ad

@@ -1,0 +1,32 @@
+---
+title: "09_Passing Parameters"
+format: html
+editor: visual
+---
+
+Install Libraries
+
+```{r install}
+install.packages("quarto")
+library(quarto)
+library(here)
+library(purrr)
+```
+
+## Passing Parameters for CoMs
+
+```{r passingParameters}
+
+
+render_docs <- function(com_name = NULL, ...){
+quarto::quarto_render(
+  input = here("params.qmd"),
+  output_file = 
+  execute_params = list(com_name = com_name), 
+  ...
+  )
+}
+
+
+walk(, render_docs, output_format = "html")
+```

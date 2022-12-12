@@ -1,0 +1,14 @@
+---
+title: "template-test"
+author: "Dave"
+format: html
+editor: visual
+params:
+  test_param: "a7"
+---
+
+## Print the parameter
+
+```{r printParam}
+params$test_param
+```

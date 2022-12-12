@@ -1,0 +1,13 @@
+---
+title: "Params test 2"
+format: html
+editor: visual
+params:
+  com_name: "DEFAULT"
+---
+
+## Print CoM Name
+
+```{r printComName}
+print(params$com_name)
+```
